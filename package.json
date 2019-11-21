@@ -1,0 +1,19 @@
+{
+  "name": "car-management",
+  "version": "1.0.0",
+  "description": "Gerenciamento de entrada e saída de carros",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjuniorfox/car-management.git"
+  },
+  "author": "Carlos Junior",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cjuniorfox/car-management/issues"
+  },
+  "homepage": "https://github.com/cjuniorfox/car-management#readme"
+}
