@@ -10,7 +10,11 @@ const fichaSchema = new mongoose.Schema({
         type: String,
         Enumerator : ['OF', 'VN', 'SL', 'TD', 'VU'] 
     },
-    dataRecepcao: Date,
+    dataRecepcao: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
     dataPrevisaoSaida: Date,
     osSistema: {
         type: Number,
@@ -55,4 +59,4 @@ const fichaSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('ficha',fichaSchema);
+module.exports = mongoose.model('Ficha',fichaSchema);
