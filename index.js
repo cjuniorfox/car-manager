@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv/config');
-const fichaRoute = require('./router/ficha');
+require('dotenv/config');
+const bodyParser = require('body-parser');
+const FichaRoute = require('./routes/FichaRoute');
+const VeiculoRoute = require('./routes/VeiculoRoute');
 
 const app = express();
 
@@ -13,8 +15,11 @@ mongoose.connect(
 );
 
 //Middleware
+app.use(bodyParser.json());
 
 //Routes
-app.use('/api/ficha/',fichaRoute);
+app.use('/api/ficha/',FichaRoute);
+app.use('/api/veiculo/',VeiculoRoute);
+
 
 app.listen(3000, () => console.log('Car management up and running!'));

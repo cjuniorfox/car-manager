@@ -22,8 +22,8 @@ const fichaSchema = new mongoose.Schema({
     },
     osInterna: Number,
     veiculo: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Veiculo'
     },
     placa: {
         type: String,
