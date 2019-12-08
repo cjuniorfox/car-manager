@@ -23,17 +23,7 @@ const fichaSchema = new mongoose.Schema({
     osInterna: Number,
     veiculo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Veiculo'
-    },
-    placa: {
-        type: String,
-        min: 7,
-        max: 7
-    },
-    chassi: {
-        type: String,
-        min: 10,
-        max: 10
+        ref: 'Cliente'
     },
     avariaInterior:{
         existente:{

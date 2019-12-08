@@ -20,8 +20,6 @@ const FichaController = {
             dataPrevistaSaida: req.body.dataPrevistaSaida,
             osSistema: req.body.osSistema,
             veiculo: req.body.veiculo._id,
-            placa: req.body.placa,
-            chassi: req.body.chassi,
             avariaInterior: {
                 existente: req.body.avariaInterior.existente,
                 detalhe: req.body.avariaInterior.detalhe
