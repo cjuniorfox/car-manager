@@ -1,4 +1,4 @@
-Veiculo = require('../model/veiculoSchema');
+Veiculo = require('../model/Veiculo');
 
 const VeiculoController = {
     async index(req,res){
