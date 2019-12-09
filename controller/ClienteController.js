@@ -1,4 +1,4 @@
-Cliente = require("../model/Cliente");
+Cliente = require('../model/Cliente');
 
 const ClienteController = {
     async cadastro(req,res){
@@ -7,11 +7,16 @@ const ClienteController = {
             telefone: req.body.telefone,
             documento: req.body.documento,
             veiculos: req.body.veiculos
-            
         });
         try{
             savedCliente = await cliente.save();
-            await savedCliente.populate("veiculos.carro").execPopulate();
+            await savedCliente
+                .populate('veiculos')
+                .execPopulate();
+            await savedCliente
+                .populate('veiculos.carro')
+                .execPopulate();
+                
             res.send(savedCliente);
         }catch(err){
             res.status(400).send(err);

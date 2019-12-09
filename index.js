@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 const bodyParser = require('body-parser');
 const FichaRoute = require('./routes/FichaRoute');
-const VeiculoRoute = require('./routes/VeiculoRoute');
+const CarroRoute = require('./routes/CarroRoute');
 const ClienteRoute = require('./routes/ClienteRoute');
+const VeiculoRoute = require('./routes/veiculoRoute');
 
 const app = express();
 
@@ -20,8 +21,9 @@ app.use(bodyParser.json());
 
 //Routes
 app.use('/api/ficha/',FichaRoute);
-app.use('/api/veiculo/',VeiculoRoute);
+app.use('/api/carro/',CarroRoute);
 app.use('/api/cliente',ClienteRoute);
+app.use('/api/veiculo',VeiculoRoute);
 
 
 app.listen(3000, () => console.log('Car management up and running!'));

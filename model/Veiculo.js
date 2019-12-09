@@ -1,14 +1,20 @@
 const mongoose = require('mongoose');
 
 const veiculoSchema = new mongoose.Schema({
-    marca : {
-        type : String,
-        required : true
+    carro: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Carro'
     },
-    modelo : {
-        type : String,
-        required : true
-    }
+    placa: {
+        type: String,
+        min: 7,
+        max: 7
+    },
+    chassi: {
+        type: String,
+        min: 10,
+        max: 10
+    }   
 });
 
-module.exports = mongoose.model('Veiculo',veiculoSchema);
+module.exports = mongoose.model('Veiculo', veiculoSchema);

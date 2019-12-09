@@ -19,20 +19,8 @@ const clienteSchema = new mongoose.Schema({
     },
     veiculos:[
         {
-            carro: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Veiculo'
-            },
-            placa: {
-                type: String,
-                min: 7,
-                max: 7
-            },
-            chassi: {
-                type: String,
-                min: 10,
-                max: 10
-            }   
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Veiculo'
         }
     ]
 });

@@ -1,26 +1,31 @@
 Veiculo = require('../model/Veiculo');
 
 const VeiculoController = {
-    async index(req,res){
-        const veiculos = await Veiculo
-            .find()
-            .populate('veiculos');
-        res.send(veiculos); 
+    async show(req,res){
+        try{
+            const veiculo = await Veiculo
+                .findById(req.param.id)
+                .populate('veiculo')
+                .populate('carro');
+            res.send(veiculo);
+        }catch(err){
+            res.status(400).send(err);
+        };
     },
-    async show(req, res){
-        const veiculo = await Veiculo
-            .findById(req.params.id)
-            .populate('veiculos');
-        res.send(veiculo);
-    },
-    async insert(req,res){
-        const veiculo = new Veiculo( {
-            marca : req.body.marca,
-            modelo: req.body.modelo
+    async post(req,res){
+        const veiculo = new Veiculo({
+            carro: req.body.carro._id,
+            placa: req.body.placa,
+            chassi: req.body.chassi
         });
-        const savedVeiculo = await veiculo.save();
-        res.send(veiculo);
+        try{
+            const savedVeiculo = await veiculo.save();
+            await savedVeiculo.populate('carro').execPopulate();
+            res.send(savedVeiculo);
+        }catch(err){
+            res.status(400).send(err);
+        };
     }
-};
+}
 
 module.exports = VeiculoController;

@@ -1,12 +1,15 @@
 Ficha = require('../model/Ficha');
-Veiculo = require('../model/Veiculo');
+Veiculo = require('../model/Carro');
 
 const FichaController = {
     async show(req, res) {
         try{
             const ficha = await Ficha
             .findById(req.params.id)
-            .populate('ficha');
+            .populate('ficha')
+            .populate('cliente')
+            .populate('cliente.veiculo')
+            .populate('cliente.veiculo.carro');
             res.send(ficha);
         }catch(err){
             res.status(400).send(err);
@@ -19,6 +22,7 @@ const FichaController = {
             setor: req.body.setor,
             dataPrevistaSaida: req.body.dataPrevistaSaida,
             osSistema: req.body.osSistema,
+            cliente: req.body.cliente._id,
             veiculo: req.body.veiculo._id,
             avariaInterior: {
                 existente: req.body.avariaInterior.existente,
@@ -35,7 +39,13 @@ const FichaController = {
         });
         try{
             const savedFicha = await ficha.save();
-            await savedFicha.populate("veiculo").execPopulate();
+            await savedFicha
+                .populate('cliente')
+                .populate('veiculo')
+                .execPopulate();
+            await savedFicha
+                .populate('veiculo.carro')
+                .execPopulate();
             res.send(savedFicha);
         }catch(err){
             res.status(400).send(err);

@@ -15,15 +15,19 @@ const fichaSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
-    dataPrevisaoSaida: Date,
+    dataPrevistaSaida: Date,
     osSistema: {
         type: Number,
         required: true
     },
     osInterna: Number,
-    veiculo: {
+    cliente: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cliente'
+    },
+    veiculo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Veiculo'
     },
     avariaInterior:{
         existente:{
