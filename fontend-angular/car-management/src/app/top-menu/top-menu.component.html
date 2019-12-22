@@ -1,41 +1,40 @@
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark blue" [containerInside]="false">
-
-    <mdb-navbar-brand><a class="navbar-brand" href="#">
+<mdb-navbar *ngIf="menu" SideClass="navbar navbar-expand-lg navbar-dark blue" [containerInside]="false">
+    <mdb-navbar-brand>
+        <a class="navbar-brand" href="#">
             <mdb-icon fas icon="car"></mdb-icon><span class="caret"></span>
-        </a></mdb-navbar-brand>
-    <links>
+        </a>
+    </mdb-navbar-brand>
+    <links *ngIf="menu?.length > 0">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link waves-light" mdbWavesEffect routerLink="controle/entrada">
-                    <mdb-icon fas icon="arrow-up"></mdb-icon><span class="caret">Entrada</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link waves-light" mdbWavesEffect routerLink="controle/saida">
-                    <mdb-icon fas icon="arrow-down"></mdb-icon><span class="caret">Saída</span>
-                </a>
-            </li>
-            <!-- Dropdown -->
-            <li class="nav-item dropdown" dropdown>
-                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
-                    mdbWavesEffect>
-                    <mdb-icon fas icon="tasks"></mdb-icon><span class="caret">Configurações</span>
-                </a>
-                <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Gerenciar usuários</a>
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Permissões</a>
-                    <div class="divider dropdown-divider"></div>
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Relatório gerencial</a>
-                    <div class="divider dropdown-divider"></div>
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Logout</a>
-                </div>
-            </li>
-
+            <ng-container *ngFor="let l of menu">
+                <!--menu item-->
+                <li class="nav-item" *ngIf="l.path">
+                    <a *ngIf="l.path" routerLink="{{l.path}}" class="nav-link waves-light" mdbWavesEffect>
+                        <mdb-icon *ngIf="l.icon" fas icon="{{l.icon}}"></mdb-icon><span class="caret">{{l.name}}</span>
+                    </a>
+                </li>
+                <!--dropdown-->
+                <li *ngIf="l.dropdown?.length > 0" class="nav-item dropdown" dropdown>
+                    <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
+                        mdbWavesEffect>
+                        <mdb-icon *ngIf="l.icon" fas icon="{{l.icon}}"></mdb-icon><span class="caret">{{l.name}}</span>
+                    </a>
+                    <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                        <ng-container *ngFor="let i of l.dropdown">
+                            <a *ngIf="i.path" routerLink="{{i.path}}" class="dropdown-item waves-light" mdbWavesEffect
+                                href="#">{{i.name}}</a>
+                            <div *ngIf="i.divider" class="divider dropdown-divider"></div>
+                        </ng-container>
+                    </div>
+                </li>
+            </ng-container>
         </ul>
     </links>
 </mdb-navbar>
-<mdb-breadcrumb>
+
+<mdb-breadcrumb textTransform="capitalize">
     <mdb-breadcrumb-item class="blue-text" *ngFor="let item of breadcrumbList; let i = index"
-        [class.active]="i===breadcrumbList.length-1" [routerLink]="item.path"
-        >{{ item.name }}</mdb-breadcrumb-item>
+        [class.active]="i===breadcrumbList.length-1" [routerLink]="item.path">
+        {{ item.name }}
+    </mdb-breadcrumb-item>
 </mdb-breadcrumb>
