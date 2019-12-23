@@ -1,4 +1,4 @@
-Ficha = require('../model/Ficha');
+Ficha = require('../model/FichaSchema');
 Veiculo = require('../model/Carro');
 
 const FichaController = {

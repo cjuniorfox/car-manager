@@ -1,6 +1,6 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuService } from '../services/menu.service';
+import { MenuService } from '../menu.service';
 
 @Component({
   selector: 'app-top-menu',
