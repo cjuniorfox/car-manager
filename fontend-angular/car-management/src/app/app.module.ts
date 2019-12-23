@@ -12,6 +12,7 @@ import { EntradaComponent } from './controle/entrada/entrada.component';
 import { SaidaComponent } from './controle/saida/saida.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     TopMenuComponent,
     EntradaComponent,
-    SaidaComponent
+    SaidaComponent,
+    ContactFormComponent
 ],
   imports: [
     BrowserModule,

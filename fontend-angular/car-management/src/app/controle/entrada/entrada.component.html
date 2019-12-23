@@ -1,19 +1,16 @@
-<form class="text-center" style="color: #757575;" action="#!">
-    <span>Setor</span>
-    <select name="ficha.setor" class="mdb-select colorful-select dropdown-primary">
-        <option value="" disabled>Setor</option>
-        <option value="OF">OF</option>
-        <option value="VN">VN</option>
-        <option value="SL">SL</option>
-        <option value="TD">TD</option>
-        <option value="VU">VU</option>
-    </select>
-    <div class="md-form">
-        <input mdbInput name="ficha.cliente" type="text" id="cliente" class="form-control">
-        <label for="ficha.cliente" class="">Cliente</label>
+<form action="#!">
+    <div class="form-group">
+        <label for="setor">Setor</label>
+        <select mdbInput name="setor" id="setor" class="browser-default custom-select form-control">
+            <option value="OF">OF</option>
+            <option value="VN">VN</option>
+            <option value="TD">TD</option>
+            <option value="VU">VU</option>
+        </select>
     </div>
-    <div class="md-form">
-        <input placeholder="Selected date" type="text" id="date-picker-example" class="form-control datepicker">
-        <label for="date-picker-example">Try me...</label>
-      </div>
+    <div class="form-group md-form">
+        <input mdbInput type="text" name="cliente" id="cliente" class="form-control">
+        <label for="cliente">Cliente</label>
+    </div>
+
 </form>
