@@ -15,13 +15,27 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { HomeComponent } from './home/home.component';
+import { ControleComponent } from './controle/controle.component';
+import { EntradaComponent } from './controle/entrada/entrada.component';
+import { SaidaComponent } from './controle/saida/saida.component';
+import { OpcaoComponent } from './opcao/opcao.component';
+import { UsuarioComponent } from './opcao/usuario/usuario.component';
+import { PermissaoComponent } from './opcao/permissao/permissao.component';
+import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     BreadcrumbComponent,
-    HomeComponent
+    HomeComponent,
+    ControleComponent,
+    EntradaComponent,
+    SaidaComponent,
+    OpcaoComponent,
+    UsuarioComponent,
+    PermissaoComponent,
+    RelatorioGerencialComponent
   ],
   imports: [
     BrowserModule,
