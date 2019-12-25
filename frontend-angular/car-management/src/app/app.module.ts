@@ -27,6 +27,8 @@ import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
 import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ClienteComponent } from './cliente/cliente.component';
+import { VeiculoComponent } from './veiculo/veiculo.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     OpcaoComponent,
     UsuarioComponent,
     PermissaoComponent,
-    RelatorioGerencialComponent
+    RelatorioGerencialComponent,
+    ClienteComponent,
+    VeiculoComponent
   ],
   imports: [
     BrowserModule,

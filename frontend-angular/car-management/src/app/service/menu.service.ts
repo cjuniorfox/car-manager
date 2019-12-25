@@ -14,7 +14,10 @@ export class MenuService {
       { name: 'Saida', path: '/controle/saida', icon: 'arrow_downward' },
       {
         name: 'Mais opções', path:"/opcao", icon: 'settings_applications', dropdown: [
-          { name: 'Controle de veículos', path: '/controle' },
+          { name: 'Controle de serviço', path: '/controle' },
+          { divider: true },
+          { name: 'Clientes', path: '/cliente' },
+          { name: 'Veiculos', path: '/veiculo' },
           { divider: true },
           { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
           { name: 'Permissões', path: '/opcao/permissao' },

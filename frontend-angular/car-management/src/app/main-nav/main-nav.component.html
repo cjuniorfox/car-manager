@@ -52,7 +52,6 @@
             mat-button 
             routerLink="{{l.path}}"><mat-icon *ngIf="l.icon"> {{l.icon}}</mat-icon> {{l.name}}
           </button>
-
           <button  mat-button
             *ngIf="l.dropdown && l.dropdown.length > 0"
             [matMenuTriggerFor]="topMenu">

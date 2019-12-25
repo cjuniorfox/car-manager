@@ -8,6 +8,8 @@ import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
 import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
+import { ClienteComponent } from './cliente/cliente.component';
+import { VeiculoComponent } from './veiculo/veiculo.component';
 
 
 const routes: Routes = [
@@ -15,6 +17,8 @@ const routes: Routes = [
   {path:"controle",component:ControleComponent},
   {path:"controle/entrada",component:EntradaComponent},
   {path:"controle/saida",component:SaidaComponent},
+  {path:"cliente",component:ClienteComponent},
+  {path:"veiculo",component:VeiculoComponent},
   {path:"opcao",component:OpcaoComponent},
   {path:"opcao/usuario",component:UsuarioComponent},
   {path:"opcao/permissao",component:PermissaoComponent},
