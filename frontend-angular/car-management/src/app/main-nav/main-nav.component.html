@@ -1,0 +1,78 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [ngClass]="{hidden:!(isHandset$ | async)}"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list 
+      *ngFor="let l of menu">
+      <ng-container *ngIf="menu && menu?.length > 0">
+        <a routerLink="{{l.path}}" 
+            mat-list-item
+            *ngIf="l.path && !l.dropdown"  
+            href="#">
+          <mat-icon *ngIf="l.icon"> {{l.icon}}</mat-icon> {{l.name}}
+        </a>
+        <a mat-list-item
+          *ngIf="l.dropdown && l.dropdown.length > 0"
+          [matMenuTriggerFor]="menuSidenav">
+            <mat-icon *ngIf="l.icon"> {{l.icon}}</mat-icon> {{l.name}}
+        </a>
+        <mat-menu #menuSidenav="matMenu">
+          <ng-container *ngFor="let d of l.dropdown">
+            <button 
+              mat-menu-item 
+              routerLink="{{d.path}}"
+              *ngIf="d.path">
+                {{d.name}}
+            </button>
+            <mat-divider *ngIf="d.divider"></mat-divider>
+          </ng-container>
+        </mat-menu>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" role="heading">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <!-- <button mat-mini-fab href="#"><mat-icon>local_car_wash</mat-icon></button> -->
+      <span><mat-icon>local_car_wash</mat-icon></span>
+      <span class="spacer"></span>
+      <ng-container *ngIf="!(isHandset$ | async) && menu && menu?.length > 0">
+        <ng-container *ngFor="let l of menu">
+          <button *ngIf="l.path && !l.dropdown" 
+            mat-button 
+            routerLink="{{l.path}}"><mat-icon *ngIf="l.icon"> {{l.icon}}</mat-icon> {{l.name}}
+          </button>
+
+          <button  mat-button
+            *ngIf="l.dropdown && l.dropdown.length > 0"
+            [matMenuTriggerFor]="topMenu">
+            <mat-icon *ngIf="l.icon"> {{l.icon}}</mat-icon> {{l.name}}
+          </button>
+          <mat-menu #topMenu="matMenu">
+            <ng-container *ngFor="let d of l.dropdown">
+              <button 
+                mat-menu-item 
+                routerLink="{{d.path}}"
+                *ngIf="d.path">
+                  {{d.name}}
+              </button>
+              <mat-divider *ngIf="d.divider"></mat-divider>
+            </ng-container>
+          </mat-menu> 
+        </ng-container>
+      </ng-container>
+    </mat-toolbar>
+    <app-breadcrumb *ngIf="!(isHandset$ | async)"></app-breadcrumb>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

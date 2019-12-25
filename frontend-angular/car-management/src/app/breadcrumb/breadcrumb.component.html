@@ -1,0 +1,13 @@
+<!-- breadcrumb -->
+<mat-toolbar color="accent">
+    <ng-container *ngFor="let item of breadcrumbList; let i = index"
+        [class.active]="i===breadcrumbList.length-1">
+        <button mat-toolbar-item 
+            mat-button 
+            [routerLink]="item.path" 
+            disabled="{{i===breadcrumbList.length-1?'true':'false'}}">
+            {{ item.name }}
+        </button>
+        <mat-icon *ngIf="i!==breadcrumbList.length-1">arrow_right</mat-icon>
+    </ng-container>
+</mat-toolbar>
