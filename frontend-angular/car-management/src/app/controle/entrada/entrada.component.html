@@ -1,1 +1,44 @@
-<p>entrada works!</p>
+<form action="">
+    <div class="container">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Cliente">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="dataRecepcao" placeholder="Data de recepção">
+            <mat-datepicker-toggle matSuffix [for]="dataRecepcao"></mat-datepicker-toggle>
+            <mat-datepicker #dataRecepcao></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Ordem de serviço">
+        </mat-form-field>
+    </div>
+
+    <div class="container">
+        <mat-form-field>
+            <input matInput [matDatepicker]="dataSaida" placeholder="Previsão de saída">
+            <mat-datepicker-toggle matSuffix [for]="dataSaida"></mat-datepicker-toggle>
+            <mat-datepicker #dataSaida></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="O.S. Interna">
+        </mat-form-field>
+    </div>
+
+    <div class="container">
+        <mat-form-field><input type="text" matInput placeholder="Veiculo"></mat-form-field>
+        <mat-form-field><input type="text" matInput placeholder="Placa"></mat-form-field>
+        <mat-form-field><input type="text" matInput placeholder="Chassi"></mat-form-field>
+    </div>
+    <div class="container">
+        <mat-checkbox>Avaria exterior</mat-checkbox>
+        <mat-form-field><textarea  matInput placeholder="Avarias"></textarea></mat-form-field>
+    </div>
+    <div class="container">
+        <mat-checkbox>Avaria interior</mat-checkbox>
+        <mat-form-field><textarea  matInput placeholder="Avarias"></textarea></mat-form-field>
+    </div>
+    <div class="container">
+        <mat-checkbox>Pertences no veículo</mat-checkbox>
+        <mat-form-field><textarea  matInput placeholder="Pertences encontrados"></textarea></mat-form-field>
+    </div>
+</form>

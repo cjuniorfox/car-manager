@@ -13,6 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { HomeComponent } from './home/home.component';
 import { ControleComponent } from './controle/controle.component';
@@ -22,6 +26,7 @@ import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
 import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,12 @@ import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-ger
     MatIconModule,
     MatListModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
