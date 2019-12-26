@@ -1,1 +1,18 @@
-<p>cliente works!</p>
+<div class="example-container">
+    <mat-form-field hideRequiredMarker color="accent">
+      <input matInput placeholder="Input" [formControl]="email" required>
+      <mat-hint>Hint</mat-hint>
+      <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <textarea matInput placeholder="Textarea"></textarea>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-select placeholder="Select">
+        <mat-option value="option">Option</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
