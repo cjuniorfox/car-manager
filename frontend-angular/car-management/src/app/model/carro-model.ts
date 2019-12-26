@@ -1,4 +1,4 @@
-export class CarModel {
+export class CarroModel {
     marca: String;
     modelo: String;
 }

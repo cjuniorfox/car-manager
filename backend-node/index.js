@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv/config');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const FichaRoute = require('./routes/FichaRoute');
 const CarroRoute = require('./routes/CarroRoute');
@@ -17,6 +18,7 @@ mongoose.connect(
 );
 
 //Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 //Routes

@@ -32,6 +32,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ClienteComponent } from './cliente/cliente.component';
 import { VeiculoComponent } from './veiculo/veiculo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CarroComponent } from './carro/carro.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PermissaoComponent,
     RelatorioGerencialComponent,
     ClienteComponent,
-    VeiculoComponent
+    VeiculoComponent,
+    CarroComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +60,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     LayoutModule,
     FlexLayoutModule,
+    HttpClientModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,

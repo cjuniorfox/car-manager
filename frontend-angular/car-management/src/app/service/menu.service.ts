@@ -18,6 +18,7 @@ export class MenuService {
           { divider: true },
           { name: 'Clientes', path: '/cliente' },
           { name: 'Veiculos', path: '/veiculo' },
+          { name: 'Carros', path: '/carro' },
           { divider: true },
           { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
           { name: 'Permissões', path: '/opcao/permissao' },

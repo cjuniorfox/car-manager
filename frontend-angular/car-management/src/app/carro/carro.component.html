@@ -1,0 +1,17 @@
+<mat-toolbar>Cadastro de veículos</mat-toolbar>
+<form [formGroup]="carForm" (ngSubmit)="onSubmit(carForm.value)">
+    <div class="container">
+        <mat-form-field>
+            <input matInput placeholder="Marca" [formControl]="marca" required>
+            <mat-error *ngIf="marca.invalid">{{getErrorMessage('marca')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Modelo" [formControl]="modelo" required>
+            <mat-error *ngIf="modelo.invalid">{{getErrorMessage('modelo')}}</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="container">
+        <button type="submit" mat-raised-button>Salvar</button>
+        <button type="reset" mat-raised-button>Limpar</button>
+    </div>
+</form>
