@@ -13,16 +13,45 @@ const CarroController = {
             .populate('carros');
         res.send(carro);
     },
+    async post(req, res) {
+        const carro = new Carro({
+            marca : req.body.marca,
+            modelo : req.body.modelo
+        });
+        carro
+            .save()
+            .then(
+                result => {
+                    console.log(result);
+                    res.status(201).json({
+                        message: "Carro criado com sucesso",
+                        createdObject : {
+                            marca : result.marca,
+                            modelo: result.modelo
+                            _id: result
+                        }
+                    });
+                }
+            )
+    },
     async insert(req, res) {
         const carro = new Carro({
             marca: req.body.marca,
             modelo: req.body.modelo
         });
         try {
+            const carroDb = await Carro.find({
+                marca: carro.marca,
+                modelo: carro.modelo
+            }
+            );
+            if (carroDb.length > 0) {
+                throw new Error({ message: "Carro " + carro.marca + " - " + carro.modelo + " já cadastrado" });
+            }
             const savedCarro = await carro.save();
-            res.send(carro);
+            res.send(savedCarro);
         } catch (err) {
-            res.status(400).send(err);
+            res.status(400).send({message:err});
         }
 
     }
