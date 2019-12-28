@@ -11,6 +11,7 @@ import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-ger
 import { ClienteComponent } from './cliente/cliente.component';
 import { VeiculoComponent } from './veiculo/veiculo.component';
 import { CarroComponent } from './carro/carro.component';
+import { CarroCadastroComponent } from './carro/carro-cadastro/carro-cadastro.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:"cliente",component:ClienteComponent},
   {path:"veiculo",component:VeiculoComponent},
   {path:"carro",component:CarroComponent},
+  {path:"carro/cadastro",component:CarroCadastroComponent},
   {path:"opcao",component:OpcaoComponent},
   {path:"opcao/usuario",component:UsuarioComponent},
   {path:"opcao/permissao",component:PermissaoComponent},

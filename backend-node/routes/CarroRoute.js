@@ -1,24 +1,39 @@
 const router = require('express').Router();
-//const CarroController = require('../controller/CarroController');
+const Carro = require('../model/CarroSchema');
 
-//router.get('/',CarroController.index);
-//router.get('/:id',CarroController.show);
-//router.post('/',CarroController.insert);
+function _carroRequest(doc) {
+    return {
+        marca: doc.marca,
+        modelo: doc.modelo,
+        _id: doc._id,
+        request: {
+            method: "GET",
+            url: "http://localhost:3000/api/carro/" + doc._id
+        }
+    };
+}
 
-const Carro = require('../model/Carro');
-
-function mapCarros(docs) {
+function _mapCarros(docs) {
     return docs.map(doc => {
-        return {
-            marca: doc.marca,
-            modelo: doc.modelo,
-            _id: doc._id,
-            request: {
-                type: "GET",
-                url: "http://localhost:3000/api/carro/" + doc._id
-            }
-        };
+        return _carroRequest(doc);
     })
+}
+
+function _queryCarros(search) {
+    const arrSearch = search.split(" ");
+    //para busca ignorando case
+    search = new RegExp('\\b' + search + '\\b', 'i');
+    //Busca por marca ou modelo ou marca e modelo
+    return {
+        $or: [
+            { marca: search },
+            { modelo: search },
+            {
+                marca: arrSearch.length > 0 ? new RegExp('\\b' + arrSearch[0] + '\\b', 'i') : search,
+                modelo: arrSearch.length > 1 ? new RegExp('\\b' + arrSearch[1] + '\\b', 'i') : search
+            }
+        ]
+    };
 }
 
 /**
@@ -30,7 +45,7 @@ router.get("/", async (req, res, next) => {
         .then(docs => {
             const response = {
                 count: docs.length,
-                carros: mapCarros(docs)
+                carros: _mapCarros(docs)
             };
             res.status(200).json(response);
         }).catch(err => {
@@ -42,27 +57,21 @@ router.get("/", async (req, res, next) => {
 });
 
 /**
- * Lista carros por marca ou modelo
+ * Busca de carros
  */
 
-router.post("/marca-modelo/", async (req, res, next) => {
-    const search = req.body.search;
-    const arrSearch = search.split(" ");
-    await Carro.find({
-        $or: [
-            { marca: search },
-            { modelo: search },
-            {
-                marca: arrSearch.length > 0 ? arrSearch[0] : search,
-                modelo: arrSearch.length > 1 ? arrSearch[1] : search
-            }
-        ]
-    })
+router.post("/buscar", async (req, res, next) => {
+    let busca = {};
+    if (req.body && req.body.search) {
+        busca = _queryCarros(req.body.search)
+    }
+    await Carro.find(busca)
+        .sort({ marca: 1 })
         .select("marca modelo _id")
         .then(docs => {
             const response = {
                 count: docs.length,
-                carros: mapCarros(docs)
+                carros: _mapCarros(docs)
             };
             res.status(200).json(response);
         }).catch(err => {
@@ -82,13 +91,7 @@ router.get("/:_id", async (req, res, next) => {
     Carro.findById(id)
         .select("marca modelo _id")
         .then(doc => {
-            res.status(200).json({
-                carro: doc,
-                request: {
-                    type: "GET",
-                    url: "http://localhost:8000/api/carro/"
-                }
-            });
+            res.status(200).json(_carroRequest(doc));
         }).catch(err => {
             if (err.name === "CastError") {
                 res.status(404).json({
@@ -100,61 +103,37 @@ router.get("/:_id", async (req, res, next) => {
         });
 });
 
-/**
- * Inserir novo carro
- */
-router.post("/", async (req, res, next) => {
-    const carro = new Carro({
+router.post("/", async (req, res) => {
+    const params = {
         marca: req.body.marca,
         modelo: req.body.modelo
-    });
-    //Verifica se carro já gravado
+    }
+    const carro = new Carro(params);
     try {
-        await Carro.find({
-            marca: carro.marca,
-            modelo: carro.modelo
-        })
-            .select("marca modelo _id")
-            .then(docs => {
-                if (docs.length > 0) {
-                    const error = {
-                        message: "Carro já cadastrado",
-                        carros: mapCarros(docs)
-                    };
-                    res.status(400).json(error);
-                    throw new Error(error);
-                }
+        carros = await Carro.find(params);
+        //Se carro cadastrado, sai fora retornando erro
+        if (carros.length > 0) {
+            const error = {
+                message: "Carro já cadastrado",
+                carros: _mapCarros(carros)
+            };
+            res.status(400).send(error);
+            throw new Error(error);
+        }
+        //Tudo ok? Grava carro
+        await carro.save()
+            .then(result => {
+                res.status(201).send({
+                    message: "Criado com sucesso",
+                    carro: _carroRequest(result)
+                });
             })
-    } catch (err) {
-        res.status(400).json(err);
-    };
-
-    //Carro não encontrado? segue com gravação
-    carro.save()
-        .then(result => {
-            res.status(201).json({
-                message: "Carro criado com sucesso",
-                createdCarro: {
-                    marca: result.marca,
-                    modelo: result.modelo,
-                    _id: result._id,
-                    request: {
-                        type: "GET",
-                        url: "http://localhost:3000/api/carro/" + result._id
-                    }
-                }
+            .catch(err => {
+                res.status(400).send({ message: err });
             });
-        }).catch(err => {
-            if (err.name === "ValidationError") {
-                res.status(400).json({
-                    error: err
-                });
-            } else {
-                res.status(500).json({
-                    error: err
-                });
-            }
-        });
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
 /**

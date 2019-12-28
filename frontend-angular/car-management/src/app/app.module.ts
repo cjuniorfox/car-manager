@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { HomeComponent } from './home/home.component';
 import { ControleComponent } from './controle/controle.component';
@@ -34,6 +35,9 @@ import { VeiculoComponent } from './veiculo/veiculo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarroComponent } from './carro/carro.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CarroCadastroComponent } from './carro/carro-cadastro/carro-cadastro.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,8 @@ import { HttpClientModule } from '@angular/common/http';
     RelatorioGerencialComponent,
     ClienteComponent,
     VeiculoComponent,
-    CarroComponent
+    CarroComponent,
+    CarroCadastroComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +78,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

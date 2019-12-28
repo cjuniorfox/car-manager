@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { CarroModel } from '../model/carro-model';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CarroService } from '../service/carro.service';
+import { MatSort } from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-carro',
@@ -10,45 +12,36 @@ import { CarroService } from '../service/carro.service';
 })
 export class CarroComponent implements OnInit {
 
-  car = new CarroModel();
+  carrosSort = new MatTableDataSource();
 
-  carForm;
+  search:string;
 
-  marca = new FormControl('', [Validators.required, Validators.minLength(3)]);
-  modelo = new FormControl('', [Validators.required]);
+  displayedColumns: string[] = ['marca', 'modelo','_id'];
 
   constructor(
-    private formBuilder: FormBuilder,
     private carroService: CarroService
-    ) {
-    this.carForm = new FormBuilder().group({
-      marca: this.marca,
-      modelo: this.modelo
-    })
+  ) {
+    this.getCars();
   }
 
-  onSubmit(formData) {
-    this.carroService.cadastrar(formData).subscribe( data => {
-      console.log(data);
-    }, err => {
-      console.error(err);
-    });
-  //  console.warn('Formulário enviado', formData);
-    this.carForm.reset();
-  }
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  getErrorMessage(fieldName) {
-    switch (fieldName) {
-      case 'marca': {
-        return this.marca.hasError('required') ? 'Digite a marca' :
-          this.marca.hasError('minlength') ? 'Mínimo de 3 caracteres' : '';
-      } case 'modelo': {
-        return this.modelo.hasError('required') ? 'Digite o modelo' : '';
-      }
+
+  ngOnInit() {
+    if(this.carrosSort){
+      this.carrosSort.paginator = this.paginator;
+      this.carrosSort.sort = this.sort;
     }
   }
 
-  ngOnInit() {
+  getCars() {
+    this.carroService.listar(this.search)
+      .subscribe(list => {
+        this.carrosSort.data = list.carros;
+      });
   }
+
+
 
 }

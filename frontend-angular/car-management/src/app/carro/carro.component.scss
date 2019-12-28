@@ -1,9 +1,16 @@
-.container{
-    margin:10px;
+form{
+    width: 300px;
+    margin:0 auto;
+    mat-form-field {
+        width: 70%;
+
+    }
 }
-.mat-form-field {
-    margin-right: 16px;
-}
-form .mat-raised-button{
-    margin-right: 16px;
+.table{
+    width: 90%;
+    margin: 0 auto;
+    table{
+        width: 100%;
+    }
+    
 }
