@@ -13,19 +13,20 @@ const app = express();
 //Database
 mongoose.connect(
     process.env.DB_CONNECTION,
-    {useNewUrlParser : true},
+    { useUnifiedTopology: true, useNewUrlParser: true },
     () => console.log('Connected to DB!')
 );
+mongoose.set('useCreateIndex', true)
 
 //Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 //Routes
-app.use('/api/ficha/',FichaRoute);
-app.use('/api/carro/',CarroRoute);
-app.use('/api/cliente',ClienteRoute);
-app.use('/api/veiculo',VeiculoRoute);
+app.use('/api/ficha/', FichaRoute);
+app.use('/api/carro/', CarroRoute);
+app.use('/api/cliente', ClienteRoute);
+app.use('/api/veiculo', VeiculoRoute);
 
 
 app.listen(3000, () => console.log('Car management up and running!'));

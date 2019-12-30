@@ -1,12 +1,27 @@
-<mat-toolbar>Cadastro de veículos</mat-toolbar>
+<mat-toolbar>Cadastro de veículos
+    <div class="spacer"></div>
+    <button mat-raised-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon> Voltar
+    </button>
+</mat-toolbar>
 <form [formGroup]="carForm" (ngSubmit)="onSubmit(carForm.value)">
     <div class="container">
         <mat-form-field>
-            <input matInput placeholder="Marca" [formControl]="marca" required>
+            <input matInput placeholder="Marca" 
+            [formControl]="marca" 
+            [value]="carroEdit?carroEdit.marca:''" 
+            required
+            [matAutocomplete]="marcaAutoComplete">
             <mat-error *ngIf="marca.invalid">{{getErrorMessage('marca')}}</mat-error>
+            <mat-autocomplete #marcaAutocomplete="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Modelo" [formControl]="modelo" required>
+            <input matInput placeholder="Modelo" [formControl]="modelo" [value]="carroEdit?carroEdit.modelo:''"
+                required>
             <mat-error *ngIf="modelo.invalid">{{getErrorMessage('modelo')}}</mat-error>
         </mat-form-field>
     </div>

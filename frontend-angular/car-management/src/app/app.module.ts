@@ -38,6 +38,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { CarroCadastroComponent } from './carro/carro-cadastro/carro-cadastro.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
+import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +59,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ClienteComponent,
     VeiculoComponent,
     CarroComponent,
-    CarroCadastroComponent
+    CarroCadastroComponent,
+    DeletarCarroComponent,
+    CadastrarCarroComponent
   ],
   imports: [
     BrowserModule,
@@ -81,9 +87,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    MatAutocompleteModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DeletarCarroComponent]
 })
 export class AppModule { }

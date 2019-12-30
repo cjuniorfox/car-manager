@@ -1,5 +1,5 @@
 <mat-toolbar>Carros <div class="spacer"></div>
-    <button mat-raised-button routerLink="cadastro">Novo Carro</button>
+    <button mat-raised-button routerLink="cadastrar">Novo Carro</button>
 </mat-toolbar>
 <div class="table">
     <form (ngSubmit)="getCars()">
@@ -13,17 +13,13 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
             <td mat-cell *matCellDef="let carro">{{carro.marca}}</td>
         </ng-container>
-        <ng-container matColumnDef="modelo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Modelo</th>
-            <td mat-cell *matCellDef="let carro">{{carro.modelo}}</td>
-        </ng-container>
         <ng-container matColumnDef="_id">
             <th mat-header-cell *matHeaderCellDef>Ação</th>
             <td mat-cell *matCellDef="let carro">
-                <button mat-icon-button [routerLink]="carro._id">
+                <button mat-icon-button routerLink="{{carro.marca}}-{{carro.modelo}}">
                     <mat-icon>edit</mat-icon>
                 </button> 
-                <button mat-icon-button [routerLink]="remover/carro._id">
+                <button mat-icon-button (click)="deleteDialog(carro)">
                     <mat-icon>delete</mat-icon>
                 </button> 
             </td>

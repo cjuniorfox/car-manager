@@ -39,7 +39,7 @@ export class BreadcrumbComponent implements OnInit {
             });
           }
           this.breadcrumbList.push({
-            name: menu ? menu.name : router,
+            name: menu ? menu.name : decodeURI(router),
             path: path
           });
         });

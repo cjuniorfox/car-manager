@@ -1,0 +1,19 @@
+<mat-toolbar>Cadastro de veículos
+    <div class="spacer"></div>
+    <button mat-raised-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon> Voltar
+    </button>
+</mat-toolbar>
+<form [formGroup]="cadastroCarroForm">
+    <div class="container">
+        <mat-form-field>
+            <input type="text" matInput placeholder="Marca" id="marca" formControlName="marca"
+                [matAutocomplete]="autoCompleteMarca">
+            <mat-autocomplete #autoCompleteMarca="matAutocomplete">
+                <mat-option *ngFor="let carro of carros" [value]="carro.marca">
+                    {{carro.marca}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+</form>
