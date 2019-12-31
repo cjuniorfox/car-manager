@@ -1,16 +1,20 @@
-form{
-    width: 300px;
-    margin:0 auto;
-    mat-form-field {
-        width: 70%;
-
-    }
+.buscaForm {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin:0 auto;
+  mat-form-field {
+    width: 100%;
+  }
 }
-.table{
-    width: 90%;
-    margin: 0 auto;
-    table{
-        width: 100%;
-    }
-    
+.table {
+  width: 90%;
+  margin: 0 auto;
+  table {
+    width: 100%;
+  }
+}
+
+mat-spinner{
+  margin-left: 1em;
 }

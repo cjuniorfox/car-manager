@@ -40,6 +40,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 
@@ -89,7 +91,8 @@ import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro
     MatSortModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],

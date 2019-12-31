@@ -78,13 +78,13 @@ export class CarroCadastroComponent implements OnInit {
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  onSubmit(formData) {
-    if (this.carroEdit && this.carroEdit._id) {
-      this.patch(formData);
-    } else {
-      this.insert(formData);
-    }
-  }
+  // onSubmit(formData) {
+  //   if (this.carroEdit && this.carroEdit._id) {
+  //     this.patch(formData);
+  //   } else {
+  //     this.insert(formData);
+  //   }
+  // }
 
   patch(formData) {
     this.carroService.patch(formData, this.carroEdit._id).subscribe(data => {
@@ -97,18 +97,18 @@ export class CarroCadastroComponent implements OnInit {
     })
   }
 
-  insert(formData) {
-    this.carroService.insert(formData).subscribe(data => {
-      this.requestError = null;
-      this.carForm.reset();
-      this.location.back();
-    }, err => {
-      if (typeof (err.error.message) == 'string') {
-        this.requestError = err.error.message;
-      }
-    });
+  // insert(formData) {
+  //   this.carroService.insert(formData).subscribe(data => {
+  //     this.requestError = null;
+  //     this.carForm.reset();
+  //     this.location.back();
+  //   }, err => {
+  //     if (typeof (err.error.message) == 'string') {
+  //       this.requestError = err.error.message;
+  //     }
+  //   });
 
-  }
+  // }
 
 
   getErrorMessage(fieldName) {

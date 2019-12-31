@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, from } from 'rxjs';
-import { startWith, map, filter, debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { CarroModel } from 'src/app/model/carro-model';
 import { CarroService } from 'src/app/service/carro.service';
+import { CarrosList } from 'src/app/interface/carros-list';
 
 
 @Component({
@@ -14,32 +14,61 @@ import { CarroService } from 'src/app/service/carro.service';
 })
 export class CadastrarCarroComponent implements OnInit {
 
-  cadastroCarroForm : FormGroup;
-  formControlCarro = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  carros: CarroModel[];
-  filteredCarros: Observable<CarroModel[]>;
+  cadastroCarroForm: FormGroup;
+  marca;
+  modelo;
+  carros: CarrosList;
+  requestError:string;
 
   constructor(
     private location: Location,
     private carroService: CarroService,
     private formBuilder: FormBuilder
-  ) { 
+  ) {
     this.cadastroCarroForm = this.formBuilder.group({
-      marca: ['', Validators.required]
+      marca: ['', [Validators.required, Validators.minLength(3)]],
+      modelo: ['', Validators.required]
     });
+    this.marca = this.cadastroCarroForm.controls.marca;
+    this.modelo = this.cadastroCarroForm.controls.modelo;
   };
 
   ngOnInit() {
-    this.search();
+    this.autoCompleteMarca();
   }
 
-  search() {
+  autoCompleteMarca() {
     this.cadastroCarroForm.controls.marca.valueChanges.pipe(
       debounceTime(500),
       switchMap(searchTerm => this.carroService.listarPorMarca(searchTerm))
     ).subscribe(result => this.carros = result);
 
   }
-  
+
+  getErrorMessage(fieldName) {
+    switch (fieldName) {
+      case 'marca': {
+        return this.marca.hasError('required') ? 'Digite a marca' :
+          this.marca.hasError('minlength') ? 'Mínimo de 3 caracteres' : '';
+      } case 'modelo': {
+        return this.modelo.hasError('required') ? 'Digite o modelo' : '';
+      }
+    }
+  }
+
+  onSubmit(){
+    this.carroService.insertMarcaModelo(this.cadastroCarroForm.value)
+      .subscribe(data => {
+        console.log(data);
+        this.requestError = null;
+        this.cadastroCarroForm.reset();
+        this.location.back();
+      }, err => {
+        if(typeof (err.error.message) == 'string') {
+          this.requestError = err.error.message;
+        }
+        console.log(err);
+      })
+  }
+
 }

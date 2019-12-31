@@ -1,6 +1,8 @@
 import { RequestModel } from './request-model';
 export class CarroModeloModel {
     nome: String;
+    _id;
+    request: RequestModel;
 };
 
 export class CarroModel {

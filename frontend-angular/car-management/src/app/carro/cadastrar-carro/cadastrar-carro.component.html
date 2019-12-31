@@ -4,7 +4,7 @@
         <mat-icon>arrow_back</mat-icon> Voltar
     </button>
 </mat-toolbar>
-<form [formGroup]="cadastroCarroForm">
+<form [formGroup]="cadastroCarroForm" (ngSubmit)="onSubmit()">
     <div class="container">
         <mat-form-field>
             <input type="text" matInput placeholder="Marca" id="marca" formControlName="marca"
@@ -14,6 +14,16 @@
                     {{carro.marca}}
                 </mat-option>
             </mat-autocomplete>
+            <mat-error *ngIf="marca.invalid">{{getErrorMessage('marca')}}</mat-error>
         </mat-form-field>
+        <mat-form-field>
+            <input type="text" matInput placeholder="Modelo" id="modelo" formControlName="modelo">
+            <mat-error *ngIf="modelo.invalid">{{getErrorMessage('modelo')}}</mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="requestError">{{requestError}}</mat-error>
+    </div>
+    <div class="container">
+        <button mat-raised-button type="submit">Salvar</button>
+        <button mat-raised-button type="reset">Limpar</button>
     </div>
 </form>

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const CarroController = require('../controller/CarroController')
 
-router.get("/buscar", CarroController.listAllCarros);//lista todos os carros da base
+router.get("/buscar", CarroController.listCarrosByMarcaModelo);//lista todos os carros da base
 router.get("/", CarroController.listAllCarros); //Lista todos os carros da base
 router.get("/buscar/:busca", CarroController.listCarrosByMarcaModelo);//Executa busca por marca ou modelo
 router.get("/marca", CarroController.listByMarca); //Lista todas as marcas

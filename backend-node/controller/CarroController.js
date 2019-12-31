@@ -27,6 +27,18 @@ function _mapCarros(docs) {
     })
 }
 
+function _mapListCarros(carros) {
+    return {
+        message: carros.length > 0 ?
+            `A pesquisa retornou ${carros.length} resultados.` :
+            `Não foram encontrados resultados para sua pesquisa`,
+        count: carros.length,
+        carros: carros.length > 0 ?
+            _mapCarros(carros) :
+            []
+    }
+}
+
 exports.listByMarca = async function (req, res, next) {
     try {
         const marca = new RegExp(req.params.marca, "i");
@@ -71,44 +83,85 @@ exports.getCarroMarcaModeloByIds = async function (req, res, next) {
 exports.listAllCarros = async function (req, res, next) {
     try {
         const carros = await Carro.find().sort({ marca: 1 });
-        response = {
-            count: carros.length,
-            carros: carros.length > 0 ?
-                _mapCarros(carros) :
-                "Lista de carros vazia"
-        };
-        res.status(200).json(response);
+        res.send(_mapListCarros(carros));
     } catch (err) {
         res.status(500).send({ error: err });
     }
 }
 
 exports.listCarrosByMarcaModelo = async function (req, res, next) {
-    const busca = new RegExp('\\b' + req.params.busca + '\\b', 'i');
+    //const busca = new RegExp(req.params.busca, "i");
+    const busca = new RegExp('\\b' + req.query.busca + '\\b', 'i');
+    const pageSize = req.query.size ? Number(req.query.size) : '$count';
+    const pageStart = req.query.index ? Number(req.query.index) * pageSize : 0;
+    const arrBusca = req.query.busca.split(" ");
+    const buscaMarca = new RegExp('\\b' + arrBusca[0] ? arrBusca[0] : '' + '\\b', 'i');
+    const buscaModelo = new RegExp('\\b' + arrBusca.shift() ? arrBusca.join(" ") : '' + '\\b', 'i');
     try {
         //Identifica se o valor passado é a marca, o modelo e realiza a query de acordo
-        var carros = await Carro.find({ marca: busca });
-        if (!carros || carros.length === 0) {
-            carros = await Carro.find({ modelos: { $elemMatch: { "nome": busca } } }, { "modelos.$": 1 })
-            if (!carros || carros.length === 0) {
-                const arrBusca = req.params.busca.split(" ");
-                const marca = new RegExp('\\b' + arrBusca[0] ? arrBusca[0] : '' + '\\b', 'i');
-                arrBusca.shift(); //Remove primeiro elemento
-                const modelo = new RegExp('\\b' + arrBusca ? arrBusca.join(" ") : '' + '\\b', 'i');
-                carros = await Carro.find({
-                    marca: marca,
-                    modelos: { $elemMatch: { "nome": modelo } }
-                }, { "modelos.$": 1 }
-                );
-                if (!carros || carros.length === 0) {
-                    res.status(404).json({ message: "A busca não retornou nenhum resultado válido" });
-                    return;
+        var carros = await Carro
+            .aggregate([
+                { $unwind: "$modelos" }, {
+                    $project: {
+                        marca: "$marca",
+                        modelo: "$modelos.nome",
+                        modelo_id: "$modelos._id"
+
+                    }
+                }, {
+                    $match: {
+                        $or: [
+                            { marca: { $regex: busca } },
+                            { modelo: { $regex: busca } },
+                            { marca: { $regex: buscaMarca }, modelo: { $regex: buscaModelo } }
+                        ]
+                    }
+                }, {
+                    $group: {
+                        _id: null,
+                        count: { $sum: 1 },
+                        results: { $push: '$$ROOT' }
+                    }
+                }, {
+                    $project: {
+                        _id: 0,
+                        count: 1,
+                        skip: { $literal: pageStart },
+                        pagesize: { $literal: pageSize },
+                        carros: { $slice: ['$results', pageStart, pageSize] }
+                    }
                 }
-            }
-        }
+            ]);
+
+
+
+
+        // .map(i =>
+        //     i.modelos.map(
+        //         m => ({ marca: i.marca, modelo: m.nome })
+        //     )
+        // ).flat();
+        // if (!carros || carros.length === 0) {
+        //     carros = await Carro
+        //         .find({ modelos: { $elemMatch: { "nome": { $regex: busca } } } }, { "modelos.$": 1 })
+        //         .select("marca _id modelos")
+        //     if (!carros || carros.length === 0) {
+        //         const arrBusca = req.params.busca.split(" ");
+        //         const marca = new RegExp('\\b' + arrBusca[0] ? arrBusca[0] : '' + '\\b', 'i');
+        //         arrBusca.shift(); //Remove primeiro elemento do array de busca
+        //         const modelo = new RegExp('\\b' + arrBusca ? arrBusca.join(" ") : '' + '\\b', 'i');
+        //         carros = await Carro.find({
+        //             marca: marca,
+        //             modelos: { $elemMatch: { "nome": modelo } }
+        //         }, { "modelos.$": 1 }
+        //         ).select("marca _id modelos");
+        //     }
+        // }
         //Só chega aqui se algum resultado foi retornado
-        res.status(200).send(_mapCarros(carros));
+        // res.send(_mapListCarros(carros));
+        res.send({ carros: carros });
     } catch (err) {
+        console.error(err);
         res.status(500).send({ error: err });
     }
 }
