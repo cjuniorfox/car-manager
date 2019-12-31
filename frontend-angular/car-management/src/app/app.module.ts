@@ -35,7 +35,6 @@ import { VeiculoComponent } from './veiculo/veiculo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarroComponent } from './carro/carro.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CarroCadastroComponent } from './carro/carro-cadastro/carro-cadastro.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -61,7 +60,6 @@ import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro
     ClienteComponent,
     VeiculoComponent,
     CarroComponent,
-    CarroCadastroComponent,
     DeletarCarroComponent,
     CadastrarCarroComponent
   ],

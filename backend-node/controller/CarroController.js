@@ -1,5 +1,20 @@
 const Carro = require('../model/CarroSchema');
 
+function _request(marca_id, modelo_id) {
+    if (marca_id && modelo_id) {
+        return {
+            method: "GET",
+            url: `http://localhost:3000/api/carro/${marca_id}/${modelo_id}`
+        }
+    } else if (marca_id) {
+        return {
+            method: "GET",
+            url: "http://localhost:3000/api/carro/" + marca_id
+
+        }
+    }
+}
+
 function _carroRequest(doc) {
     return {
         marca: doc.marca,
@@ -7,17 +22,11 @@ function _carroRequest(doc) {
             return {
                 nome: modelo.nome,
                 _id: modelo._id,
-                request: {
-                    method: "GET",
-                    url: `http://localhost:3000/api/carro/${doc._id}/${modelo._id}`
-                }
+                request: _request(doc._id, modelo._id)
             }
         }),
         _id: doc._id,
-        request: {
-            method: "GET",
-            url: "http://localhost:3000/api/carro/" + doc._id
-        }
+        request: _request(doc._id)
     };
 }
 
@@ -37,6 +46,28 @@ function _mapListCarros(carros) {
             _mapCarros(carros) :
             []
     }
+}
+
+function _mapListCarrosAsTable(doc) {
+    return {
+        count: doc.count,
+        skip: doc.skip,
+        pagesize: doc.pagesize,
+        carros: doc.carros.map(carro => {
+            return {
+                marca: carro.marca,
+                marca_id: carro._id,
+                modelo: carro.modelo,
+                modelo_id: carro.modelo_id,
+                requests:
+                {
+                    marca: _request(carro._id),
+                    modelo: _request(carro._id, carro.modelo_id)
+                }
+            }
+        })
+    }
+
 }
 
 exports.listByMarca = async function (req, res, next) {
@@ -89,26 +120,22 @@ exports.listAllCarros = async function (req, res, next) {
     }
 }
 
-exports.listCarrosByMarcaModelo = async function (req, res, next) {
+exports.listCarrosByMarcaModeloAsTable = async function (req, res, next) {
     //const busca = new RegExp(req.params.busca, "i");
     const busca = new RegExp('\\b' + req.query.busca + '\\b', 'i');
-    const pageSize = req.query.size ? Number(req.query.size) : '$count';
+    const pageSize = req.query.size ? Number(req.query.size) : null;
     const pageStart = req.query.index ? Number(req.query.index) * pageSize : 0;
-    const arrBusca = req.query.busca.split(" ");
+    const arrBusca = req.query.busca ? req.query.busca.split(" ") : "".split();
     const buscaMarca = new RegExp('\\b' + arrBusca[0] ? arrBusca[0] : '' + '\\b', 'i');
     const buscaModelo = new RegExp('\\b' + arrBusca.shift() ? arrBusca.join(" ") : '' + '\\b', 'i');
     try {
         //Identifica se o valor passado é a marca, o modelo e realiza a query de acordo
         var carros = await Carro
             .aggregate([
+                //traz o subarray modelos de carro para o array principal
                 { $unwind: "$modelos" }, {
-                    $project: {
-                        marca: "$marca",
-                        modelo: "$modelos.nome",
-                        modelo_id: "$modelos._id"
-
-                    }
-                }, {
+                    $project: { marca: "$marca", modelo: "$modelos.nome", modelo_id: "$modelos._id" }
+                }, { //testa as igualdades
                     $match: {
                         $or: [
                             { marca: { $regex: busca } },
@@ -117,49 +144,27 @@ exports.listCarrosByMarcaModelo = async function (req, res, next) {
                         ]
                     }
                 }, {
+                    //order by
+                    $sort: { marca: 1, modelo: 1 }
+                }
+                , { //Agrupa e counta total de registros
                     $group: {
                         _id: null,
                         count: { $sum: 1 },
-                        results: { $push: '$$ROOT' }
+                        carros: { $push: '$$ROOT' } //e retorna em (carros) a os valores do agrupamento
                     }
-                }, {
+                }, { //Desagrupa em "carros" e retorna resultado paginado
                     $project: {
                         _id: 0,
                         count: 1,
                         skip: { $literal: pageStart },
-                        pagesize: { $literal: pageSize },
-                        carros: { $slice: ['$results', pageStart, pageSize] }
+                        pagesize: function () { return pageSize ? { $literal: pageSize } : '$count' }, //subfuncao para contar ou nao
+                        carros: { $slice: ['$carros', pageStart, pageSize ? pageSize : '$count'] } //Fatia o resultado
                     }
                 }
             ]);
-
-
-
-
-        // .map(i =>
-        //     i.modelos.map(
-        //         m => ({ marca: i.marca, modelo: m.nome })
-        //     )
-        // ).flat();
-        // if (!carros || carros.length === 0) {
-        //     carros = await Carro
-        //         .find({ modelos: { $elemMatch: { "nome": { $regex: busca } } } }, { "modelos.$": 1 })
-        //         .select("marca _id modelos")
-        //     if (!carros || carros.length === 0) {
-        //         const arrBusca = req.params.busca.split(" ");
-        //         const marca = new RegExp('\\b' + arrBusca[0] ? arrBusca[0] : '' + '\\b', 'i');
-        //         arrBusca.shift(); //Remove primeiro elemento do array de busca
-        //         const modelo = new RegExp('\\b' + arrBusca ? arrBusca.join(" ") : '' + '\\b', 'i');
-        //         carros = await Carro.find({
-        //             marca: marca,
-        //             modelos: { $elemMatch: { "nome": modelo } }
-        //         }, { "modelos.$": 1 }
-        //         ).select("marca _id modelos");
-        //     }
-        // }
-        //Só chega aqui se algum resultado foi retornado
-        // res.send(_mapListCarros(carros));
-        res.send({ carros: carros });
+        res.send(_mapListCarrosAsTable(carros[0]));
+        //res.send(_mapListCarrosAsTable(carros));
     } catch (err) {
         console.error(err);
         res.status(500).send({ error: err });

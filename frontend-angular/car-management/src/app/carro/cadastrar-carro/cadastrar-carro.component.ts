@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { CarroModel } from 'src/app/model/carro-model';
+import { CarroModel } from 'src/app/interface/carro-model';
 import { CarroService } from 'src/app/service/carro.service';
-import { CarrosList } from 'src/app/interface/carros-list';
+import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class CadastrarCarroComponent implements OnInit {
   cadastroCarroForm: FormGroup;
   marca;
   modelo;
-  carros: CarrosList;
+  carros: CarroMarcaModelo[];
   requestError:string;
 
   constructor(

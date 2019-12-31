@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CarroService } from '../service/carro.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DeletarCarroComponent } from './deletar-carro/deletar-carro.component';
-import { CarroModel } from '../model/carro-model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { debounceTime, switchMap, startWith, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { CarroListPaginator } from '../interface/carro-list-paginator';
+import { merge } from 'rxjs';
 
 
 @Component({
@@ -23,9 +24,9 @@ import { debounceTime, switchMap, startWith, tap } from 'rxjs/operators';
     ]),
   ],
 })
-export class CarroComponent implements OnInit {
+export class CarroComponent implements OnInit, AfterViewInit {
 
-  carrosSort = new MatTableDataSource();
+  carros = new MatTableDataSource();
   buscarForm: FormGroup;
 
   initColumns: any[] = [
@@ -37,6 +38,9 @@ export class CarroComponent implements OnInit {
 
   loading: boolean = true; // Turn spinner on and off
 
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   constructor(
     private carroService: CarroService,
     private formBuilder: FormBuilder
@@ -46,44 +50,42 @@ export class CarroComponent implements OnInit {
     });
   };
 
-
-
-  length = 100;
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-
-  pageEvent: PageEvent;
-
   ngOnInit() {
-    this._buscarCarros();
-    this._listaInicial();
   }
 
+  ngAfterViewInit() {
+    this._listaInicial();
+    this._buscarCarros();
+  }
+
+
   private _buscarCarros() {
-    this.buscarForm.controls.buscar.valueChanges.pipe(
+    merge(this.buscarForm.controls.buscar.valueChanges, this.paginator.page).pipe(
       debounceTime(500),
-      tap(_ => this.loading = true),
-      switchMap(searchTerm => this.carroService.listar(searchTerm.toLowerCase()))
-    ).subscribe(result => this._subscribeCarro(result)
+      tap(() => this.loading = true),
+      switchMap(() =>
+        this.carroService.listPaginator(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
+      )
+    ).subscribe(result => { this._subscribeCarro(result) }
     );
   }
 
-  private _subscribeCarro(result) {
-    this.carrosSort.data = this.carroService.convertToMarcaModeloList(result);
-//    this.carrosSort.paginator = this.paginator;
-    this.carrosSort.sort = this.sort;
+  private _subscribeCarro(result: CarroListPaginator) {
+    this.carros.data = result.carros;
+    this.paginator.length = result.count;
+    //    this.carros.paginator = this.paginator;
+    this.carros.sort = this.sort;
     this.loading = false
   }
 
   private _listaInicial() {
-    this.carroService.listar('').pipe(
+    this.carroService.listPaginator('', this.paginator.pageIndex, this.paginator.pageSize).pipe(
       tap(_ => this.loading = true)
     ).subscribe(result => this._subscribeCarro(result))
   }
 
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-//  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
 
   // 
   // search: string;
