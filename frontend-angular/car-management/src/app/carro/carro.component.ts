@@ -63,11 +63,23 @@ export class CarroComponent implements OnInit, AfterViewInit {
     merge(this.buscarForm.controls.buscar.valueChanges, this.paginator.page).pipe(
       debounceTime(500),
       tap(() => this.loading = true),
+      tap(res => {
+        //Se busca alterada, reinicia paginação
+        if (typeof(res) === 'string'){
+          this.paginator.pageIndex = 0;
+        }
+      }),
       switchMap(() =>
         this.carroService.listPaginator(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
       )
     ).subscribe(result => { this._subscribeCarro(result) }
     );
+  }
+
+  private _listaInicial() {
+    this.carroService.listPaginator('', this.paginator.pageIndex, this.paginator.pageSize).pipe(
+      tap(_ => this.loading = true)
+    ).subscribe(result => this._subscribeCarro(result))
   }
 
   private _subscribeCarro(result: CarroListPaginator) {
@@ -76,12 +88,6 @@ export class CarroComponent implements OnInit, AfterViewInit {
     //    this.carros.paginator = this.paginator;
     this.carros.sort = this.sort;
     this.loading = false
-  }
-
-  private _listaInicial() {
-    this.carroService.listPaginator('', this.paginator.pageIndex, this.paginator.pageSize).pipe(
-      tap(_ => this.loading = true)
-    ).subscribe(result => this._subscribeCarro(result))
   }
 
 

@@ -50,10 +50,11 @@ function _mapListCarros(carros) {
 
 function _mapListCarrosAsTable(doc) {
     return {
-        count: doc.count,
-        skip: doc.skip,
-        pagesize: doc.pagesize,
-        carros: doc.carros.map(carro => {
+        message: `Sua pesquisa retornou ${doc.count ? doc.count : 0} resultados.`,
+        count: doc.count? doc.count : 0,
+        skip: doc.skip ? doc.skip : 0,
+        pagesize: doc.pagesize ? doc.pagesize : 0 ,
+        carros: doc.carros ? doc.carros.map(carro => {
             return {
                 marca: carro.marca,
                 marca_id: carro._id,
@@ -65,7 +66,7 @@ function _mapListCarrosAsTable(doc) {
                     modelo: _request(carro._id, carro.modelo_id)
                 }
             }
-        })
+        }) : []
     }
 
 }
@@ -122,12 +123,12 @@ exports.listAllCarros = async function (req, res, next) {
 
 exports.listCarrosByMarcaModeloAsTable = async function (req, res, next) {
     //const busca = new RegExp(req.params.busca, "i");
-    const busca = new RegExp('\\b' + req.query.busca + '\\b', 'i');
+    const search = new RegExp('\\b' + req.query.search + '\\b', 'i');
     const pageSize = req.query.size ? Number(req.query.size) : null;
     const pageStart = req.query.index ? Number(req.query.index) * pageSize : 0;
-    const arrBusca = req.query.busca ? req.query.busca.split(" ") : "".split();
-    const buscaMarca = new RegExp('\\b' + arrBusca[0] ? arrBusca[0] : '' + '\\b', 'i');
-    const buscaModelo = new RegExp('\\b' + arrBusca.shift() ? arrBusca.join(" ") : '' + '\\b', 'i');
+    const arrBusca = req.query.search ? req.query.search.split(" ") : "".split();
+    const buscaMarca = arrBusca[0] ? new RegExp('\\b' + arrBusca[0] + '\\b', 'i') : 'null';
+    const buscaModelo = arrBusca.shift() ? new RegExp('\\b' + arrBusca.join(" ") + '\\b', 'i') : 'null';
     try {
         //Identifica se o valor passado é a marca, o modelo e realiza a query de acordo
         var carros = await Carro
@@ -138,8 +139,8 @@ exports.listCarrosByMarcaModeloAsTable = async function (req, res, next) {
                 }, { //testa as igualdades
                     $match: {
                         $or: [
-                            { marca: { $regex: busca } },
-                            { modelo: { $regex: busca } },
+                            { marca: { $regex: search } },
+                            { modelo: { $regex: search } },
                             { marca: { $regex: buscaMarca }, modelo: { $regex: buscaModelo } }
                         ]
                     }
@@ -163,7 +164,7 @@ exports.listCarrosByMarcaModeloAsTable = async function (req, res, next) {
                     }
                 }
             ]);
-        res.send(_mapListCarrosAsTable(carros[0]));
+        res.send(_mapListCarrosAsTable(carros.length > 0 ? carros[0] : {}));
         //res.send(_mapListCarrosAsTable(carros));
     } catch (err) {
         console.error(err);

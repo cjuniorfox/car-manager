@@ -35,7 +35,7 @@ export class CarroService {
   constructor(private http: HttpClient) { }
 
   listPaginator(search: string, pageIndex:number, pageSize:number) {
-    const getParam = `buscar=${search}&index=${pageIndex}&size=${pageSize}`;
+    const getParam = `search=${search}&index=${pageIndex}&size=${pageSize}`;
     return this.http.get<CarroListPaginator>(`${environment.baseUrl}${this.ep.listar}?${getParam}`);
   }
 
