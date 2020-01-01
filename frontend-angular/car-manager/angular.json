@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "car-management": {
+    "car-manager": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/car-management",
+            "outputPath": "dist/car-manager",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,18 +68,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "car-management:build"
+            "browserTarget": "car-manager:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "car-management:build:production"
+              "browserTarget": "car-manager:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "car-management:build"
+            "browserTarget": "car-manager:build"
           }
         },
         "test": {
@@ -117,16 +117,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "car-management:serve"
+            "devServerTarget": "car-manager:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "car-management:serve:production"
+              "devServerTarget": "car-manager:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "car-management"
+  "defaultProject": "car-manager"
 }

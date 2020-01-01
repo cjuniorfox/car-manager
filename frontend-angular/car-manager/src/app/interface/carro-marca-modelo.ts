@@ -1,8 +1,8 @@
 export interface CarroMarcaModelo {
     marca: string,
-    id_marca: number,
+    marca_id: number,
     modelo: string,
-    id_modelo: number,
+    modelo_id: number,
     requests: {
         marca: {
             method: string,

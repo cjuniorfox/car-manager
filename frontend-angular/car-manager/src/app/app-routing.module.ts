@@ -12,6 +12,7 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { VeiculoComponent } from './veiculo/veiculo.component';
 import { CarroComponent } from './carro/carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
+import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path:"controle/entrada",component:EntradaComponent},
   {path:"controle/saida",component:SaidaComponent},
   {path:"cliente",component:ClienteComponent},
+  {path:"cliente/cadastrar",component:CadastrarClienteComponent},
   {path:"veiculo",component:VeiculoComponent},
   {path:"carro",component:CarroComponent},
   {path:"carro/cadastrar",component:CadastrarCarroComponent},

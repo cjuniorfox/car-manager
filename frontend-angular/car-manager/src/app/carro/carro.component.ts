@@ -2,14 +2,17 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CarroService } from '../service/carro.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { DeletarCarroComponent } from './deletar-carro/deletar-carro.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { CarroListPaginator } from '../interface/carro-list-paginator';
 import { merge } from 'rxjs';
+import { CarroMarcaModelo } from '../interface/carro-marca-modelo';
+import { AtualizarCarroComponent } from './atualizar-carro/atualizar-carro.component';
+import { DeletarCarroComponent } from './deletar-carro/deletar-carro.component';
+
 
 
 @Component({
@@ -30,9 +33,11 @@ export class CarroComponent implements OnInit, AfterViewInit {
   buscarForm: FormGroup;
 
   initColumns: any[] = [
+    { name: 'editMarca', label: '' },
     { name: 'marca', label: 'Marca' },
+    { name: 'deleteModelo', label: '' },
+    { name: 'editModelo', label: '' },
     { name: 'modelo', label: 'Modelo' },
-    { name: 'id_marca', label: 'Id da marca' },
   ];
   displayedColumns: String[] = this.initColumns.map(col => col.name);
 
@@ -43,7 +48,8 @@ export class CarroComponent implements OnInit, AfterViewInit {
 
   constructor(
     private carroService: CarroService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
   ) {
     this.buscarForm = this.formBuilder.group({
       buscar: ['']
@@ -58,6 +64,24 @@ export class CarroComponent implements OnInit, AfterViewInit {
     this._buscarCarros();
   }
 
+  public updateDialog(carroMarcaModelo: CarroMarcaModelo, operacao: string) {
+    const data = { carroMarcaModelo: carroMarcaModelo, operacao: operacao }
+    const dialogRef = this.dialog.open(AtualizarCarroComponent, { data: data });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this._listaInicial();
+      }
+    });
+  }
+
+  public deleteDialog(carroMarcaModelo: CarroMarcaModelo) {
+    const dialogRef = this.dialog.open(DeletarCarroComponent, { data: carroMarcaModelo });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this._listaInicial();
+      }
+    })
+  }
 
   private _buscarCarros() {
     merge(this.buscarForm.controls.buscar.valueChanges, this.paginator.page).pipe(
@@ -65,20 +89,20 @@ export class CarroComponent implements OnInit, AfterViewInit {
       tap(() => this.loading = true),
       tap(res => {
         //Se busca alterada, reinicia paginação
-        if (typeof(res) === 'string'){
+        if (typeof (res) === 'string') {
           this.paginator.pageIndex = 0;
         }
       }),
       switchMap(() =>
-        this.carroService.listPaginator(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
+        this.carroService.listAsTable(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
       )
     ).subscribe(result => { this._subscribeCarro(result) }
     );
   }
 
   private _listaInicial() {
-    this.carroService.listPaginator('', this.paginator.pageIndex, this.paginator.pageSize).pipe(
-      tap(_ => this.loading = true)
+    this.carroService.listAsTable(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize).pipe(
+      tap(() => this.loading = true)
     ).subscribe(result => this._subscribeCarro(result))
   }
 
@@ -89,44 +113,4 @@ export class CarroComponent implements OnInit, AfterViewInit {
     this.carros.sort = this.sort;
     this.loading = false
   }
-
-
-
-
-  // 
-  // search: string;
-
-  // displayedColumns: string[] = ['marca', '_id'];
-  // expandedElement: CarroModel | null;
-
-  // constructor(
-  //   private carroService: CarroService,
-  //   public dialog: MatDialog
-  // ) {
-  //   this.getCars();
-  // }
-
-
-
-
-  // ngOnInit() {
-  //   if (this.carrosSort) {
-  //     this.carrosSort.paginator = this.paginator;
-  //     this.carrosSort.sort = this.sort;
-  //   }
-  // }
-
-
-  // deleteDialog(data: CarroModel) {
-  //   const dialogRef = this.dialog.open(DeletarCarroComponent, { width: '300px', data: data });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result && result === true) {
-  //       this.carroService.delete(data._id).subscribe(res => {
-  //         console.log(res);
-  //         this.getCars();
-  //       });
-  //     }
-  //   });
-  // }
-
 }

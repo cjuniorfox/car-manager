@@ -1,4 +1,4 @@
-Cliente = require('../model/Cliente');
+Cliente = require('../model/ClienteSchema');
 
 const ClienteController = {
     async cadastro(req,res){

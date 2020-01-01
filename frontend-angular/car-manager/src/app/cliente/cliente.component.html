@@ -1,3 +1,8 @@
+<mat-toolbar>Clientes
+  <mat-spinner diameter="24" *ngIf="loading"></mat-spinner>
+  <div class="spacer"></div>
+  <button mat-raised-button routerLink="cadastrar">Novo Cliente</button>
+</mat-toolbar>
 <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
        class="mat-elevation-z8">

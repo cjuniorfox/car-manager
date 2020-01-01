@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Alterando registro {{registro}}</h1>
+<form (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+
+        <p>Digite novo valor.</p>
+        <p *ngIf="data.operacao === 'marca'">Esta alteração será aplicada a todos os modelos da marca
+            <strong>{{registro}}</strong></p>
+        <div class="container">
+            <mat-form-field>
+                <input type="text" cdkFocusInitial matInput [placeholder]="labelCampoEdit" [formControl]="campoEdit">
+                <mat-error *ngIf="campoEdit.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-error *ngIf="requestError">{{requestError}}</mat-error>
+        </div>
+    </div>
+
+    <div mat-dialog-actions>
+        <button mat-icon-button type="submit" aria-placeholder="Salvar">
+            <mat-icon>save</mat-icon>
+        </button>
+        <button type="button" aria-placeholder="Cancelar" mat-icon-button (click)="dialogRef.close(false)">
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+</form>

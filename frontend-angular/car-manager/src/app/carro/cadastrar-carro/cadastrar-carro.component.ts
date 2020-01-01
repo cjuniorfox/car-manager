@@ -40,7 +40,7 @@ export class CadastrarCarroComponent implements OnInit {
   autoCompleteMarca() {
     this.cadastroCarroForm.controls.marca.valueChanges.pipe(
       debounceTime(500),
-      switchMap(searchTerm => this.carroService.listarPorMarca(searchTerm))
+      switchMap(searchTerm => this.carroService.listMarcas(searchTerm))
     ).subscribe(result => this.carros = result);
 
   }
@@ -57,9 +57,8 @@ export class CadastrarCarroComponent implements OnInit {
   }
 
   onSubmit(){
-    this.carroService.insertMarcaModelo(this.cadastroCarroForm.value)
-      .subscribe(data => {
-        console.log(data);
+    this.carroService.create(this.cadastroCarroForm.value)
+      .subscribe(() => {
         this.requestError = null;
         this.cadastroCarroForm.reset();
         this.location.back();

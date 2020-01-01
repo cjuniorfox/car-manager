@@ -43,6 +43,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
+import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
+import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro
     VeiculoComponent,
     CarroComponent,
     DeletarCarroComponent,
-    CadastrarCarroComponent
+    CadastrarCarroComponent,
+    CadastrarClienteComponent,
+    AtualizarCarroComponent
   ],
   imports: [
     BrowserModule,
@@ -94,6 +98,6 @@ import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [DeletarCarroComponent]
+  entryComponents: [AtualizarCarroComponent, DeletarCarroComponent]
 })
 export class AppModule { }
