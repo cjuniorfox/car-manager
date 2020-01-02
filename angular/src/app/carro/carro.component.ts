@@ -85,8 +85,8 @@ export class CarroComponent implements OnInit, AfterViewInit {
 
   private _buscarCarros() {
     merge(this.buscarForm.controls.buscar.valueChanges, this.paginator.page).pipe(
-      debounceTime(500),
       tap(() => this.loading = true),
+      debounceTime(500),
       tap(res => {
         //Se busca alterada, reinicia paginação
         if (typeof (res) === 'string') {

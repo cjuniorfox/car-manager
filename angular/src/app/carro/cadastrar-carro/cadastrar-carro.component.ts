@@ -60,7 +60,6 @@ export class CadastrarCarroComponent implements OnInit {
     this.carroService.create(this.cadastroCarroForm.value)
       .subscribe(() => {
         this.requestError = null;
-        this.cadastroCarroForm.reset();
         this.location.back();
       }, err => {
         if(typeof (err.error.message) == 'string') {

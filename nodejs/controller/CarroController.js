@@ -154,25 +154,21 @@ exports.saveMarcaModeloSmart = async function (req, res, next) {
         if (typeof error !== 'undefined')
             return res.status(400).send({ message: error.details[0].message });
         const modelo = new CarroModelo({ nome: submit.modelo });
-        await modelo.save();
+        await modelo.save()
         //Verifica se carro já existe na base.
-        const carroUpdate = await Carro.findOne({ marca: submit.marca });
-        if (carroUpdate) {
-            carroUpdate.modelos.push(modelo._id);
-            carroUpdate.save();
-            await carroUpdate.populate('modelos');
+        const qryMarca = new RegExp(submit.marca, "i");
+        if (await Carro.findOneAndUpdate({ marca: qryMarca },
+            { $push: { modelos: modelo._id } })) {
             res.status(201).send({
-                message: `Cadastro de modelo ${submit.modelo} cadastrado em ${submit.marca} previamente existente`,
-                carro: _carroRequest(carroUpdate)
+                message: `Cadastro de modelo ${submit.modelo} cadastrado em ${submit.marca} previamente existente`
             });
         } else {
             //Não existe? grava insere marca na base de dados
             const carroInsert = new Carro({
                 marca: submit.marca,
+                $push: { modelos: modelo._id }
             });
-            carroInsert.modelos.push(modelo._id);
             await carroInsert.save();
-            await carroInsert.populate('modelos');
             res.status(201).send({
                 message: `Marca ${submit.marca} e modelo ${submit.modelo} registrados com sucesso`,
                 carro: _carroRequest(carroInsert)
