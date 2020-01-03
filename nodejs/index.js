@@ -4,9 +4,8 @@ require('dotenv/config');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const FichaRoute = require('./routes/FichaRoute');
-const CarroRoute = require('./routes/CarroRoute');
-const ClienteRoute = require('./routes/ClienteRoute');
-const VeiculoRoute = require('./routes/veiculoRoute');
+const CarroRoute = require('./routes/carroRoute');
+const ClienteRoute = require('./routes/clienteRoute');
 
 const app = express();
 
@@ -30,7 +29,5 @@ app.use(bodyParser.json());
 app.use('/api/ficha/', FichaRoute);
 app.use('/api/carro/', CarroRoute);
 app.use('/api/cliente', ClienteRoute);
-app.use('/api/veiculo', VeiculoRoute);
-
 
 app.listen(3000, () => console.log('Car management up and running!'));

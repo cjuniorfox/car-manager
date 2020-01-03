@@ -1,4 +1,4 @@
-const { Carro, CarroModelo } = require('../model/CarroSchema');
+const { Carro, CarroModelo } = require('../model/carroSchema');
 const { CarroMarcaModeloValidation } = require('../validation/carroValidation');
 
 
@@ -57,6 +57,7 @@ function _mapListCarrosAsTable(doc) {
 
 exports.listCarrosByMarcaModeloAsTable = async function (req, res, next) {
     //const busca = new RegExp(req.params.busca, "i");
+    console.log(req.query.search);
     const search = new RegExp('\\b' + req.query.search ? req.query.search : '' + '\\b', 'i');
     const pageSize = req.query.size ? Number(req.query.size) : null;
     const pageStart = req.query.index ? Number(req.query.index) * pageSize : 0;

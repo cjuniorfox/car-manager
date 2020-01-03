@@ -1,5 +1,5 @@
 Ficha = require('../model/FichaSchema');
-Veiculo = require('../model/CarroSchema');
+Veiculo = require('../model/carroSchema');
 
 const FichaController = {
     async show(req, res) {

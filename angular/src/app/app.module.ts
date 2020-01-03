@@ -40,11 +40,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
 import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -94,7 +98,11 @@ import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro
     MatPaginatorModule,
     MatDialogModule,
     MatAutocompleteModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatCardModule,
+    RxReactiveFormsModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

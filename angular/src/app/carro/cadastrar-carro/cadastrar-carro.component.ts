@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { CarroModel } from 'src/app/interface/carro-model';
 import { CarroService } from 'src/app/service/carro.service';
 import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
 

@@ -1,1 +1,146 @@
-<p>cadastrar-cliente works!</p>
+<mat-toolbar>Cadastro de clientes <div class="spacer"></div>
+    <button mat-raised-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon> Voltar
+    </button>
+</mat-toolbar>
+<div fxLayout="row" fxLayoutAlign="center center">
+    <form class="cadCliForm" [formGroup]="cadCliForm" (submit)="onSubmit()">
+        <div class="input-row">
+            <mat-form-field fxFlex>
+                <input type="text" matInput placeholder="Nome" formControlName="nome" id="nome">
+                <mat-error *ngIf="cadCliForm.controls.nome.invalid">{{getErrorMessage(cadCliForm.controls.nome)}}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div formGroupName="documento">
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex=60>
+                    <input matInput placeholder="Documento" formControlName="documento" id="documento">
+                    <mat-error *ngIf="cadCliForm.controls.documento.controls.documento.invalid">
+                        {{getErrorMessage(cadCliForm.controls.documento.controls.documento)}}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <mat-label>Tipo de documento</mat-label>
+                    <mat-select>
+                        <mat-option value="Identidadae">Identidade</mat-option>
+                        <mat-option value="CPF">CPF</mat-option>
+                        <mat-option value="CNH">CNH</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="cadCliForm.controls.documento.controls.tipoDocumento.invalid">
+                        {{getErrorMessage(cadCliForm.controls.documento.controls.tipoDocumento)}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div formGroupName="endereco">
+            <div class="input-row">
+                <mat-form-field fxFlex>
+                    <textarea matInput placeholder="Endereço" formControlName="endereco" id="endereco"></textarea>
+                    <mat-error *ngIf="endereco.controls.endereco.invalid">
+                        {{getErrorMessage(endereco.controls.endereco)}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex=60>
+                    <input type="text" matInput placeholder="Cidade" formControlName="cidade" id="cidade">
+                    <mat-error *ngIf="endereco.controls.cidade.invalid">{{getErrorMessage(endereco.controls.cidade)}}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex=40>
+                    <input type="text" matInput placeholder="Cep" mask="00000-000" formControlName="cep" id="cep">
+                    <mat-error *ngIf="endereco.controls.cep.invalid">{{getErrorMessage(endereco.controls.cep)}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div formArrayName="telefones">
+            <div class="tip">
+                <h3>Telefones</h3>
+                <p *ngIf="!telefones.length">Digite o telefone e selecione "adicionar telefone".</p>
+            </div>
+            <mat-chip-list>
+                <ng-container aria-label="telefones" *ngFor="let telefone of telefones.controls; let i=index">
+                    <mat-chip (removed)="removeTelefone(i)">
+                        {{telefone.value | mask:"(00) 00000-0009"}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                </ng-container>
+            </mat-chip-list>
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex>
+                    <input matInput [formControl]="telefone" placeholder="Telefone" mask="(00) 00000-0009"
+                        id="telefone">
+                    <mat-error *ngIf="!telefone.valid">{{getErrorMessage(telefone)}}</mat-error>
+                </mat-form-field>
+                <button fxFlex=30 [disabled]="!telefone.valid" mat-button type="button" (click)="addTelefone()">Adicionar Telefone</button>
+            </div>
+        </div>
+        <div formArrayName="veiculos">
+            <div class=tip>
+                <h3>Veículos</h3>
+                <p *ngIf="!veiculos.length">
+                    Preencha os veículos selecionando a <strong>marca e modelo</strong> do veículo,
+                    digitando as demais informações e selecionando <strong>adicionar veículo.</strong>
+                </p>
+            </div>
+            <mat-chip-list>
+                <ng-container *ngFor="let veiculo of veiculos.controls; let i=index">
+                    <mat-chip (removed)="removeCarro(i)">{{veiculo.value.carro.marca}} -
+                        {{veiculo.value.carroModelo.nome}} ({{veiculo.value.placa}})
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                </ng-container>
+            </mat-chip-list>
+            <form [formGroup]="veiculoForm">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+                    <mat-form-field fxFlex>
+                        <input [formControl]="buscaCarro" matInput [matAutocomplete]="autocompleteCarro"
+                            placeholder="Marca e Modelo" id="buscaCarro">
+                        <mat-autocomplete #autocompleteCarro="matAutocomplete" [displayWith]="displayCarroMarcaModelo"
+                            (optionSelected)=setCarroOnVeiculo($event.option.value)>
+                            <mat-option *ngFor="let carro of carrosAutocomplete" [value]="carro">
+                                {{carro.marca}} - {{carro.modelo}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+                    <mat-form-field fxFlex>
+                        <input type="text" matInput placeholder="Placa" (input)="toUpperCase($event)" #placa
+                            formControlName="placa" mask="SSS-0A00" id="placa">
+                        <mat-error *ngIf="veiculoForm.controls.placa.invalid">
+                            {{getErrorMessage(veiculoForm.controls.placa)}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex>
+                        <input type="text" matInput placeholder="Chassi" formControlName="chassi" mask="0000000000"
+                            id="chassi">
+                        <mat-error *ngIf="veiculoForm.controls.chassi.invalid">
+                            {{getErrorMessage(veiculoForm.controls.chassi)}}</mat-error>
+                    </mat-form-field>
+                    <button mat-button fxFlex=20 type="button" (click)="addVeiculo()"
+                        [disabled]="!veiculoForm.valid">Adicionar
+                        Veículo</button>
+                </div>
+                <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
+            </form>
+        </div>
+        <div class="input-row" fxLayout="row">
+            <button fxFlex [disabled]="!cadCliForm.valid" mat-button type="submit">Salvar</button>
+        </div>
+    </form>
+</div>
+<!-- 
+<pre>
+Veiculo: {{ veiculoForm.value | json}}
+</pre>
+<pre>
+Telefone: {{ telefone.value | json}}
+</pre>
+<pre>
+Busca Carro: {{ buscaCarro.value | json}}
+</pre>
+<pre>
+Form Status : {{cadCliForm.status}}
+</pre> -->

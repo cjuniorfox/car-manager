@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CarroModel, CarroModeloModel } from '../interface/carro-model';
+import { CarroModel } from '../interface/carro-model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CarroMarcaModelo } from '../interface/carro-marca-modelo';
