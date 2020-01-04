@@ -31,7 +31,6 @@ import { PermissaoComponent } from './opcao/permissao/permissao.component';
 import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ClienteComponent } from './cliente/cliente.component';
-import { VeiculoComponent } from './veiculo/veiculo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarroComponent } from './carro/carro.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -43,12 +42,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
 import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
 
 @NgModule({
   declarations: [
@@ -64,12 +65,12 @@ import { NgxMaskModule } from 'ngx-mask';
     PermissaoComponent,
     RelatorioGerencialComponent,
     ClienteComponent,
-    VeiculoComponent,
     CarroComponent,
     DeletarCarroComponent,
     CadastrarCarroComponent,
     CadastrarClienteComponent,
-    AtualizarCarroComponent
+    AtualizarCarroComponent,
+    DeletarClienteComponent
   ],
   imports: [
     BrowserModule,
@@ -102,10 +103,14 @@ import { NgxMaskModule } from 'ngx-mask';
     MatChipsModule,
     MatCardModule,
     RxReactiveFormsModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [AtualizarCarroComponent, DeletarCarroComponent]
+  entryComponents: [
+    AtualizarCarroComponent,
+    DeletarCarroComponent,
+    DeletarClienteComponent]
 })
 export class AppModule { }

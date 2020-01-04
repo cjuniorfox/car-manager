@@ -5,7 +5,7 @@
 </mat-toolbar>
 <form [formGroup]="buscarForm" class="buscaForm">
     <mat-form-field>
-        <input matInput placeholder="Buscar" id="buscar" formControlName="buscar">
+        <input matInput placeholder="Buscar" id="buscarCarro" formControlName="buscar">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 </form>
@@ -17,7 +17,7 @@
         <ng-container matColumnDef="editMarca">
             <th mat-header-cell *matHeaderCellDef class="column-action"></th>
             <td mat-cell *matCellDef="let carro">
-                <button mat-icon-button (click)="updateDialog(carro,'marca')">
+                <button matTooltip="Editar marca" mat-icon-button (click)="updateDialog(carro,'marca')">
                     <mat-icon>edit</mat-icon>
                 </button>
             </td>
@@ -25,7 +25,7 @@
         <ng-container matColumnDef="deleteModelo">
             <th mat-header-cell *matHeaderCellDef class="column-action"></th>
             <td mat-cell *matCellDef="let carro">
-                <button mat-icon-button (click)="deleteDialog(carro)">
+                <button matTooltip="Deletar carro" mat-icon-button (click)="deleteDialog(carro)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>
@@ -33,7 +33,7 @@
         <ng-container matColumnDef="editModelo">
             <th mat-header-cell *matHeaderCellDef class="column-action"></th>
             <td mat-cell *matCellDef="let carro">
-                <button mat-icon-button (click)="updateDialog(carro,'modelo')">
+                <button matTooltip="Editar modelo" mat-icon-button (click)="updateDialog(carro,'modelo')">
                     <mat-icon>edit</mat-icon>
                 </button>
             </td>
@@ -54,70 +54,3 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 </div>
-<!-- <mat-toolbar>Carros <div class="spacer"></div>
-    <button mat-raised-button routerLink="cadastrar">Novo Carro</button>
-</mat-toolbar>
-<div class="table">
-    <form (ngSubmit)="getCars()">
-        <mat-form-field>
-            <input type="text" matInput [(ngModel)]="search" name="search" placeholder="Digite a marca ou modelo">
-        </mat-form-field>
-        <button type="submit" mat-button="">Buscar</button>
-    </form>
-    <table mat-table="" [dataSource]="carrosSort" matSort class="mat-elevation-z8">
-        <ng-container matColumnDef="marca">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
-            <td mat-cell *matCellDef="let carro">{{carro.marca}}</td>
-        </ng-container>
-        <ng-container matColumnDef="_id">
-            <th mat-header-cell *matHeaderCellDef>Ação</th>
-            <td mat-cell *matCellDef="let carro">
-                <button mat-icon-button routerLink="{{carro.marca}}-{{carro.modelo}}">
-                    <mat-icon>edit</mat-icon>
-                </button> 
-                <button mat-icon-button (click)="deleteDialog(carro)">
-                    <mat-icon>delete</mat-icon>
-                </button> 
-            </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-
-    
-    <table mat-table="" [dataSource]="carrosSort" matSort class="mat-elevation-z8">
-        <ng-container matColumnDef="marca">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
-            <td mat-cell *matCellDef="let carro">{{carro.marca}}</td>
-        </ng-container>
-        <ng-container matColumnDef="_id">
-            <th mat-header-cell *matHeaderCellDef>Ação</th>
-            <td mat-cell *matCellDef="let carro">
-                <button mat-icon-button routerLink="{{carro.marca}}-{{carro.modelo}}">
-                    <mat-icon>edit</mat-icon>
-                </button> 
-                <button mat-icon-button (click)="deleteDialog(carro)">
-                    <mat-icon>delete</mat-icon>
-                </button> 
-            </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-
-    <div class="table">
-    <table mat-table [dataSource]="carrosSort" matSort class="mat-elevation-z8">
-        <ng-container matColumnDef="{{column.name}}" *ngFor="let column of initColumns">
-            <th mat-header-cell   *matHeaderCellDef>{{column.label}}</th>
-            <td mat-cell *matCellDef="let carro">{{carro[column.name]}}</td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns : displayedColumns"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-</div>
-
-
-</div> -->

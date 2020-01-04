@@ -134,6 +134,11 @@ export class CadastrarClienteComponent implements OnInit {
     event.target.value = event.target.value.toUpperCase();
   }
 
+  mascaraTelefone(event){
+    console.log(event);
+    return '(00) 00000-0009'
+  }
+
   private _autoCompleteCarro() {
     this.buscaCarro.valueChanges.pipe(
       debounceTime(500),

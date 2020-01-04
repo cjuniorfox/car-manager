@@ -1,7 +1,8 @@
 const { Cliente, ClienteVeiculo } = require('../model/clienteSchema');
 const { ClienteValidation } = require('../validation/clienteValidation');
+const defineRequest = require('../util/defineRequest');
 
-async function _insertArrayVeiculos(arrVeiculos) {
+const _insertArrayVeiculos = async (arrVeiculos) => {
     const veiculos = arrVeiculos.map(v => {
         const clienteVeiculo = new ClienteVeiculo({
             carro: {
@@ -19,7 +20,7 @@ async function _insertArrayVeiculos(arrVeiculos) {
     return veiculos;
 }
 
-exports.saveCliente = async function (req, res) {
+exports.saveCliente = async (req, res) => {
     const submit = {
         nome: req.body.nome,
         documento: {
@@ -44,12 +45,68 @@ exports.saveCliente = async function (req, res) {
         res.status(201).send({
             "message": "Novo cliente armazenado com êxito.",
             "_id": cliente._id,
-            "request": {
-                "method": "GET",
-                "url": "http://localhost:3000/api/cliente/" + cliente._id
-            }
+            "request": defineRequest('GET', 'cliente', cliente._id)
         });
     } catch (err) {
         res.status(500).send(err);
     };
 };
+
+exports.getCliente = async (req, res) => {
+    try {
+        const id = req.params._id;
+        const cliente = await Cliente.findById(id)
+            .populate({
+                path: 'veiculos',
+                populate: [
+                    { path: 'carro', select: 'marca' },
+                    { path: 'carroModelo', select: 'nome' }
+                ]
+            });
+        res.send(Object.assign(
+            { request: defineRequest('GET', 'cliente', cliente._id) },
+            cliente._doc
+        ));
+
+    } catch (err) { res.status(500).send({ error: err }); }
+}
+
+exports.listCliente = async (req, res) => {
+    try {
+        const search = new RegExp('\\b' + req.query.search ? req.query.search : '' + '\\b', 'i');
+        const pageSize = req.query.size ? Number(req.query.size) : null;
+        const skip = req.query.index ? Number(req.query.index) * pageSize : 0;
+        const clientes = await Cliente.find({ nome: { $regex: search } })
+            .skip(skip)
+            .limit(pageSize)
+            .populate({
+                path: 'veiculos',
+                populate: [
+                    { path: 'carro', select: 'marca' },
+                    { path: 'carroModelo', select: 'nome' }
+                ]
+            })
+            .sort({ 'nome': 1 });
+        const qtClientes = await Cliente.count({ nome: { $regex: search } });
+        res.send({
+            message: 'Sua busca retornou ' + qtClientes + ' resultados.',
+            count: qtClientes,
+            skip: skip,
+            pageSize: pageSize ? pageSize : qtClientes,
+            clientes: clientes
+                .map(c => Object.assign({ request: defineRequest('GET', 'cliente', c._id) }, c._doc))
+        });
+    } catch (err) {
+        res.status(500).send({ error: err });
+    }
+}
+
+exports.deleteCliente = async (req, res) => {
+    try {
+        const cliente = await Cliente.findOneAndDelete({ _id: req.params._id });
+        if (cliente)
+            res.send({ message: "Registro removido com sucesso" })
+        else
+            res.status(400).send({ message: 'No valid entry for provided ID' })
+    } catch (err) { res.status(500).send({ error: err }) }
+}

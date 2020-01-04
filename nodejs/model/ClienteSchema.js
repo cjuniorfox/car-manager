@@ -58,7 +58,7 @@ const clienteSchema = new mongoose.Schema({
 
     veiculos: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Veiculo'
+        ref: 'ClienteVeiculo'
     }]
 });
 

@@ -63,14 +63,14 @@
             <mat-chip-list>
                 <ng-container aria-label="telefones" *ngFor="let telefone of telefones.controls; let i=index">
                     <mat-chip (removed)="removeTelefone(i)">
-                        {{telefone.value | mask:"(00) 00000-0009"}}
+                        {{telefone.value | mask: telefone.value.length === 10 ? "(00) 0000-0000" : "(00) 00000-0000"}}
                         <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
                 </ng-container>
             </mat-chip-list>
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
                 <mat-form-field fxFlex>
-                    <input matInput [formControl]="telefone" placeholder="Telefone" mask="(00) 00000-0009"
+                    <input matInput [formControl]="telefone" placeholder="Telefone" mask="(00) 000000009"
                         id="telefone">
                     <mat-error *ngIf="!telefone.valid">{{getErrorMessage(telefone)}}</mat-error>
                 </mat-form-field>

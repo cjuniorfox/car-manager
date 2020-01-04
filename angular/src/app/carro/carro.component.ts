@@ -30,7 +30,10 @@ import { DeletarCarroComponent } from './deletar-carro/deletar-carro.component';
 export class CarroComponent implements OnInit, AfterViewInit {
 
   carros = new MatTableDataSource();
-  buscarForm: FormGroup;
+
+  buscarForm = this.formBuilder.group({
+    buscar: ['']
+  });;
 
   initColumns: any[] = [
     { name: 'editMarca', label: '' },
@@ -51,9 +54,6 @@ export class CarroComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     public dialog: MatDialog
   ) {
-    this.buscarForm = this.formBuilder.group({
-      buscar: ['']
-    });
   };
 
   ngOnInit() {

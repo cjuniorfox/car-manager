@@ -17,7 +17,6 @@ export class MenuService {
           { name: 'Controle de serviço', path: '/controle' },
           { divider: true },
           { name: 'Clientes', path: '/cliente' },
-          { name: 'Veiculos', path: '/veiculo' },
           { name: 'Carros', path: '/carro' },
           { divider: true },
           { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
