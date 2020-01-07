@@ -21,6 +21,7 @@ const routes: Routes = [
   {path:"controle/saida",component:SaidaComponent},
   {path:"cliente",component:ClienteComponent},
   {path:"cliente/cadastrar",component:CadastrarClienteComponent},
+  {path:"cliente/:id",component:CadastrarClienteComponent},
   {path:"carro",component:CarroComponent},
   {path:"carro/cadastrar",component:CadastrarCarroComponent},
   {path:"opcao",component:OpcaoComponent},

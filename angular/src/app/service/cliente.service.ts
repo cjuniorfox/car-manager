@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Cliente } from '../interface/cliente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
-
 
   endpoint = environment.baseUrl + '/cliente';
   routes = {
@@ -14,9 +14,19 @@ export class ClienteService {
     search: this.endpoint + '/buscar'
   };
 
-  create(cliente: any) {
+  get(cliente_id: number) {
+    const url = this.routes.cliente + cliente_id;
+    return this._http.get<Cliente>(url);
+  }
+
+  create(cliente: Cliente) {
     const url = this.routes.cliente;
     return this._http.post(url, cliente);
+  }
+
+  patch(cliente_id: string, cliente: Cliente) {
+    const url = this.routes.cliente + cliente_id;
+    return this._http.patch(url, cliente);
   }
 
   list(search: string, pageIndex: number, pageSize: number) {

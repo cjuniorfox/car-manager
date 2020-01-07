@@ -43,7 +43,7 @@
           <button matTooltip="Deletar" mat-icon-button (click)="deleteDialog(c)">
             <mat-icon>delete</mat-icon>
           </button>
-          <button matTooltip="Editar" mat-icon-button>
+          <button matTooltip="Editar" [routerLink]="c._id" mat-icon-button>
             <mat-icon>edit</mat-icon>
           </button>
 

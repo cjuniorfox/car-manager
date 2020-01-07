@@ -6,6 +6,8 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { CarroService } from 'src/app/service/carro.service';
 import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
+import { ActivatedRoute } from '@angular/router';
+import { Cliente } from 'src/app/interface/cliente';
 
 @Component({
   selector: 'app-cadastrar-cliente',
@@ -13,6 +15,8 @@ import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
   styleUrls: ['./cadastrar-cliente.component.scss']
 })
 export class CadastrarClienteComponent implements OnInit {
+
+  sub: any;
 
   cadCliForm: FormGroup = this.fb.group({
     nome: ['', [Validators.required, Validators.minLength(4)]],
@@ -31,15 +35,17 @@ export class CadastrarClienteComponent implements OnInit {
 
   telefone = new FormControl('', Validators.required);
 
-  veiculoForm: FormGroup = this._createNewVeiculo();
+  veiculoForm: FormGroup = this._formGroupVeiculo();
 
   buscaCarro = new FormControl('');
 
   carrosAutocomplete = new Array();
 
   errorForm;
+  cliente_idUpdate: any;
 
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private location: Location,
     private clienteService: ClienteService,
@@ -49,19 +55,23 @@ export class CadastrarClienteComponent implements OnInit {
 
   ngOnInit() {
     this._autoCompleteCarro();
+    this._getCliente(); //Em caso de update.
   }
 
   public onSubmit() {
+    //Se update, atualiza registro
+    if (this.cliente_idUpdate) {
+      this.clienteService.patch(this.cliente_idUpdate, this.cadCliValues)
+        .subscribe(() => {
+          this.location.back();
+        }, err => this._error(err))
+      return;
+    }
+    //Senão, grava novo registro
     this.clienteService.create(this.cadCliValues)
       .subscribe(() => {
         this.location.back();
-      }, err => {
-        if (typeof (err.error.message) === 'string') {
-          this.errorForm = err.error.message;
-        } else {
-          this.errorForm = 'Não foi possível inserir cliente por um erro desconhecido'
-        }
-      })
+      }, err => this._error(err))
   }
 
   get cadCliValues() {
@@ -110,7 +120,7 @@ export class CadastrarClienteComponent implements OnInit {
   addVeiculo() {
     if (this.veiculoForm.valid) {
       this.veiculos.push(this.veiculoForm);
-      this.veiculoForm = this._createNewVeiculo();
+      this.veiculoForm = this._formGroupVeiculo();
       this.buscaCarro.setValue('');
     }
   }
@@ -134,26 +144,71 @@ export class CadastrarClienteComponent implements OnInit {
     event.target.value = event.target.value.toUpperCase();
   }
 
-  mascaraTelefone(event){
-    console.log(event);
+  mascaraTelefone(event) {
     return '(00) 00000-0009'
+  }
+
+  private _getCliente() {
+    this.route.params.subscribe(params => {
+      if (!params['id']) {
+        return; //Se não exisitir parametro, sai fora
+      }
+      this.cliente_idUpdate = params['id'];
+      this.clienteService.get(this.cliente_idUpdate).subscribe(data => this._mapCliente(data),
+        err => this._error(err)
+      )
+    });
+  }
+  _mapCliente(data: Cliente) {
+    this.cadCliForm.get('nome').setValue(data.nome);
+    this.cadCliForm.get('endereco').get('endereco').setValue(data.endereco.endereco);
+    this.cadCliForm.get('endereco').get('cidade').setValue(data.endereco.cidade);
+    this.cadCliForm.get('endereco').get('cep').setValue(data.endereco.cep);
+    if (data.telefones)
+      data.telefones.map(telefone =>
+        this.telefones.push(new FormControl(telefone, Validators.required))
+      );
+    if (data.veiculos)
+      data.veiculos.map(veiculo =>
+        this.veiculos.push(this._formGroupVeiculo(veiculo)))
+    this.cadCliForm.get('telefones').setValue(data.telefones);
+    this.cadCliForm.get('endereco').get('endereco').setValue(data.endereco.endereco);
   }
 
   private _autoCompleteCarro() {
     this.buscaCarro.valueChanges.pipe(
       debounceTime(500),
-      switchMap(search => this.carroService.listAsTable(typeof (search) == 'string' ? search : '', 0, 10))
+      switchMap(search => this.carroService.listAsTable(
+        typeof (search) == 'string' ? search : '', 0, 10)
+      )
     ).subscribe(result => {
       this.carrosAutocomplete = result.carros;
     });
   }
 
-  private _createNewVeiculo(): FormGroup {
-    return this.fb.group({
-      carro: [null, Validators.required],
-      carroModelo: [null, Validators.required],
-      placa: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(7)]],
-      chassi: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
-    });
+  private _formGroupVeiculo(veiculo = null): FormGroup {
+    const _id = veiculo ? veiculo._id : null;
+    const carro = veiculo ? veiculo.carro : null;
+    const carroModelo = veiculo ? veiculo.carroModelo : null;
+    const placa = veiculo ? veiculo.placa : '';
+    const chassi = veiculo ? veiculo.chassi : '';
+    let formVeiculo = {
+      _id: [_id],
+      carro: [carro, Validators.required],
+      carroModelo: [carroModelo, Validators.required],
+      placa: [placa, [Validators.required, Validators.minLength(7), Validators.maxLength(7)]],
+      chassi: [chassi, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
+    };
+    if (_id == null){
+      delete formVeiculo._id;
+    }
+    return this.fb.group(formVeiculo);
   }
+  private _error(err: any): void {
+    if ((err.error.error.message)) {
+      this.errorForm = err.error.error.message;
+    } else {
+      this.errorForm = 'Ocorreu um erro desconhecido'
+    }
+  };
 }

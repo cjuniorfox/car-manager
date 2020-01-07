@@ -61,7 +61,8 @@ const clienteValidation = (data) => {
                 .messages({
                     "string.required": "Necessário informar o chassi",
                     "string.length": "Digite 10 caracteres"
-                })
+                }),
+            _id: Joi.string().allow(null)
         })
     });
     return schema.validate(data);

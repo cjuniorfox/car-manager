@@ -13,8 +13,6 @@ import { CarroMarcaModelo } from '../interface/carro-marca-modelo';
 import { AtualizarCarroComponent } from './atualizar-carro/atualizar-carro.component';
 import { DeletarCarroComponent } from './deletar-carro/deletar-carro.component';
 
-
-
 @Component({
   selector: 'app-carro',
   templateUrl: './carro.component.html',

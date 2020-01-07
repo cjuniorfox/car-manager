@@ -87,7 +87,7 @@
             </div>
             <mat-chip-list>
                 <ng-container *ngFor="let veiculo of veiculos.controls; let i=index">
-                    <mat-chip (removed)="removeCarro(i)">{{veiculo.value.carro.marca}} -
+                    <mat-chip (removed)="removeVeiculo(i)">{{veiculo.value.carro.marca}} -
                         {{veiculo.value.carroModelo.nome}} ({{veiculo.value.placa}})
                         <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>

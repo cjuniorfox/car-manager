@@ -1,56 +1,27 @@
-const { Cliente, ClienteVeiculo } = require('../model/clienteSchema');
+const { Cliente } = require('../model/clienteSchema');
+const { ClienteVeiculo } = require('../model/clienteVeiculoSchema');
 const { ClienteValidation } = require('../validation/clienteValidation');
 const defineRequest = require('../util/defineRequest');
 
 const _insertArrayVeiculos = async (arrVeiculos) => {
-    const veiculos = arrVeiculos.map(v => {
-        const clienteVeiculo = new ClienteVeiculo({
-            carro: {
-                _id: v.carro._id
-            },
-            carroModelo: {
-                _id: v.carroModelo._id
-            },
-            placa: v.placa,
-            chassi: v.chassi
-        });
-        clienteVeiculo.save();
-        return clienteVeiculo._id;
-    });
+    const veiculos = arrVeiculos.map(v => _insertClienteVeiculo(v));
     return veiculos;
 }
 
-exports.saveCliente = async (req, res) => {
-    const submit = {
-        nome: req.body.nome,
-        documento: {
-            documento: req.body.documento.documento,
-            tipoDocumento: req.body.documento.tipoDocumento
+const _insertClienteVeiculo = (veiculo) => {
+    const clienteVeiculo = new ClienteVeiculo({
+        carro: {
+            _id: veiculo.carro._id
         },
-        endereco: {
-            endereco: req.body.endereco.endereco,
-            cidade: req.body.endereco.cidade,
-            cep: req.body.endereco.cep
+        carroModelo: {
+            _id: veiculo.carroModelo._id
         },
-        telefones: req.body.telefones,
-        veiculos: req.body.veiculos
-    };
-    const { error } = ClienteValidation(submit);
-    if (typeof error !== 'undefined')
-        return res.status(400).send({ message: error.details[0].message });
-    const cliente = new Cliente(submit);
-    cliente.veiculos = await _insertArrayVeiculos(submit.veiculos);
-    try {
-        await cliente.save();
-        res.status(201).send({
-            "message": "Novo cliente armazenado com êxito.",
-            "_id": cliente._id,
-            "request": defineRequest('GET', 'cliente', cliente._id)
-        });
-    } catch (err) {
-        res.status(500).send(err);
-    };
-};
+        placa: veiculo.placa,
+        chassi: veiculo.chassi
+    });
+    clienteVeiculo.save();
+    return clienteVeiculo._id;
+}
 
 exports.getCliente = async (req, res) => {
     try {
@@ -63,11 +34,71 @@ exports.getCliente = async (req, res) => {
                     { path: 'carroModelo', select: 'nome' }
                 ]
             });
+        if (!cliente) {
+            return res.status(400).send({ 'message': 'No valid entry for provided ID' })
+        }
         res.send(Object.assign(
             { request: defineRequest('GET', 'cliente', cliente._id) },
             cliente._doc
         ));
 
+    } catch (err) { res.status(500).send({ error: err }); }
+}
+
+exports.saveCliente = async (req, res) => {
+    const { error } = ClienteValidation(req.body);
+    //Valida requisição.
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    const cliente = new Cliente(req.body);
+    try {
+        cliente.veiculos = await _insertArrayVeiculos(req.body.veiculos);
+        await cliente.save();
+        res.status(201).send({
+            "message": "Novo cliente armazenado com êxito.",
+            "_id": cliente._id,
+            "request": defineRequest('GET', 'cliente', cliente._id)
+        });
+    } catch (err) {
+        res.status(500).send(err);
+    };
+};
+
+exports.patchCliente = async (req, res) => {
+    const { error } = ClienteValidation(req.body);
+    //valida requisição
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    try {
+        var update = req.body;
+        cliente = await Cliente.findById(req.params._id);
+        if (!cliente) {
+            return res.status(400).send({ 'message': 'No valid entry for provided ID' })
+        }
+        //Trata os veiculos, incluindo os novos, excluindo os velhos e atualizando os atuais.
+        const veiculosExcluir = cliente.veiculos.filter(v =>
+            !req.body.veiculos.some(v2 => (v2._id == v))
+        );
+        const veiculosIncluir = req.body.veiculos.filter(v2 =>
+            !cliente.veiculos.some(v => (v == v2._id))
+        );
+        //Inclui novos veículos
+        const idVeiculosIncluir = await veiculosIncluir.map(v => {
+            const clienteVeiculo = new ClienteVeiculo(v);
+            clienteVeiculo.save();
+            return clienteVeiculo._id;
+        });
+        //Monta o update, Substituindo veiculos, 
+        //removendo os objetos a excluir e incluindo os novos objetos
+        update.veiculos = cliente.veiculos.filter(v =>
+            req.body.veiculos.some(v2 => (v2._id == v))
+        ).concat(idVeiculosIncluir);
+        await Cliente.updateOne({ _id: req.params._id }, update);
+        //realiza exclusão lógica dos ClienteVeiculo excluidos.
+        await ClienteVeiculo.updateMany({ _id: { $in: veiculosExcluir } },
+            { deleted: { cliente: cliente._id, date: Date.now() } }
+        );
+        res.send({ message: 'Registro atualizado com sucesso' });
     } catch (err) { res.status(500).send({ error: err }); }
 }
 
@@ -87,7 +118,7 @@ exports.listCliente = async (req, res) => {
                 ]
             })
             .sort({ 'nome': 1 });
-        const qtClientes = await Cliente.count({ nome: { $regex: search } });
+        const qtClientes = await Cliente.countDocuments({ nome: { $regex: search } });
         res.send({
             message: 'Sua busca retornou ' + qtClientes + ' resultados.',
             count: qtClientes,

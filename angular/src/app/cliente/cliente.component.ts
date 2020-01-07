@@ -85,8 +85,7 @@ export class ClienteComponent implements OnInit, AfterViewInit {
       switchMap(() =>
         this.clienteService.list(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
       )
-    ).subscribe(result => { this._mapResultList(result) }
-    );
+    ).subscribe(result => { this._mapResultList(result) });
   }
 
   _mapResultList(result: any): void {

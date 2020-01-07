@@ -166,7 +166,7 @@ exports.saveMarcaModeloSmart = async function (req, res, next) {
             //Não existe? grava insere marca na base de dados
             const carroInsert = new Carro({
                 marca: submit.marca,
-                $push: { modelos: modelo._id }
+                modelos: [modelo._id]
             });
             await carroInsert.save();
             res.status(201).send({
