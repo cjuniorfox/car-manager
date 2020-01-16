@@ -70,7 +70,7 @@ exports.patchCliente = async (req, res) => {
     if (typeof error !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     try {
-        var update = req.body;
+        let update = req.body;
         cliente = await Cliente.findById(req.params._id);
         if (!cliente) {
             return res.status(400).send({ 'message': 'No valid entry for provided ID' })

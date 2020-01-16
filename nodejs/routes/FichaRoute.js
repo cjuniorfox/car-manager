@@ -1,8 +1,6 @@
 const router = require('express').Router();
+const FichaController = require('../controller/fichaController');
 
-const FichaController = require('../controller/FichaController');
-
-router.get('/:id', FichaController.show);
-router.post('/', FichaController.entrada);
+router.post('/entrada',FichaController.saveFichaEntrada);
 
 module.exports = router;

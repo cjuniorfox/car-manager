@@ -65,7 +65,7 @@ exports.listCarrosByMarcaModeloAsTable = async function (req, res, next) {
     const buscaModelo = arrBusca.shift() ? new RegExp('\\b' + arrBusca.join(" ") + '\\b', 'i') : 'null';
     try {
         //Identifica se o valor passado é a marca, o modelo e realiza a query de acordo
-        var carros = await Carro
+        let carros = await Carro
             .aggregate([
                 //equivalente ao (JOIN) no SQL
                 { $lookup: { from: "carromodelos", localField: "modelos", foreignField: "_id", as: "modelos" } },

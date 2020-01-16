@@ -1,56 +1,77 @@
 const mongoose = require('mongoose');
 
 const fichaSchema = new mongoose.Schema({
-    retorno: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    setor: {
-        type: String,
-        Enumerator : ['OF', 'VN', 'SL', 'TD', 'VU'] 
-    },
-    dataRecepcao: {
-        type: Date,
-        required: true,
-        default: Date.now
-    },
-    dataPrevistaSaida: Date,
     osSistema: {
         type: Number,
         required: true
     },
     osInterna: Number,
-    cliente: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Cliente'
-    },
-    veiculo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Veiculo'
-    },
-    avariaInterior:{
-        existente:{
-            type: Boolean,
-            required: true
+    dadosCadastrais: {
+        cliente: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Cliente'
         },
-        detalhe: String
+        clientVeiculo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ClienteVeiculo'
+        }
     },
-    pertencesNoVeiculo: {
-        existente: {
-            type: Boolean,
-            required: true
+    entrada: {
+        dataRecepcao: {
+            type: Date,
+            required: true,
+            default: Date.now
         },
-        detalhe: String
+        dataPrevistaSaida: Date,
+        avariaInterior: {
+            existente: {
+                type: Boolean,
+                required: true
+            },
+            detalhe: String
+        },
+        pertencesNoVeiculo: {
+            existente: {
+                type: Boolean,
+                required: true
+            },
+            detalhe: String
+        },
+        servicosPrevisao: [
+            {
+                type: String,
+                required: true
+            }
+        ]
     },
-    tipoServico: {
-        tipo: {
-            type:String,
+    servicos: [{
+        servico: {
+            type: String,
             Enumerator: ['Cortesia', 'Ducha', 'Lavagem simples', 'Lavagem completa', 'Servicos']
         },
-        descServicos: String
-    }
+        setor: {
+            type: String,
+            Enumerator: ['OF', 'VN', 'SL', 'TD', 'VU']
+        },
+        box: {
+            type: String,
+            Enumerator: ['Lavagem', 'Detalhamento']
+        },
+        descricao: {
+            type: String,
+            required: false
+        },
+        inicio: {
+            type: Date,
+            required: true
+        },
+        fim: Date
+    }],
 
+    retorno: {
+        type: Boolean,
+        default: false
+    }
 });
 
-module.exports = mongoose.model('Ficha',fichaSchema);
+module.exports = mongoose.model('Ficha', fichaSchema);
