@@ -9,7 +9,6 @@ const fichaEntradaValidation = (data) => {
             clienteVeiculo: Joi.string().required()
         },
         entrada: {
-            
             dataRecepcao: Joi.date().optional(),
             dataPrevisaoSaida: Joi.date().optional(),
             avariaInterior: {

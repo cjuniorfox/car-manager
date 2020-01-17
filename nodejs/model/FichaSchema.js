@@ -37,17 +37,15 @@ const fichaSchema = new mongoose.Schema({
             },
             detalhe: String
         },
-        servicosPrevisao: [
-            {
-                type: String,
-                required: true
-            }
-        ]
+        servicosPrevisao: [{
+            type: String,
+            required: true
+        }]
     },
     servicos: [{
         servico: {
             type: String,
-            Enumerator: ['Cortesia', 'Ducha', 'Lavagem simples', 'Lavagem completa', 'Servicos']
+            Enumerator: ['Cortesia', 'Ducha', 'Lavagem simples', 'Lavagem completa']
         },
         setor: {
             type: String,

@@ -9,10 +9,10 @@ exports.saveFichaEntrada = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     try {
         const ficha = new Ficha(req.body);
-        //   await ficha.save();
+        await ficha.save();
         return res.send({
-            message: "Entrada de ficha registrada com sucesso"//,
-            //       request: defineRequest('GET', 'cliente', ficha._id)
+            message: "Entrada de ficha registrada com sucesso",
+            request: defineRequest('GET', 'cliente', ficha._id)
         })
     } catch (err) { res.status(500).send(err); }
 }

@@ -32,7 +32,7 @@ export class ClienteService {
   list(search: string, pageIndex: number, pageSize: number) {
     const url = this.routes.search +
       '?search=' + search.toLowerCase() + '&index=' + pageIndex + '&size=' + pageSize;
-    return this._http.get(url);
+    return this._http.get<any>(url);
   }
 
   delete(_id: number) {
