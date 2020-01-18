@@ -23,6 +23,13 @@ const fichaSchema = new mongoose.Schema({
             default: Date.now
         },
         dataPrevistaSaida: Date,
+        avariaExterior: {
+            existente: {
+                type: Boolean,
+                required: true
+            },
+            detalhe: String
+        },
         avariaInterior: {
             existente: {
                 type: Boolean,

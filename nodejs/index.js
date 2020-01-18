@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const FichaRoute = require('./routes/FichaRoute');
 const CarroRoute = require('./routes/carroRoute');
 const ClienteRoute = require('./routes/clienteRoute');
+const UserRoute = require('./routes/userRoute');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 //Routes
 app.use('/api/ficha/', FichaRoute);
 app.use('/api/carro/', CarroRoute);
-app.use('/api/cliente', ClienteRoute);
+app.use('/api/cliente/', ClienteRoute);
+app.use('/api/user/', UserRoute);
 
 app.listen(3000, () => console.log('Car management up and running!'));

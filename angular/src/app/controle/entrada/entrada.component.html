@@ -5,7 +5,7 @@
 </mat-toolbar>
 
 <div fxLayout="row" fxLayoutAlign="center center">
-    <form class="entrada-veiculo" [formGroup]="formEntrada" (submit)="onSubmit()">
+    <form class="entrada-veiculo" [formGroup]="formEntrada" (ngSubmit)="onSubmit()">
         <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex>
                 <input type="text" id="osSistema" matInput placeholder="OS Sistema" formControlName="osSistema">
@@ -16,8 +16,8 @@
                 <mat-error></mat-error>
             </mat-form-field>
         </div>
-        <div [formGroup]="dadosCadastrais" fxLayout="row" fxLayout.lt-md="column">
-            <form>
+        <div [formGroup]="dadosCadastrais">
+            <form fxLayout="row" fxLayout.lt-md="column">
                 <mat-form-field fxFlex>
                     <input type="text" [matAutocomplete]="autoCompleteCliente" id="buscaCliente" matInput
                         placeholder="Cliente" [formControl]="buscaCliente">
@@ -28,18 +28,23 @@
                     <mat-error>Necessário selecionar um cliente</mat-error>
                 </mat-form-field>
             </form>
-            <mat-form-field fxFlex>
-                <mat-label>Veículo</mat-label>
-                <mat-select formControlName="clienteVeiculo">
-                    <mat-option *ngFor="let v of veiculos" [value]="v._id">
-                        {{v.carro.marca}} - {{v.carroModelo.nome}} ({{v.placa}})
-                    </mat-option>
-                </mat-select>
-                <mat-error>Selecione o veículo do cliente</mat-error>
-            </mat-form-field>
+            <div class="veiculo" fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex="2 0 0">
+                    <mat-label>Veículo</mat-label>
+                    <mat-select formControlName="clienteVeiculo">
+                        <mat-option *ngFor="let v of veiculos" [value]="v._id">
+                            {{v.carro.marca}} - {{v.carroModelo.nome}} ({{v.placa}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Selecione o veículo do cliente</mat-error>
+                </mat-form-field>
+                <div fxFlex="1 0 0" class="button-routercadcli">
+                    <button type="button" mat-button matTooltip="Redireciona para cadastro de clientes" routerLink="/cliente/cadastrar">Cadastro de clientes e veículos</button>
+                </div>
+            </div>
         </div>
         <div [formGroup]="entrada">
-            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+            <div fxLayout="row" fxLayout.lt-md="column">
                 <mat-form-field fxFlex>
                     <input matInput id="dataRecepcao" [matDatepicker]="dpDataRecepcao" placeholder="Data de recepção"
                         formControlName="dataRecepcao">
@@ -53,39 +58,49 @@
                     <mat-datepicker #dpDataPrevisaoSaida></mat-datepicker>
                 </mat-form-field>
             </div>
-            <div [formGroup]="avariaInterior">
-                <label class="input-row" for="">Avaria interior</label>
-                <mat-slide-toggle formControlName="existente"></mat-slide-toggle>
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
-                    <mat-form-field fxFlex>
-                        <textarea matInput formControlName="detalhe" placeholder="Detalhe as avarias"
-                            id="avariaInteriorDetalhe"></textarea>
-                    </mat-form-field>
+            <div fxLayout="column" [formGroup]="avariaExterior">
+                <div fxFlex>
+                    <mat-slide-toggle labelPosition="before" formControlName="existente">Avaria no exterior do veículo
+                    </mat-slide-toggle>
                 </div>
+                <mat-form-field fxFlex>
+                    <textarea matInput formControlName="detalhe" placeholder="Detalhe as avarias"
+                        id="avariaExteriorDetalhe"></textarea>
+                </mat-form-field>
             </div>
-            <div [formGroup]="pertencesNoVeiculo">
-                <label for="">Pertences no veículo</label>
-                <mat-slide-toggle formControlName="existente"></mat-slide-toggle>
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
-                    <mat-form-field fxFlex>
-                        <textarea matInput formControlName="detalhe" placeholder="Detalhe os itens encontrados"
-                            id="pertencesNoVeiculoDetalhe"></textarea>
-                    </mat-form-field>
+            <div fxLayout="column" [formGroup]="avariaInterior">
+                <div fxFlex>
+                    <mat-slide-toggle labelPosition="before" formControlName="existente">Avaria no interior do veículo
+                    </mat-slide-toggle>
                 </div>
+                <mat-form-field fxFlex>
+                    <textarea matInput formControlName="detalhe" placeholder="Detalhe as avarias"
+                        id="avariaInteriorDetalhe"></textarea>
+                </mat-form-field>
             </div>
-            <label for="">Serviços</label>
-            <div fxLayout="row" fxLayout.lt-md="column">
-                <div fxFlex *ngFor="let servico of servicos; let i=index">
+            <div fxLayout="column" [formGroup]="pertencesNoVeiculo">
+                <div fxFlex>
+                    <mat-slide-toggle labelPosition="before" formControlName="existente">Pertences no veículo
+                    </mat-slide-toggle>
+                </div>
+                <mat-form-field fxFlex>
+                    <textarea matInput formControlName="detalhe" placeholder="Detalhe os itens encontrados"
+                        id="pertencesNoVeiculoDetalhe"></textarea>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <h4>Serviços</h4>
+                <div class="servicos" fxFlex *ngFor="let servico of servicos; let i=index">
                     <mat-checkbox [value]="servico" (change)="onChangeServicos($event)">{{servico}}</mat-checkbox>
                 </div>
             </div>
         </div>
-        <div fxLayout="row">
-            <button fxFlex [disabled]="!formEntrada.valid" mat-button type="submit">Salvar</button>
+        <div fxLayout="row" class="submit-button">
+            <button mat-raised-button type="submit" fxFlex [disabled]="!formEntrada.valid">Salvar</button>
         </div>
         <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
     </form>
 </div>
-<pre>
+<!-- <pre>
 {{formEntrada.value | json}}
-</pre>
+</pre> -->

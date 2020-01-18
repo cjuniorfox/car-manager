@@ -10,7 +10,7 @@ exports.saveFichaEntrada = async (req, res) => {
     try {
         const ficha = new Ficha(req.body);
         await ficha.save();
-        return res.send({
+        return res.status(201).send({
             message: "Entrada de ficha registrada com sucesso",
             request: defineRequest('GET', 'cliente', ficha._id)
         })

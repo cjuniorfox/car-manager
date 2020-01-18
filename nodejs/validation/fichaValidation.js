@@ -11,6 +11,12 @@ const fichaEntradaValidation = (data) => {
         entrada: {
             dataRecepcao: Joi.date().optional(),
             dataPrevisaoSaida: Joi.date().optional(),
+            avariaExterior: {
+                existente: Joi.boolean().required(),
+                detalhe: Joi.string()
+                    .when('existente',
+                        { is: true, then: Joi.required() }),
+            },
             avariaInterior: {
                 existente: Joi.boolean().required(),
                 detalhe: Joi.string()

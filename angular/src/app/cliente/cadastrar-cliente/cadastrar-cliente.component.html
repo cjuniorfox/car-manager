@@ -5,18 +5,18 @@
 </mat-toolbar>
 <div fxLayout="row" fxLayoutAlign="center center">
     <form class="cadCliForm" [formGroup]="cadCliForm" (submit)="onSubmit()">
-        <div class="input-row">
+        <div fxLayout="column">
             <mat-form-field fxFlex>
                 <input type="text" matInput placeholder="Nome" formControlName="nome" id="nome">
-                <mat-error *ngIf="cadCliForm.controls.nome.invalid">{{getErrorMessage(cadCliForm.controls.nome)}}
+                <mat-error>{{getErrorMessage(cadCliForm.controls.nome)}}
                 </mat-error>
             </mat-form-field>
         </div>
         <div formGroupName="documento">
-            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
-                <mat-form-field fxFlex=60>
+            <div fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex="2 0 0">
                     <input matInput placeholder="Documento" formControlName="documento" id="documento">
-                    <mat-error *ngIf="cadCliForm.controls.documento.controls.documento.invalid">
+                    <mat-error>
                         {{getErrorMessage(cadCliForm.controls.documento.controls.documento)}}
                     </mat-error>
                 </mat-form-field>
@@ -27,31 +27,29 @@
                         <mat-option value="CPF">CPF</mat-option>
                         <mat-option value="CNH">CNH</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="cadCliForm.controls.documento.controls.tipoDocumento.invalid">
+                    <mat-error>
                         {{getErrorMessage(cadCliForm.controls.documento.controls.tipoDocumento)}}
                     </mat-error>
                 </mat-form-field>
             </div>
         </div>
         <div formGroupName="endereco">
-            <div class="input-row">
+            <div fxLayout="column">
                 <mat-form-field fxFlex>
                     <textarea matInput placeholder="Endereço" formControlName="endereco" id="endereco"></textarea>
-                    <mat-error *ngIf="endereco.controls.endereco.invalid">
+                    <mat-error>
                         {{getErrorMessage(endereco.controls.endereco)}}
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
-                <mat-form-field fxFlex=60>
+            <div fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex="2 0 0">
                     <input type="text" matInput placeholder="Cidade" formControlName="cidade" id="cidade">
-                    <mat-error *ngIf="endereco.controls.cidade.invalid">{{getErrorMessage(endereco.controls.cidade)}}
-                    </mat-error>
+                    <mat-error>{{getErrorMessage(endereco.controls.cidade)}}</mat-error>
                 </mat-form-field>
-                <mat-form-field fxFlex=40>
+                <mat-form-field fxFlex="1 0 0">
                     <input type="text" matInput placeholder="Cep" mask="00000-000" formControlName="cep" id="cep">
-                    <mat-error *ngIf="endereco.controls.cep.invalid">{{getErrorMessage(endereco.controls.cep)}}
-                    </mat-error>
+                    <mat-error>{{getErrorMessage(endereco.controls.cep)}}</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -68,13 +66,15 @@
                     </mat-chip>
                 </ng-container>
             </mat-chip-list>
-            <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
-                <mat-form-field fxFlex>
-                    <input matInput [formControl]="telefone" placeholder="Telefone" mask="(00) 000000009"
-                        id="telefone">
-                    <mat-error *ngIf="!telefone.valid">{{getErrorMessage(telefone)}}</mat-error>
+            <div fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex="2 0 0">
+                    <input matInput [formControl]="telefone" placeholder="Telefone" mask="(00) 000000009" id="telefone">
+                    <mat-error>{{getErrorMessage(telefone)}}</mat-error>
                 </mat-form-field>
-                <button fxFlex=30 [disabled]="!telefone.valid" mat-button type="button" (click)="addTelefone()">Adicionar Telefone</button>
+                <div fxFlex="1 0 0" class="flex-button">
+                    <button [disabled]="!telefone.valid" mat-button type="button" (click)="addTelefone()">Adicionar
+                        Telefone</button>
+                </div>
             </div>
         </div>
         <div formArrayName="veiculos">
@@ -94,7 +94,7 @@
                 </ng-container>
             </mat-chip-list>
             <form [formGroup]="veiculoForm">
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+                <div fxLayout="row" fxLayout.lt-md="column">
                     <mat-form-field fxFlex>
                         <input [formControl]="buscaCarro" matInput [matAutocomplete]="autocompleteCarro"
                             placeholder="Marca e Modelo" id="buscaCarro">
@@ -106,27 +106,28 @@
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
-                    <mat-form-field fxFlex>
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+                    <mat-form-field fxFlex="2 0 0">
                         <input type="text" matInput placeholder="Placa" (input)="toUpperCase($event)" #placa
                             formControlName="placa" mask="SSS-0A00" id="placa">
                         <mat-error *ngIf="veiculoForm.controls.placa.invalid">
                             {{getErrorMessage(veiculoForm.controls.placa)}}</mat-error>
                     </mat-form-field>
-                    <mat-form-field fxFlex>
+                    <mat-form-field fxFlex="2 0 0">
                         <input type="text" matInput placeholder="Chassi" formControlName="chassi" mask="0000000000"
                             id="chassi">
                         <mat-error *ngIf="veiculoForm.controls.chassi.invalid">
                             {{getErrorMessage(veiculoForm.controls.chassi)}}</mat-error>
                     </mat-form-field>
-                    <button mat-button fxFlex=20 type="button" (click)="addVeiculo()"
-                        [disabled]="!veiculoForm.valid">Adicionar
-                        Veículo</button>
+                    <div fxFlex="1 0 0" class="flex-button">
+                        <button mat-button type="button" (click)="addVeiculo()"
+                            [disabled]="!veiculoForm.valid">Adicionar Veículo</button>
+                    </div>
                 </div>
                 <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
             </form>
         </div>
-        <div class="input-row" fxLayout="row">
+        <div fxLayout="column">
             <button fxFlex [disabled]="!cadCliForm.valid" mat-button type="submit">Salvar</button>
         </div>
     </form>

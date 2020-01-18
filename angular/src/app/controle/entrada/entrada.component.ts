@@ -6,6 +6,7 @@ import { Cliente } from 'src/app/interface/cliente';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { FichaService } from 'src/app/service/ficha.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entrada',
@@ -17,15 +18,19 @@ export class EntradaComponent implements OnInit {
   veiculos = [];
 
   formEntrada = this.fb.group({
-    osSistema: ['', Validators.required],
-    osInterna: [''],
+    osSistema: [null, Validators.required],
+    osInterna: [null],
     dadosCadastrais: this.fb.group({
       cliente: ['', Validators.required],
       clienteVeiculo: ['', Validators.required]
     }),
     entrada: this.fb.group({
       dataRecepcao: [new Date(), Validators.required],
-      dataPrevisaoSaida: [''],
+      dataPrevisaoSaida: [null],
+      avariaExterior: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
       avariaInterior: this.fb.group({
         existente: [false],
         detalhe: [{ value: '', disabled: true }, Validators.required]
@@ -48,6 +53,7 @@ export class EntradaComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private location: Location,
+    private router: Router,
     private clienteService: ClienteService,
     private fichaService: FichaService
   ) { }
@@ -91,6 +97,10 @@ export class EntradaComponent implements OnInit {
     return this.formEntrada.get('entrada') as FormGroup;
   }
 
+  get avariaExterior() {
+    return this.entrada.get('avariaExterior') as FormGroup;
+  }
+  
   get avariaInterior() {
     return this.entrada.get('avariaInterior') as FormGroup;
   }
@@ -139,7 +149,10 @@ export class EntradaComponent implements OnInit {
 
   public onSubmit() {
     this.fichaService.saveFichaEntrada(this.formEntrada.value)
-      .subscribe(() => this.location.back(), err => this._error(err))
+      .subscribe(
+        () => this.router.navigate(['/controle']),
+        err => this._error(err)
+      );
   }
 
   private _error(err: any): void {
