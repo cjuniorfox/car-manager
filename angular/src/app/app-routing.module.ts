@@ -12,23 +12,25 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { CarroComponent } from './carro/carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
-
+import { LoginComponent } from './user/login/login.component';
+import { UserGuard } from './guards/user.guard';
 
 const routes: Routes = [
-  {path:"",component:HomeComponent},
-  {path:"controle",component:ControleComponent},
-  {path:"controle/entrada",component:EntradaComponent},
-  {path:"controle/saida",component:SaidaComponent},
-  {path:"cliente",component:ClienteComponent},
-  {path:"cliente/editar/:id",component:CadastrarClienteComponent},
-  {path:"cliente/cadastrar",component:CadastrarClienteComponent},
-  {path:"carro",component:CarroComponent},
-  {path:"carro/cadastrar",component:CadastrarCarroComponent},
-  {path:"opcao",component:OpcaoComponent},
-  {path:"opcao/usuario",component:UsuarioComponent},
-  {path:"opcao/permissao",component:PermissaoComponent},
-  {path:"relatorio-gerencial",component:RelatorioGerencialComponent},
-  {path:"logout",component:HomeComponent}
+  { path: "", component: HomeComponent },
+  { path: "controle", component: ControleComponent },
+  { path: "controle/entrada", component: EntradaComponent, canActivate: [UserGuard] },
+  { path: "controle/saida", component: SaidaComponent },
+  { path: "cliente", component: ClienteComponent },
+  { path: "cliente/editar/:id", component: CadastrarClienteComponent },
+  { path: "cliente/cadastrar", component: CadastrarClienteComponent },
+  { path: "carro", component: CarroComponent },
+  { path: "carro/cadastrar", component: CadastrarCarroComponent },
+  { path: "opcao", component: OpcaoComponent },
+  { path: "opcao/usuario", component: UsuarioComponent },
+  { path: "opcao/permissao", component: PermissaoComponent },
+  { path: "relatorio-gerencial", component: RelatorioGerencialComponent },
+  { path: "user/login", component: LoginComponent },
+  { path: "logout", component: HomeComponent }
 ];
 
 @NgModule({

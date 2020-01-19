@@ -1,0 +1,39 @@
+<div class="login-content" fxLayout="row" fxLayoutAlign="center">
+    <form [formGroup]="formLogin" fxLayout="column" (ngSubmit)="onSubmit()" fxFlex="400px" fxFlex.lt-md="100%">
+        <h1>login</h1>
+        <mat-form-field fxFlex>
+            <input id="username" type="text" placeholder="Usuário" matInput formControlName="username">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+            <input id="password" type="password" placeholder="Senha" matInput formControlName="password">
+        </mat-form-field>
+        <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
+        <button fxFlex type="submit" mat-button>Logar</button>
+    </form>
+    <!--     <mat-card class="login" fxFlex="400px" fxFlex.lt-md="100%">
+        <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+            <mat-card-header>
+                <mat-card-title>Login</mat-card-title>
+                <mat-card-subtitle>Digite usuário e senha</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content fxLayout="column">
+                <mat-form-field fxFlex>
+                    <input id="username" type="text" placeholder="Usuário" matInput formControlName="username">
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <input id="password" type="password" placeholder="Senha" matInput formControlName="password">
+                </mat-form-field>
+                <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
+            </mat-card-content>
+            <mat-card-actions>
+                <button type="submit" mat-button>Logar</button>
+                <button type="reset" mat-button>Limpar</button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+ -->
+</div>
+
+<pre>
+{{formLogin.value | json}}
+</pre>

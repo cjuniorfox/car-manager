@@ -51,6 +51,7 @@ import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar
 import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
+import { LoginComponent } from './user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -71,8 +72,9 @@ import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-clien
     CadastrarCarroComponent,
     CadastrarClienteComponent,
     AtualizarCarroComponent,
-    DeletarClienteComponent
-  ],
+    DeletarClienteComponent,
+    LoginComponent
+],
   imports: [
     BrowserModule,
     FormsModule,

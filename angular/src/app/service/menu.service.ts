@@ -24,7 +24,7 @@ export class MenuService {
           { divider: true },
           { name: 'Relatório Gerencial', path: '/relatorio-gerencial' },
           { divider: true },
-          { name: 'Logout', path: '/logout' }
+          { name: 'Login', path: '/user/login' }
         ]
       }
     ];

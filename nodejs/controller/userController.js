@@ -10,7 +10,7 @@ exports.create = async (req, res) => {
         return res.status(400).send({ "message": error.details[0].message });
     //Somente administradores podem criar perfis
     if (req.user && req.user.admin === false) {
-        return res.status(400).send({ "message": "Somente administradores podem criar perfis" });
+        return res.status(401).send({ "message": "Somente administradores podem criar perfis" });
     }
     try {
         //Se não autenticado, só permite o cadastro se não exisitir perfil nenhum cadastrado
@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
         if (!req.user) {
             const hasUser = await User.find();
             if (hasUser.length > 0)
-                return res.status(400).send({ "message": "Somente administradores autenticados podem criar perfis" });
+                return res.status(401).send({ "message": "Somente administradores autenticados podem criar perfis" });
             if (!req.body.admin || req.body.admin !== "true")
                 return res.status(400).send({ "message": "Primeiro perfil a ser criado necessita ser administrador" });
         }
@@ -63,6 +63,6 @@ exports.login = async (req, res) => {
             admin: user.admin,
             _id: user._id
         }, process.env.TOKEN_SECRET);
-        res.header('auth-token', token).send({ "message": "Login realizado com sucesso" });
+        res.send({ 'auth-token': token, "message": "Login realizado com sucesso" });
     } catch (err) { console.error(err); res.status(500).send(err) }
 }
