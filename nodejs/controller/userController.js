@@ -1,8 +1,43 @@
-const { User } = require('../model/userSchema');
-const { registerValidation, loginValidation } = require('../validation/userValidation');
+const { User, RefreshToken } = require('../model/userSchema');
+const { registerValidation, loginValidation, refreshTokenValidation } = require('../validation/userValidation');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const randToken = require('rand-token');
 
+const defineToken = (user) => {
+    return {
+        username: user.username,
+        name: user.name,
+        admin: user.admin,
+        _id: user._id
+    };
+};
+
+const sign = (user) => {
+    return jwt.sign(defineToken(user), process.env.TOKEN_SECRET, { expiresIn: 1200 });
+}
+
+const defineUser = async (body) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(body.password, salt);
+    return new User({
+        name: body.name,
+        tel: body.tel,
+        username: body.username,
+        password: hashedPass,
+        admin: body.admin
+    });
+}
+
+const defineRefreshToken = (req, user) => {
+    return new RefreshToken({
+        token: randToken.uid(256),
+        user: user._id,
+        created: {
+            from: req.connection.remoteAddress
+        }
+    });
+}
 
 exports.create = async (req, res) => {
     const { error } = registerValidation(req.body);
@@ -26,15 +61,7 @@ exports.create = async (req, res) => {
         const loginExists = await User.findOne({ username: req.body.username });
         if (loginExists) return res.status(400).send({ 'message': 'usuário já cadastrado' });
         //Passada validações, criptografa senha e registra usuário.
-        const salt = await bcrypt.genSalt(10);
-        const hashedPass = await bcrypt.hash(req.body.password, salt);
-        const user = new User({
-            name: req.body.name,
-            tel: req.body.tel,
-            username: req.body.username,
-            password: hashedPass,
-            admin: req.body.admin
-        });
+        const user = defineUser(body);
         const savedUser = await user.save();
         res.status(201).send({
             "message": "Novo usuário armazenado com êxito",
@@ -58,11 +85,48 @@ exports.login = async (req, res) => {
         if (!validPass) {
             return res.status(400).send({ "message": "Usuário ou senha inválidos" });
         }
-        const token = jwt.sign({
-            username: user.username,
-            admin: user.admin,
-            _id: user._id
-        }, process.env.TOKEN_SECRET);
-        res.send({ 'auth-token': token, "message": "Login realizado com sucesso" });
+        const token = sign(user);
+        //Cria refresh token
+        //Deleta tokens existentes
+        await RefreshToken.deleteMany({ user: user._id });
+        const refreshToken = defineRefreshToken(req, user);
+        await refreshToken.save()
+        res.send({
+            token: token,
+            refreshtoken: refreshToken.token,
+            message: 'Login realizado com sucesso'
+        });
+    } catch (err) { console.error(err); res.status(500).send(err) }
+}
+
+exports.refreshToken = async (req, res) => {
+    const { error } = refreshTokenValidation(req.body);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ "message": error.details[0].message });
+    try {
+        const refreshToken = await RefreshToken
+            .findOneAndUpdate(
+                { token: req.body.refreshtoken },
+                { "$push": { updated: { "from": req.connection.remoteAddress } } })
+            .populate('user');
+        if (!refreshToken) {
+            return res.status(401).send({ message: 'Token inválido' })
+        }
+        const token = sign(refreshToken.user);
+        return res.send({
+            token: token,
+            refreshtoken: refreshToken.token,
+            message: 'Token renovado com sucesso'
+        });
+    } catch (err) { console.error(err); res.status(500).send(err) }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        const refreshToken = await RefreshToken.findOneAndDelete({ "user": req.user._id });
+        if (!refreshToken) {
+            return res.status(400).send({ "message": "Não foram encontradas sessões deste usuário" });
+        }
+        return res.status(200).send({ "message": "Logout realizado com sucesso." })
     } catch (err) { console.error(err); res.status(500).send(err) }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CarroModel } from '../interface/carro-model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CarroMarcaModelo } from '../interface/carro-marca-modelo';
 import { CarroListPaginator } from '../interface/carro-list-paginator';
@@ -33,15 +33,18 @@ export class CarroService {
   }
 
   listAsTable(search: string, pageIndex: number, pageSize: number) {
-    const query = '?search=' + search + '&index=' + pageIndex + '&size=' + pageSize;
-    const url = this.routes.listAstable + query;
-    return this.http.get<CarroListPaginator>(url);
+    const params = new HttpParams()
+      .set('search', search)
+      .set('index', pageIndex.toString())
+      .set('size', pageSize.toString());
+    const url = this.routes.listAstable;
+    return this.http.get<CarroListPaginator>(url, { params });
   }
 
   listMarcas(search: string) {
-    const query = '?search=' + search;
-    const url = this.routes.marca + query;
-    return this.http.get<CarroMarcaModelo[]>(url);
+    let params = new HttpParams().set('search', search);
+    const url = this.routes.marca;
+    return this.http.get<CarroMarcaModelo[]>(url, { params });
   }
 
   create(marcaModelo: { marca: string, modelo: string }) {

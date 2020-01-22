@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,13 +17,22 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder, private auth: AuthService) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private route: Router
+  ) { }
 
   ngOnInit() {
+
   }
 
   onSubmit() {
-    this.auth.login(this.formLogin.value).subscribe(data => {
+    this.authService.login(this.formLogin.value).subscribe(data => {
+      if (this.authService.currentRoute)
+        this.route.navigate([this.authService.currentRoute]);
+      else
+        this.route.navigate(['/'])
     }, err => this.errorForm = err.error.message);
   }
 }

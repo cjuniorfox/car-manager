@@ -1,47 +1,92 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Login } from '../interface/user';
+import { Login, AuthToken, LoggedUser } from '../interface/user';
 import { Observable, of, throwError } from 'rxjs';
 import { tap, mapTo, catchError, map } from 'rxjs/operators';
-import { Token } from '@angular/compiler/src/ml_parser/lexer';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  public currentRoute;
+
   private readonly JWT_TOKEN = 'JWT_TOKEN'
+  private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
+
+
+  private loggedUser;
 
   private endpoint = environment.baseUrl + '/user';
   private routes = {
     login: this.endpoint + '/login',
+    logout: this.endpoint + '/logout',
+    refreshToken: this.endpoint + '/refresh-token',
     create: this.endpoint + '/'
   };
 
   constructor(private _http: HttpClient) { }
 
-  login(login: Login): Observable<boolean | Error> {
+  public login(login: Login): Observable<boolean | Error> {
     const url = this.routes.login;
-    return this._http.post<Token>(url, login).pipe(
+    return this._http.post<AuthToken>(url, login).pipe(
       tap(resp => { this.doLoginUser(resp) }),
       mapTo(true),
-      catchError(err=>{
+      catchError(err => {
         throw err;
       })
     );
   }
 
-  isLoggedIn(){
+  public refreshToken(): Observable<any | Error> {
+    const url = this.routes.refreshToken;
+    return this._http.post<AuthToken>(url, { refreshtoken: this.getRefreshToken() }).pipe(
+      tap(resp => { this.doLoginUser(resp) })
+    );
+  }
+
+  public logout(): Observable<any | Error> {
+    const url = this.routes.logout;
+    return this._http.get(url).pipe(
+      tap(() => {
+        localStorage.removeItem(this.JWT_TOKEN);
+        localStorage.removeItem(this.REFRESH_TOKEN);
+      })
+    );
+  }
+
+  public isLoggedIn() {
     return !!this.getJwtToken();
   }
 
-  private doLoginUser(resToken: Token) {
-    localStorage.setItem(this.JWT_TOKEN, resToken['auth-token'])
+  public doLoginUser(res: AuthToken) {
+    localStorage.setItem(this.JWT_TOKEN, res.token)
+    localStorage.setItem(this.REFRESH_TOKEN, res.refreshtoken)
   }
 
-  private getJwtToken(){
+  public getJwtToken() {
     return localStorage.getItem(this.JWT_TOKEN);
+  }
+
+  public getRefreshToken() {
+    return localStorage.getItem(this.REFRESH_TOKEN);
+  }
+
+  public getLoggedUser() {
+    if (this.loggedUser)
+      return this.loggedUser as LoggedUser;
+    this.loggedUser = this.decodePayloadJwt();
+    return this.loggedUser as LoggedUser;
+  }
+
+  private decodePayloadJwt(): LoggedUser | void {
+    try {
+      return jwt_decode(this.getJwtToken());
+    } catch (error) {
+      return null;
+    }
   }
 
 }

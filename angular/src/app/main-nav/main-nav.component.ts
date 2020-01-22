@@ -3,6 +3,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MenuService } from '../service/menu.service';
+import { AuthService } from '../service/auth.service';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'main-nav',
@@ -17,13 +20,33 @@ export class MainNavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private menuService: MenuService) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private menuService: MenuService,
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
-  menu : Array<any> = [];
+  menu: Array<any> = [];
 
   ngOnInit() {
     this.menu = this.menuService.getMenu();
-//    this.listenRouting();
+    //    this.listenRouting();
+  }
+
+  get isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  get loggedUser() {
+    return this.authService.getLoggedUser();
+  }
+
+  logout() {
+    this.authService.logout().subscribe(
+      () => this.router.navigate(['/user/login']),
+      err => console.error(err)
+    );
   }
 
 }

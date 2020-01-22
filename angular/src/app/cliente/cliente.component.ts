@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ClienteService } from '../service/cliente.service';
 import { FormBuilder } from '@angular/forms';
-import { startWith, tap, debounceTime, switchMap } from 'rxjs/operators';
+import { startWith, tap, debounceTime, switchMap, map } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -59,16 +59,10 @@ export class ClienteComponent implements OnInit, AfterViewInit {
   }
 
   private _listaInicial() {
-    this.clienteService.list('', this.paginator.pageIndex, this.paginator.pageSize)
-      .pipe(
-        startWith(''),
-        tap(() => this.loading = false),
-      ).subscribe(result => this._mapResultList(result), err => {
-        if (typeof (err.error.message) === 'string') {
-          this.fieldError = err.error.message;
-        } else {
-          this.fieldError = 'Ocorreu um erro desconhecido ao efetuar sua busca';
-        }
+
+    this.clienteService.search('', this.paginator.pageIndex, this.paginator.pageSize)
+      .subscribe(res => {
+        this._mapResultList(res)
       });
   }
 
@@ -83,7 +77,7 @@ export class ClienteComponent implements OnInit, AfterViewInit {
         }
       }),
       switchMap(() =>
-        this.clienteService.list(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
+        this.clienteService.search(this.buscarForm.controls.buscar.value.toLowerCase(), this.paginator.pageIndex, this.paginator.pageSize)
       )
     ).subscribe(result => { this._mapResultList(result) });
   }

@@ -136,7 +136,7 @@ exports.deleteCliente = async (req, res) => {
     try {
         const cliente = await Cliente.findOneAndDelete({ _id: req.params._id });
         if (cliente)
-            res.send({ message: "Registro removido com sucesso" })
+            res.status(200).send({ message: "Registro removido com sucesso" })
         else
             res.status(400).send({ message: 'No valid entry for provided ID' })
     } catch (err) { res.status(500).send({ error: err }) }

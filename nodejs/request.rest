@@ -1,0 +1,20 @@
+
+POST http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+	"username": "cjuniorfox",
+	"password" : "senha123"
+}
+###
+GET http://localhost:3000/api/user/logout
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1Nzk2NDM0MTUsImV4cCI6MTU3OTY0NDAxNX0.C8DK1-EP8TbBEM6Y1ApG_i85n9Yz-qkEjkI0NDf7IOM
+###
+POST http://localhost:3000/api/user/refresh-token
+Content-Type: application/json
+
+{"refreshtoken":"I41XVjwQ5OOCyohBl12XzLv09CUOmEwRKl6Eqz9HkNIZjUE0jeaTqCbF8pqVt3b18X1KpdTquTfXxz1fEanB5z43pIKEjGibND5CVgNY2eCJjJLSYmqVNV0JutB17jFOoIrD1o2uniAKE3eamwbGb2EbD24bgrUfjS6quK5wrCLlqGkjQ6ig3q9ICFGiNQPoOJRLmvZLfOL9bGG3hciOn3p1ViPar0EkrCoTjUiAHLsGNLkPxeIg9f8QoeNkX5xA"}
+
+###
+GET http://localhost:3000/api/cliente/buscar
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1Nzk2NDIzNzIsImV4cCI6MTU3OTY0MjQzMn0.2YQ3ypgDjcs5e3GSniOJaVrMdz2LwL9WHt5IiOWsYYw

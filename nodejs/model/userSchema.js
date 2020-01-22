@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -36,9 +35,44 @@ const userSchema = new mongoose.Schema({
         default: false
     }
 });
-
 userSchema.plugin(uniqueValidator, { message: '{PATH} já registrado anteriormente' });
 
-user = mongoose.model('user', userSchema);
 
-module.exports = { User: user }
+const refreshTokenSchema = new mongoose.Schema({
+    token: {
+        type: String,
+        required: true,
+        min: 256
+    }, user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    created: {
+        from: {
+            type: String,
+            required: true,
+            min: 32
+        },
+        at: {
+            type: Date,
+            default: Date.now
+        }
+    },
+    updated: [{
+        from: {
+            type: String,
+            required: true,
+            min: 32
+        },
+        at: {
+            type: Date,
+            default: Date.now
+        }
+    }]
+});
+
+user = mongoose.model('user', userSchema);
+refreshToken = mongoose.model('refreshtoken', refreshTokenSchema);
+
+module.exports = { User: user, RefreshToken: refreshToken }

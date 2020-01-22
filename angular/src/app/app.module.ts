@@ -52,6 +52,7 @@ import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro
 import { NgxMaskModule } from 'ngx-mask';
 import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
 import { LoginComponent } from './user/login/login.component';
+import { InterceptorModule } from './modules/interceptor/interceptor.module';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { LoginComponent } from './user/login/login.component';
     LayoutModule,
     FlexLayoutModule,
     HttpClientModule,
+    InterceptorModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,

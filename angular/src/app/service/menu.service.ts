@@ -22,9 +22,7 @@ export class MenuService {
           { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
           { name: 'Permissões', path: '/opcao/permissao' },
           { divider: true },
-          { name: 'Relatório Gerencial', path: '/relatorio-gerencial' },
-          { divider: true },
-          { name: 'Login', path: '/user/login' }
+          { name: 'Relatório Gerencial', path: '/relatorio-gerencial' }
         ]
       }
     ];

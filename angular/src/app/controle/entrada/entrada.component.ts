@@ -68,7 +68,7 @@ export class EntradaComponent implements OnInit {
             this.veiculos = [];
           }
         }),
-        switchMap(search => this.clienteService.list(
+        switchMap(search => this.clienteService.search(
           typeof (search) == 'string' ? search : '', 0, 10)
         )
       ).subscribe(result => {

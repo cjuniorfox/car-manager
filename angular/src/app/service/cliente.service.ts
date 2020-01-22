@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Cliente } from '../interface/cliente';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,13 @@ export class ClienteService {
     return this._http.patch(url, cliente);
   }
 
-  list(search: string, pageIndex: number, pageSize: number) {
-    const url = this.routes.search +
-      '?search=' + search.toLowerCase() + '&index=' + pageIndex + '&size=' + pageSize;
-    return this._http.get<any>(url);
+  search(search: string, pageIndex: number, pageSize: number){
+    const url = this.routes.search;
+    let params = new HttpParams()
+    .set('search', search)
+    .set('index', pageIndex.toString())
+    .set('size', pageSize.toString());
+    return this._http.get<any>(url,{params});
   }
 
   delete(_id: number) {

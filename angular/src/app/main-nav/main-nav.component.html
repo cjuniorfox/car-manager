@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
+  <mat-sidenav *ngIf="isLoggedIn" #drawer class="sidenav" fixedInViewport
       [ngClass]="{hidden:!(isHandset$ | async)}"
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -7,7 +7,7 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list 
       *ngFor="let l of menu">
-      <ng-container *ngIf="menu && menu?.length > 0">
+      <ng-container *ngIf="menu && menu?.length > 0">  
         <a routerLink="{{l.path}}" 
             mat-list-item
             *ngIf="l.path && !l.dropdown"  
@@ -32,9 +32,19 @@
         </mat-menu>
       </ng-container>
     </mat-nav-list>
+    <mat-nav-list>
+      <a href="#" mat-list-item [matMenuTriggerFor]="sidenavUserMenu">
+        <mat-icon>account_circle</mat-icon>{{loggedUser.username}}
+      </a>
+      <mat-menu #sidenavUserMenu="matMenu">
+        <button mat-menu-item> Gerenciar sua conta</button>
+        <mat-divider></mat-divider>
+        <button (click)="logout()" mat-menu-item>Logout</button>
+      </mat-menu>
+    </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary" role="heading">
+    <mat-toolbar color="primary" role="heading" *ngIf="isLoggedIn">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -70,8 +80,19 @@
           </mat-menu> 
         </ng-container>
       </ng-container>
+      <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="topUserMenu">
+        <mat-icon>account_circle</mat-icon>{{loggedUser.username}}
+      </button>
+      <mat-menu #topUserMenu="matMenu">
+        <div class="username-menu">
+          <h2>{{loggedUser.name}}</h2>
+          <button mat-stroked-button> Gerenciar sua conta</button>
+        </div>
+        <mat-divider></mat-divider>
+        <button (click)="logout()" mat-menu-item>Logout</button>
+      </mat-menu>
     </mat-toolbar>
-    <app-breadcrumb *ngIf="!(isHandset$ | async)"></app-breadcrumb>
+    <app-breadcrumb *ngIf="!(isHandset$ | async) && isLoggedIn"></app-breadcrumb>
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
