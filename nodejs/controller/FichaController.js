@@ -1,18 +1,59 @@
 Ficha = require('../model/fichaSchema');
 const { FichaEntradaValidation } = require('../validation/fichaValidation');
+const { searchValidation } = require('../validation/searchValidation');
 const defineRequest = require('../util/defineRequest');
+const defineQuery = require('../util/defineQuery');
+const paginationRequest = require('../util/paginationRequest');
 
+const defineFichaCreated = (req) => {
+    return {
+        user: req.user._id,
+        from: req.connection.remoteAddress,
+        at: Date.now()
+    }
+}
 
 exports.saveFichaEntrada = async (req, res) => {
     const { error } = FichaEntradaValidation(req.body);
     if (typeof error !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     try {
-        const ficha = new Ficha(req.body);
+        let ficha = new Ficha(req.body);
+        ficha.created = defineFichaCreated(req);
         await ficha.save();
         return res.status(201).send({
             message: "Entrada de ficha registrada com sucesso",
             request: defineRequest('GET', 'cliente', ficha._id)
         })
     } catch (err) { res.status(500).send(err); }
+}
+
+exports.fichasAtivas = async (req, res) => {
+    const { error } = searchValidation(req.query);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    const getQuery = defineQuery(req.query);
+    try {
+        const query = {
+            $or: [
+                { "finalizado.at": null },
+                { finalizado: null },
+                { finalizado: { $exists: false } }
+            ]
+        };
+        const fichas = await Ficha.find(query)
+            .skip(getQuery.skip)
+            .limit(getQuery.pageSize)
+            .populate({ path: 'created.user', select: 'name username admin' })
+            .populate({ path: 'dadosCadastrais.cliente', select: 'nome documento endereco telefones' })
+            .populate({
+                path: 'dadosCadastrais.clienteVeiculo',
+                populate: [
+                    { path: 'carro', select: 'marca' },
+                    'carroModelo'
+                ]
+            });
+        const qtFichas = await Ficha.countDocuments(query);
+        res.send(paginationRequest(fichas, qtFichas, getQuery, 'ficha'));
+    } catch (err) { res.status(500).send(err); console.error(err) }
 }

@@ -20,7 +20,6 @@ export class FichaService {
 
   public saveFichaEntrada(body) {
     const postRequest = removeEmpty(body);
-    console.log(postRequest)
     const url = this.routes.saveFichaEntrada;
     return this._http.post(url, postRequest);
   }

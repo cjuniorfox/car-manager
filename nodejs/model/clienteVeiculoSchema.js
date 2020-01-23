@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const clienteVeiculoSchema = new mongoose.Schema({
     carro: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Carro'
+        ref: 'carros'
     },
     carroModelo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CarroModelo'
+        ref: 'carromodelos'
     },
     placa: {
         type: String,
@@ -22,13 +22,13 @@ const clienteVeiculoSchema = new mongoose.Schema({
     deleted: {
         cliente: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Cliente'
+            ref: 'clientes'
         },
         date: Date
     }
 });
 
-const clienteVeiculo = mongoose.model('ClienteVeiculo', clienteVeiculoSchema);
+const clienteVeiculo = mongoose.model('clienteveiculos', clienteVeiculoSchema);
 module.exports = {
     ClienteVeiculo: clienteVeiculo
 }

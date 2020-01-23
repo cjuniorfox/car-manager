@@ -1,4 +1,4 @@
-
+#Usuarios
 POST http://localhost:3000/api/user/login
 Content-Type: application/json
 
@@ -6,7 +6,7 @@ Content-Type: application/json
 	"username": "cjuniorfox",
 	"password" : "senha123"
 }
-###
+### 
 GET http://localhost:3000/api/user/logout
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1Nzk2NDM0MTUsImV4cCI6MTU3OTY0NDAxNX0.C8DK1-EP8TbBEM6Y1ApG_i85n9Yz-qkEjkI0NDf7IOM
 ###
@@ -18,3 +18,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/cliente/buscar
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1Nzk2NDIzNzIsImV4cCI6MTU3OTY0MjQzMn0.2YQ3ypgDjcs5e3GSniOJaVrMdz2LwL9WHt5IiOWsYYw
+
+###Fichas
+GET http://localhost:3000/api/ficha/fichas-ativas?index=10
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbmllbGVhbW9yaW0xMCIsIm5hbWUiOiJEYW5pZWxlIGRlIEFtb3JpbSBSb3NhIiwiYWRtaW4iOmZhbHNlLCJfaWQiOiI1ZTIzMGE0Y2QxODg0NjdlOTYxZWNjMDAiLCJpYXQiOjE1Nzk3NDAwMzgsImV4cCI6MTU3OTc0MTIzOH0.-sAVZ7rxd0iBKB-WAT2B8FSDgAtEmEcXmr_dyI609LU

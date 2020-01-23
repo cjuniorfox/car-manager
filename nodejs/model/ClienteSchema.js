@@ -35,11 +35,11 @@ const clienteSchema = new mongoose.Schema({
 
     veiculos: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ClienteVeiculo'
+        ref: 'clienteveiculos'
     }]
 });
 
-const cliente = mongoose.model('Cliente', clienteSchema);
+const cliente = mongoose.model('clientes', clienteSchema);
 
 module.exports = {
     Cliente : cliente

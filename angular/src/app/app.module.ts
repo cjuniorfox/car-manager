@@ -53,6 +53,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
 import { LoginComponent } from './user/login/login.component';
 import { InterceptorModule } from './modules/interceptor/interceptor.module';
+import { AndamentoComponent } from './controle/andamento/andamento.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { InterceptorModule } from './modules/interceptor/interceptor.module';
     CadastrarClienteComponent,
     AtualizarCarroComponent,
     DeletarClienteComponent,
-    LoginComponent
+    LoginComponent,
+    AndamentoComponent
 ],
   imports: [
     BrowserModule,

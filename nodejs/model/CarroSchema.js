@@ -11,7 +11,7 @@ const carroModeloSchema = new mongoose.Schema({
     
 });
 carroModeloSchema.plugin(uniqueValidator,{ message: '{PATH} já registrado anteriormente.' });
-const carroModelo = mongoose.model('CarroModelo', carroModeloSchema);
+const carroModelo = mongoose.model('carromodelos', carroModeloSchema);
 
 const carroSchema = new mongoose.Schema({
     marca: {
@@ -23,12 +23,12 @@ const carroSchema = new mongoose.Schema({
     },
     modelos: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CarroModelo'
+        ref: 'carromodelos'
     }]
 
 });
 carroSchema.plugin(uniqueValidator,{ message: '{PATH} já registrado anteriormente.' });
-const carro = module.exports = mongoose.model('Carro', carroSchema);
+const carro = module.exports = mongoose.model('carros', carroSchema);
 
 module.exports = {
     CarroModelo : carroModelo,

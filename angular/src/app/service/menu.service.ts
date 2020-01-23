@@ -11,6 +11,7 @@ export class MenuService {
     const menu = [
       { name: 'Home', path: '/', icon: 'home' },
       { name: 'Entrada', path: '/controle/entrada', icon: 'arrow_upward' },
+      { name: 'Andamento', path: '/controle/andamento', icon: 'arrow_forward' },
       { name: 'Saida', path: '/controle/saida', icon: 'arrow_downward' },
       {
         name: 'Mais opções', path:"/opcao", icon: 'settings_applications', dropdown: [
@@ -20,7 +21,6 @@ export class MenuService {
           { name: 'Carros', path: '/carro' },
           { divider: true },
           { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
-          { name: 'Permissões', path: '/opcao/permissao' },
           { divider: true },
           { name: 'Relatório Gerencial', path: '/relatorio-gerencial' }
         ]

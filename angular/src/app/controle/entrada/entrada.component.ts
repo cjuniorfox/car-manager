@@ -156,7 +156,6 @@ export class EntradaComponent implements OnInit {
   }
 
   private _error(err: any): void {
-    console.log(err);
     if ((err.error.message)) {
       this.errorForm = err.error.message;
     } else {

@@ -1,6 +1,21 @@
 const mongoose = require('mongoose');
 
 const fichaSchema = new mongoose.Schema({
+    created: {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        },
+        at: {
+            type: Date,
+            default: Date.now()
+        },
+        from: {
+            type: String,
+            required: true,
+            min: 32
+        }
+    },
     osSistema: {
         type: Number,
         required: true
@@ -9,11 +24,11 @@ const fichaSchema = new mongoose.Schema({
     dadosCadastrais: {
         cliente: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Cliente'
+            ref: 'clientes'
         },
-        clientVeiculo: {
+        clienteVeiculo: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'ClienteVeiculo'
+            ref: 'clienteveiculos'
         }
     },
     entrada: {
@@ -50,6 +65,10 @@ const fichaSchema = new mongoose.Schema({
         }]
     },
     servicos: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        },
         servico: {
             type: String,
             Enumerator: ['Cortesia', 'Ducha', 'Lavagem simples', 'Lavagem completa']
@@ -72,11 +91,19 @@ const fichaSchema = new mongoose.Schema({
         },
         fim: Date
     }],
-
+    finalizado:{
+        at: {
+            type: Date
+        },
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        }
+    },
     retorno: {
         type: Boolean,
         default: false
     }
 });
 
-module.exports = mongoose.model('Ficha', fichaSchema);
+module.exports = mongoose.model('fichas', fichaSchema);

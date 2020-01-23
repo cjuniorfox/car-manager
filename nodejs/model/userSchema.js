@@ -45,7 +45,7 @@ const refreshTokenSchema = new mongoose.Schema({
         min: 256
     }, user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'users',
         required: true
     },
     created: {
@@ -72,7 +72,7 @@ const refreshTokenSchema = new mongoose.Schema({
     }]
 });
 
-user = mongoose.model('user', userSchema);
-refreshToken = mongoose.model('refreshtoken', refreshTokenSchema);
+user = mongoose.model('users', userSchema);
+refreshToken = mongoose.model('refreshtokens', refreshTokenSchema);
 
 module.exports = { User: user, RefreshToken: refreshToken }
