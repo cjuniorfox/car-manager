@@ -16,11 +16,22 @@
   z-index: 100;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-.username-menu{
+.username-menu {
+  h2 {
+    font-size: 1rem;
+    margin: 1rem;
+  }
+  button {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+/* .username-menu{
   display:flex;
   flex-direction: column;
   h2{
@@ -34,4 +45,4 @@
     margin: 1.4rem auto;
     margin-top: 0;
   }
-}
+} */

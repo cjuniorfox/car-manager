@@ -23,7 +23,7 @@
     <th mat-header-cell *matHeaderCellDef>Telefones</th>
     <td mat-cell *matCellDef="let c">
       <ng-container *ngFor="let t of c.telefones">
-        {{t | mask: t.length==10 ? "(00) 0000-0000" : "(00) 00000-0000"}}
+        {{t | mask: clienteService.mascaraTelefone(t)}}
       </ng-container>
     </td>
   </ng-container>

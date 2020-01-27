@@ -11,16 +11,13 @@ export class MenuService {
     const menu = [
       { name: 'Home', path: '/', icon: 'home' },
       { name: 'Entrada', path: '/controle/entrada', icon: 'arrow_upward' },
-      { name: 'Andamento', path: '/controle/andamento', icon: 'arrow_forward' },
-      { name: 'Saida', path: '/controle/saida', icon: 'arrow_downward' },
+      { name: 'Controle', path: '/controle', icon: 'playlist_add_check' },
       {
         name: 'Mais opções', path:"/opcao", icon: 'settings_applications', dropdown: [
-          { name: 'Controle de serviço', path: '/controle' },
+          { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
           { divider: true },
           { name: 'Clientes', path: '/cliente' },
           { name: 'Carros', path: '/carro' },
-          { divider: true },
-          { name: 'Gerenciar Usuários', path: '/opcao/usuario' },
           { divider: true },
           { name: 'Relatório Gerencial', path: '/relatorio-gerencial' }
         ]

@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ClienteService } from '../service/cliente.service';
 import { FormBuilder } from '@angular/forms';
-import { startWith, tap, debounceTime, switchMap, map } from 'rxjs/operators';
+import { tap, debounceTime, switchMap, map } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';

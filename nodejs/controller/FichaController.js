@@ -1,6 +1,6 @@
 Ficha = require('../model/fichaSchema');
 const { FichaEntradaValidation } = require('../validation/fichaValidation');
-const { searchValidation } = require('../validation/searchValidation');
+const { searchFichaValidation } = require('../validation/searchValidation');
 const defineRequest = require('../util/defineRequest');
 const defineQuery = require('../util/defineQuery');
 const paginationRequest = require('../util/paginationRequest');
@@ -28,20 +28,27 @@ exports.saveFichaEntrada = async (req, res) => {
     } catch (err) { res.status(500).send(err); }
 }
 
-exports.fichasAtivas = async (req, res) => {
-    const { error } = searchValidation(req.query);
+exports.addServico = async (req, res) => {
+
+}
+
+exports.fichas = async (req, res) => {
+    const { error } = searchFichaValidation(req.query);
     if (typeof error !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     const getQuery = defineQuery(req.query);
     try {
-        const query = {
+        let where = {
             $or: [
                 { "finalizado.at": null },
-                { finalizado: null },
-                { finalizado: { $exists: false } }
+                { finalizado: null }
             ]
         };
-        const fichas = await Ficha.find(query)
+        //Se ativas =1 (true), exibe apenas fichas que não foram finalizadas.
+        if (req.query.ativas == 1)
+            where.$or.push({ finalizado: { $exists: false } });
+
+        const fichas = await Ficha.find(where)
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)
             .populate({ path: 'created.user', select: 'name username admin' })
@@ -53,7 +60,7 @@ exports.fichasAtivas = async (req, res) => {
                     'carroModelo'
                 ]
             });
-        const qtFichas = await Ficha.countDocuments(query);
+        const qtFichas = await Ficha.countDocuments(where);
         res.send(paginationRequest(fichas, qtFichas, getQuery, 'ficha'));
     } catch (err) { res.status(500).send(err); console.error(err) }
 }

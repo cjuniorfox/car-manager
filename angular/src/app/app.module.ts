@@ -54,6 +54,7 @@ import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-clien
 import { LoginComponent } from './user/login/login.component';
 import { InterceptorModule } from './modules/interceptor/interceptor.module';
 import { AndamentoComponent } from './controle/andamento/andamento.component';
+import { ServicoComponent } from './controle/servico/servico.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { AndamentoComponent } from './controle/andamento/andamento.component';
     AtualizarCarroComponent,
     DeletarClienteComponent,
     LoginComponent,
-    AndamentoComponent
+    AndamentoComponent,
+    ServicoComponent
 ],
   imports: [
     BrowserModule,

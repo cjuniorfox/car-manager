@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ServicoEnum, BoxEnum, SetorEnum } = require('../enum/setorServicoBoxEnum');
 
 const fichaSchema = new mongoose.Schema({
     created: {
@@ -61,6 +62,7 @@ const fichaSchema = new mongoose.Schema({
         },
         servicosPrevisao: [{
             type: String,
+            Enumerator: Object.values(ServicoEnum),
             required: true
         }]
     },
@@ -71,15 +73,15 @@ const fichaSchema = new mongoose.Schema({
         },
         servico: {
             type: String,
-            Enumerator: ['Cortesia', 'Ducha', 'Lavagem simples', 'Lavagem completa']
+            Enumerator: Object.values(ServicoEnum)
         },
         setor: {
             type: String,
-            Enumerator: ['OF', 'VN', 'SL', 'TD', 'VU']
+            Enumerator: Object.values(SetorEnum)
         },
         box: {
             type: String,
-            Enumerator: ['Lavagem', 'Detalhamento']
+            Enumerator: Object.values(BoxEnum)
         },
         descricao: {
             type: String,
@@ -91,7 +93,7 @@ const fichaSchema = new mongoose.Schema({
         },
         fim: Date
     }],
-    finalizado:{
+    finalizado: {
         at: {
             type: Date
         },

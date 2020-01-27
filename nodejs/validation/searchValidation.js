@@ -5,8 +5,21 @@ const searchValidation = (data) => {
         search: Joi.string().optional(),
         index: Joi.number(),
         size: Joi.number()
-    })
+    });
     return schema.validate(data);
 }
 
-module.exports = { searchValidation: searchValidation };
+const searchFichaValidation = (data) => {
+    const schema = new Joi.object({
+        search: Joi.string().optional(),
+        index: Joi.number(),
+        size: Joi.number(),
+        ativas: Joi.string().valid('0', '1').optional()
+    });
+    return schema.validate(data);
+}
+
+module.exports = { 
+    searchValidation: searchValidation,
+    searchFichaValidation: searchFichaValidation
+};

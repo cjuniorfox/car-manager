@@ -7,6 +7,7 @@ import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { FichaService } from 'src/app/service/ficha.service';
 import { Router } from '@angular/router';
+import { ServicoEnum } from 'src/app/enum/servico.enum';
 
 @Component({
   selector: 'app-entrada',
@@ -47,7 +48,7 @@ export class EntradaComponent implements OnInit {
 
   clientes = [];
 
-  servicos = ['Cortesia', 'Ducha', 'Lavagem simples', 'Lavagem completa']
+  servicos = Object.values(ServicoEnum)
   errorForm: string;
 
   constructor(
@@ -81,6 +82,12 @@ export class EntradaComponent implements OnInit {
         value ? detalhe.enable() : detalhe.disable();
       }
     );
+    this.avariaExterior.get('existente').valueChanges.subscribe(
+      value => {
+        const detalhe: FormControl = this.avariaExterior.get('detalhe') as FormControl;
+        value ? detalhe.enable() : detalhe.disable();
+      }
+    );
     this.pertencesNoVeiculo.get('existente').valueChanges.subscribe(
       value => {
         const detalhe: FormControl = this.pertencesNoVeiculo.get('detalhe') as FormControl;
@@ -100,7 +107,7 @@ export class EntradaComponent implements OnInit {
   get avariaExterior() {
     return this.entrada.get('avariaExterior') as FormGroup;
   }
-  
+
   get avariaInterior() {
     return this.entrada.get('avariaInterior') as FormGroup;
   }

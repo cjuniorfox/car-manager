@@ -44,5 +44,9 @@ export class ClienteService {
     return this._http.delete(url);
   }
 
+  mascaraTelefone(telefone:string){
+    return (telefone.length==10 ? "(00) 0000-0000" : "(00) 00000-0000")
+  }
+
   constructor(private _http: HttpClient) { }
 }

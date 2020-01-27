@@ -1,6 +1,6 @@
 export interface ClienteVeiculo {
     carro: {
-        modelo: string,
+        marca: string,
         _id: number
     },
     carroModelo: {

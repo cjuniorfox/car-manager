@@ -1,0 +1,66 @@
+table {
+  width: 100%;
+}
+
+.expanded-detail {
+  overflow: hidden;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.element-row:not(.expanded-row):hover {
+  background: #777;
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  background-color: lightgray;
+  padding: 0.5rem;
+  font-size: 1rem;
+  .spinner-space {
+    width: 24px;
+    padding: 0;
+    margin: 0;
+  }
+  .toolmenu {
+    align-items: center;
+    display: flex;
+    div {
+      margin: 0.3rem;
+    }
+  }
+}
+
+.detalhe-ficha {
+  mat-card {
+    margin: 1rem 0.5rem;
+    h3 {
+      margin: 0.3rem;
+    }
+    h4 {
+      margin: 0;
+    }
+  }
+  div {
+    margin: 0 1rem;
+  }
+  ul{
+    list-style-type: none;
+    padding: 1em;
+  }
+}
+
+.acoes-ficha {
+  width: 100%;
+  max-width: 400px;
+  button {
+    margin: 0.3rem;
+  }
+}
