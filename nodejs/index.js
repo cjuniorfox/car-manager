@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const FichaRoute = require('./routes/FichaRoute');
+const FichaRoute = require('./routes/fichaRoute');
 const CarroRoute = require('./routes/carroRoute');
 const ClienteRoute = require('./routes/clienteRoute');
 const UserRoute = require('./routes/userRoute');

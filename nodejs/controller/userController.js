@@ -1,4 +1,4 @@
-const { User, RefreshToken } = require('../model/userSchema');
+const { User, RefreshToken } = require('../model/User');
 const { registerValidation, loginValidation, refreshTokenValidation } = require('../validation/userValidation');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

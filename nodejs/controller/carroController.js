@@ -1,4 +1,4 @@
-const { Carro, CarroModelo } = require('../model/carroSchema');
+const { Carro, CarroModelo } = require('../model/Carro');
 const { CarroMarcaModeloValidation } = require('../validation/carroValidation');
 
 

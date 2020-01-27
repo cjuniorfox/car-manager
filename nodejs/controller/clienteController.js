@@ -1,5 +1,5 @@
-const { Cliente } = require('../model/clienteSchema');
-const { ClienteVeiculo } = require('../model/clienteVeiculoSchema');
+const { Cliente } = require('../model/Cliente');
+const { ClienteVeiculo } = require('../model/ClienteVeiculo');
 const { ClienteValidation } = require('../validation/clienteValidation');
 const defineRequest = require('../util/defineRequest');
 

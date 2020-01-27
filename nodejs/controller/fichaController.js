@@ -1,4 +1,4 @@
-Ficha = require('../model/fichaSchema');
+Ficha = require('../model/Ficha');
 const { FichaEntradaValidation } = require('../validation/fichaValidation');
 const { searchFichaValidation } = require('../validation/searchValidation');
 const defineRequest = require('../util/defineRequest');
