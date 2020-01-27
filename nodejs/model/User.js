@@ -75,4 +75,6 @@ const refreshTokenSchema = new mongoose.Schema({
 user = mongoose.model('users', userSchema);
 refreshToken = mongoose.model('refreshtokens', refreshTokenSchema);
 
-module.exports = { User: user, RefreshToken: refreshToken }
+module.exports = { User: user, 
+    RefreshToken: refreshToken 
+}

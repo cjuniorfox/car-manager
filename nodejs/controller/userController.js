@@ -61,7 +61,7 @@ exports.create = async (req, res) => {
         const loginExists = await User.findOne({ username: req.body.username });
         if (loginExists) return res.status(400).send({ 'message': 'usuário já cadastrado' });
         //Passada validações, criptografa senha e registra usuário.
-        const user = defineUser(body);
+        const user = await defineUser(req.body);
         const savedUser = await user.save();
         res.status(201).send({
             "message": "Novo usuário armazenado com êxito",

@@ -6,6 +6,18 @@ Content-Type: application/json
 	"username": "cjuniorfox",
 	"password" : "senha123"
 }
+###
+POST http://localhost:3000/api/user
+Content-Type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODAxNTMzODcsImV4cCI6MTU4MDE1NDU4N30._Be-aC9qzxl7pkbL2dVzLobBe96_tx8qiIC9OPP5-nc
+
+{
+	"username": "danieleamorim10",
+	"password": "senha123",
+	"name": "Daniele Rosa",
+	"tel": "21986109042",
+	"admin": "true"
+}
 ### 
 GET http://localhost:3000/api/user/logout
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1Nzk2NDM0MTUsImV4cCI6MTU3OTY0NDAxNX0.C8DK1-EP8TbBEM6Y1ApG_i85n9Yz-qkEjkI0NDf7IOM
