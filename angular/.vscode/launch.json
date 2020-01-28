@@ -10,6 +10,22 @@
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "runtimeExecutable": "/usr/bin/chromium",
+            "name": "Launch Chromium against localhost",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}",
+            "runtimeArgs": [
+                "--new-window",
+                "-user-data-dir=${workspaceFolder}/chromium-dev-profile",
+                "--remote-debugging-port=9222",
+                "--disable-background-networking"
+              ]
         }
     ]
 }
+
+

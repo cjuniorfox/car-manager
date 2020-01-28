@@ -25,9 +25,9 @@ export class ClienteService {
     return this._http.post(url, cliente);
   }
 
-  patch(cliente_id: string, cliente: Cliente) {
+  put(cliente_id: string, cliente: Cliente) {
     const url = this.routes.cliente + cliente_id;
-    return this._http.patch(url, cliente);
+    return this._http.put(url, cliente);
   }
 
   search(search: string, pageIndex: number, pageSize: number){

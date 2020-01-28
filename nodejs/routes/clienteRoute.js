@@ -5,7 +5,7 @@ const ClienteController = require('../controller/clienteController');
 router.get('/buscar', VerifyToken.allowUser, ClienteController.listCliente);
 router.get('/:_id',VerifyToken.allowUser,ClienteController.getCliente);
 router.post('/',VerifyToken.allowUser,ClienteController.saveCliente);
-router.patch('/:_id',VerifyToken.allowUser,ClienteController.patchCliente);
+router.put('/:_id',VerifyToken.allowUser,ClienteController.putCliente);
 router.delete('/:_id',VerifyToken.allowUser,ClienteController.deleteCliente);
 
 module.exports = router;

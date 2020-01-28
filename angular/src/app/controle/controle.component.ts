@@ -7,6 +7,9 @@ import { SearchFicha } from '../model/searchFicha.model';
 import { FichaPagination } from '../interface/ficha-pagination';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ClienteService } from '../service/cliente.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Ficha } from '../interface/ficha';
+import { ServicoComponent } from './servico/servico.component';
 
 @Component({
   selector: 'app-controle',
@@ -28,12 +31,13 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  
+
 
   constructor(
     private fichaService: FichaService,
-    private clienteService: ClienteService
-    ) { }
+    private clienteService: ClienteService,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit() { }
 
@@ -43,6 +47,11 @@ export class ControleComponent implements OnInit, AfterViewInit {
     getQuery.pageSize = this.paginator.pageSize;
     this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
     this.paginator.page.subscribe(res => { this._mapResultList(res) });
+  }
+
+  registrarServicoDialog(ficha: Ficha) {
+    const data = { ficha: ficha }
+    this.dialog.open(ServicoComponent, { data: data });
   }
 
   private _mapResultList(res: any) {

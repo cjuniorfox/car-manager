@@ -61,7 +61,7 @@ export class CadastrarClienteComponent implements OnInit {
   public onSubmit() {
     //Se update, atualiza registro
     if (this.cliente_idUpdate) {
-      this.clienteService.patch(this.cliente_idUpdate, this.cadCliValues)
+      this.clienteService.put(this.cliente_idUpdate, this.cadCliValues)
         .subscribe(() => {
           this.location.back();
         }, err => this._error(err))

@@ -105,15 +105,30 @@
                             <h3>Serviços realizados</h3>
                         </mat-card-header>
                         <mat-card-content>
-                            <ul>
-                                <li *ngFor="let s of f.servicos">{{servico}} - {{setor}} - {{box}}</li>
-                            </ul>
+                            <table>
+                                <tr>
+                                    <th>Inicio</th>
+                                    <th>Fim</th>
+                                    <th>Serviço</th>
+                                    <th>Setor</th>
+                                    <th>Box</th>
+                                    <th>Funcionário</th>
+                                </tr>
+                                <tr *ngFor="let s of f.servicos">
+                                    <td>{{s.inicio | date : 'short'}}</td>
+                                    <td>{{s.inicio | date : 'short'}}</td>
+                                    <td>{{s.servico}}</td>
+                                    <td>{{s.setor}}</td>
+                                    <td>{{s.box}}</td>
+                                    <td>{{s.user.username}}</td>
+                                </tr>                                
+                            </table>
                         </mat-card-content>
                     </mat-card>
                 </div>
                 <div class="acoes-ficha" fxLayout="row" fxLayout.lt-md="column">
                     <div fxFlex>
-                        <button mat-raised-button color="accent">
+                        <button mat-raised-button color="accent" (click)="registrarServicoDialog(f)">
                             <mat-icon>local_car_wash</mat-icon> Registrar serviço
                         </button>
                     </div>

@@ -43,7 +43,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
@@ -79,7 +79,7 @@ import { ServicoComponent } from './controle/servico/servico.component';
     LoginComponent,
     AndamentoComponent,
     ServicoComponent
-],
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -121,6 +121,7 @@ import { ServicoComponent } from './controle/servico/servico.component';
   entryComponents: [
     AtualizarCarroComponent,
     DeletarCarroComponent,
-    DeletarClienteComponent]
+    DeletarClienteComponent,
+    ServicoComponent]
 })
 export class AppModule { }

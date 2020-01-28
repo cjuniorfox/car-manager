@@ -64,7 +64,7 @@ exports.saveCliente = async (req, res) => {
     };
 };
 
-exports.patchCliente = async (req, res) => {
+exports.putCliente = async (req, res) => {
     const { error } = ClienteValidation(req.body);
     //valida requisição
     if (typeof error !== 'undefined')

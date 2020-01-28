@@ -5,6 +5,7 @@ import { Login, AuthToken, LoggedUser } from '../interface/user';
 import { Observable, of, throwError } from 'rxjs';
 import { tap, mapTo, catchError, map } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class AuthService {
     create: this.endpoint + '/'
   };
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private router: Router) { }
 
   public login(login: Login): Observable<boolean | Error> {
     const url = this.routes.login;
@@ -43,18 +44,17 @@ export class AuthService {
   public refreshToken(): Observable<any | Error> {
     const url = this.routes.refreshToken;
     return this._http.post<AuthToken>(url, { refreshtoken: this.getRefreshToken() }).pipe(
-      tap(resp => { this.doLoginUser(resp) })
+      tap(resp => { this.doLoginUser(resp) }),
+      catchError(err => {console.log(err); return throwError(err)})
     );
   }
 
   public logout(): Observable<any | Error> {
     const url = this.routes.logout;
-    return this._http.get(url).pipe(
-      tap(() => {
-        localStorage.removeItem(this.JWT_TOKEN);
-        localStorage.removeItem(this.REFRESH_TOKEN);
-      })
-    );
+    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(this.REFRESH_TOKEN);
+    this.router.navigate(['/user/login'])
+    return this._http.get(url);
   }
 
   public isLoggedIn() {

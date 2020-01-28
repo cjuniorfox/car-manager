@@ -43,10 +43,7 @@ export class MainNavComponent {
   }
 
   logout() {
-    this.authService.logout().subscribe(
-      () => this.router.navigate(['/user/login']),
-      err => console.error(err)
-    );
+    this.authService.logout().subscribe();
   }
 
 }

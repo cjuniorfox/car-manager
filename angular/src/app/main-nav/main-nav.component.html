@@ -47,7 +47,7 @@
       <span class="spacer"></span>
       <ng-container *ngIf="!(isHandset$ | async) && menu && menu?.length > 0">
         <ng-container *ngFor="let l of menu">
-          <button *ngIf="l.path && !l.dropdown" mat-button [color]="'accent'" routerLink="{{l.path}}">
+          <button *ngIf="l.path && !l.dropdown" mat-button routerLink="{{l.path}}">
             <mat-icon *ngIf="l.icon"> {{l.icon}}</mat-icon> {{l.name}}
           </button>
           <button mat-button *ngIf="l.dropdown && l.dropdown.length > 0" [matMenuTriggerFor]="topMenu">

@@ -6,6 +6,8 @@
 /out-tsc
 # Only exists if Bazel was run
 /bazel-out
+#Chrome profile
+/chromium-dev-profile
 
 # dependencies
 /node_modules

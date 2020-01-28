@@ -1,5 +1,6 @@
 const { Carro, CarroModelo } = require('../model/Carro');
 const { CarroMarcaModeloValidation } = require('../validation/carroValidation');
+const updateOps = require('../util/updateOps');
 
 
 function _request(marca_id, modelo_id) {
@@ -184,12 +185,9 @@ exports.saveMarcaModeloSmart = async function (req, res, next) {
 
 exports.updateCarro = async function (req, res, next) {
     try {
-        const updateOps = {};
-        for (const ops of req.body) {
-            updateOps[ops.propName] = ops.value;
-        }
+        const update = updateOps(req.body);
         const carro = await Carro.findOneAndUpdate(
-            { _id: req.params._id }, { $set: updateOps }
+            { _id: req.params._id }, { $set: update }
         );
         if (carro) {
             res.send({

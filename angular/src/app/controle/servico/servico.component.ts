@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Ficha } from 'src/app/interface/ficha';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-servico',
@@ -7,9 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServicoComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data:Ficha) { }
 
   ngOnInit() {
   }
-
+  
 }
