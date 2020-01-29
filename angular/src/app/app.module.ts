@@ -54,7 +54,8 @@ import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-clien
 import { LoginComponent } from './user/login/login.component';
 import { InterceptorModule } from './modules/interceptor/interceptor.module';
 import { AndamentoComponent } from './controle/andamento/andamento.component';
-import { ServicoComponent } from './controle/servico/servico.component';
+import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,7 @@ import { ServicoComponent } from './controle/servico/servico.component';
     DeletarClienteComponent,
     LoginComponent,
     AndamentoComponent,
-    ServicoComponent
+    FichaServicoComponent
   ],
   imports: [
     BrowserModule,
@@ -114,7 +115,8 @@ import { ServicoComponent } from './controle/servico/servico.component';
     RxReactiveFormsModule,
     NgxMaskModule.forRoot(),
     MatTooltipModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -122,6 +124,6 @@ import { ServicoComponent } from './controle/servico/servico.component';
     AtualizarCarroComponent,
     DeletarCarroComponent,
     DeletarClienteComponent,
-    ServicoComponent]
+    FichaServicoComponent]
 })
 export class AppModule { }

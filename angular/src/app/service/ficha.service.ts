@@ -17,7 +17,8 @@ export class FichaService {
   routes = {
     ficha: this.endpoint + '/',
     saveFichaEntrada: this.endpoint + '/entrada',
-    listar : this.endpoint + '/listar'
+    listar : this.endpoint + '/listar',
+    addServico: this.endpoint + '{_id}/add-servico'
   };
 
   constructor(private _http: HttpClient) { }
@@ -36,4 +37,11 @@ export class FichaService {
     const url = this.routes.saveFichaEntrada;
     return this._http.post(url, postRequest);
   }
+
+  public addServico(id,body){
+    const postRequest = removeEmpty(body);
+    const url = this.routes.addServico.replace('{_id}',id);
+    return this._http.post(url,postRequest);
+  }
+
 }

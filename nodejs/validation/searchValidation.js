@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 const searchValidation = (data) => {
     const schema = new Joi.object({
-        search: Joi.string().optional(),
+        search: Joi.string().optional().allow('',null),
         index: Joi.number(),
         size: Joi.number()
     });
@@ -11,7 +11,7 @@ const searchValidation = (data) => {
 
 const searchFichaValidation = (data) => {
     const schema = new Joi.object({
-        search: Joi.string().optional(),
+        search: Joi.string().optional().allow('',null),
         index: Joi.number(),
         size: Joi.number(),
         ativas: Joi.string().valid('0', '1').optional()

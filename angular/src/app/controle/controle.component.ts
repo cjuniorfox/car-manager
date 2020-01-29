@@ -9,7 +9,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { ClienteService } from '../service/cliente.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Ficha } from '../interface/ficha';
-import { ServicoComponent } from './servico/servico.component';
+import { FichaServicoComponent } from './fichaServico/fichaServico.component';
 
 @Component({
   selector: 'app-controle',
@@ -28,6 +28,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
   colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo'];
+  colunasServico = ['funcionario','inicio', 'servico', 'setor','fim'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -51,7 +52,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   registrarServicoDialog(ficha: Ficha) {
     const data = { ficha: ficha }
-    this.dialog.open(ServicoComponent, { data: data });
+    this.dialog.open(FichaServicoComponent, { data: data });
   }
 
   private _mapResultList(res: any) {

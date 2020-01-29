@@ -30,6 +30,14 @@ export class AuthService {
 
   constructor(private _http: HttpClient, private router: Router) { }
 
+  get refreshTokenRoute(){
+    return this.routes.refreshToken;
+  }
+
+  get logoutRoute(){
+    return this.routes.logout;
+  }
+
   public login(login: Login): Observable<boolean | Error> {
     const url = this.routes.login;
     return this._http.post<AuthToken>(url, login).pipe(

@@ -38,11 +38,13 @@ export interface Ficha {
         box: BoxEnum,
         descricao: string,
         inicio: Date,
-        fim: Date
+        fim: Date,
+        id: string
     }],
     finalizado: {
         at: Date,
         user: User
     },
-    retorno: boolean
+    retorno: boolean,
+    _id: string
 };

@@ -39,6 +39,18 @@ export class InterceptorService implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    //Se estiver logando, retorna o erro redirecionando para tela de login
+    if (request.url.search(this.authService.refreshTokenRoute) != -1) {
+      return this.authService.logout();
+    }
+    //Quando logout, a funcionalidade "limpar token" não é autorizada pelo servidor.
+    //Então necessita permitir o "refresh token" para seguir a vida.
+    if (request.url.search(this.authService.logoutRoute) != -1) {
+      this.refreshing = false;
+      this.refreshTokenSubject.next(null);
+      return this.authService.refreshToken();
+    }
+
     if (!this.refreshing) {
       this.refreshing = true;
       this.refreshTokenSubject.next(null);

@@ -4,6 +4,7 @@ import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
 import { FormControl, Validators } from '@angular/forms';
 import { CarroService } from 'src/app/service/carro.service';
 import { CarroModeloModel } from 'src/app/interface/carro-model';
+import { handleSubmitError } from 'src/app/util/handleSubmitError';
 
 @Component({
   selector: 'app-atualizar-carro',
@@ -69,12 +70,7 @@ export class AtualizarCarroComponent implements OnInit {
             this.requestError = null;
             this.dialogRef.close(true);
           }, err => {
-            if (typeof (err.error.message) == 'string') {
-              this.requestError = err.error.message;
-            }else{
-              console.error(err);
-              this.requestError = 'Ocorreu um erro desconhecido ao tentar atualizar o registro.';
-            }
+            this.requestError = handleSubmitError(err);
           });
         break;
       }

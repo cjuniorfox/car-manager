@@ -1,5 +1,5 @@
 export class Search {
-    search: string;
+    search: string = '';
     pageIndex: number;
     pageSize: number;
 }
