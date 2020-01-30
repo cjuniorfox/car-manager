@@ -36,33 +36,35 @@
             <mat-error>Necessário preencher corretamente a descrição do serviço</mat-error>
         </mat-form-field>
     </div>
+    <form [formGroup]="formDataHora">
         <div fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex>
-                <input matInput id="inicio" [matDatepicker]="dpInicio" placeholder="Inicio"
-                    formControlName="inicio">
+                <input matInput id="inicio" [matDatepicker]="dpInicio" placeholder="Inicio" formControlName="dtInicio">
                 <mat-datepicker-toggle matSuffix [for]="dpInicio"> </mat-datepicker-toggle>
                 <mat-datepicker #dpInicio></mat-datepicker>
-                <mat-error>Informe a data inicial</mat-error>
+                <mat-error>Informe a data e hora de inicio do serviço</mat-error>
             </mat-form-field>
-            <ngx-timepicker-field fxFlex aria-placeholder="Hora inicial" [format]="24" [formControl]="timeFields.get('inicio')">
+            <ngx-timepicker-field aria-placeholder="Hora inicial" [format]="24" formControlName="hrInicio">
             </ngx-timepicker-field>
         </div>
 
         <div fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex>
-                <input matInput id="fim" [matDatepicker]="dpFim" placeholder="Final" formControlName="fim">
+                <input matInput id="fim" [matDatepicker]="dpFim" placeholder="Final" formControlName="dtFim">
                 <mat-datepicker-toggle matSuffix [for]="dpFim"> </mat-datepicker-toggle>
                 <mat-datepicker #dpFim></mat-datepicker>
+                <mat-error>Informe a data e hora de final do serviço</mat-error>
             </mat-form-field>
-            <ngx-timepicker-field fxFlex aria-placeholder="Hora final" [formControl]="timeFields.get('fim')" fxLayout [format]="24">
+            <ngx-timepicker-field aria-placeholder="Hora final" formControlName="hrFim" fxLayout [format]="24">
             </ngx-timepicker-field>
         </div>
+    </form>
     <div fxLayout="row" class="submit-button">
-        <button mat-raised-button type="submit" fxFlex [disabled]="!formServico.valid">Salvar</button>
+        <button fxFlex mat-raised-button color="primary" type="submit"  [disabled]="!formServico.valid || !formDataHora.valid">Salvar</button>
     </div>
     <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
 </form>
 <pre>
     {{formServico.value | json}}
-    {{timeFields.value | json}}
+    {{formDataHora.value | json}}
 </pre>

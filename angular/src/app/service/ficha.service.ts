@@ -18,7 +18,7 @@ export class FichaService {
     ficha: this.endpoint + '/',
     saveFichaEntrada: this.endpoint + '/entrada',
     listar : this.endpoint + '/listar',
-    addServico: this.endpoint + '{_id}/add-servico'
+    addServico: this.endpoint + '/{_id}/add-servico'
   };
 
   constructor(private _http: HttpClient) { }

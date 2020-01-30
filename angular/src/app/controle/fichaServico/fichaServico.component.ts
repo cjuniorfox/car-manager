@@ -1,7 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Ficha } from 'src/app/interface/ficha';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FichaService } from 'src/app/service/ficha.service';
 import { handleSubmitError } from 'src/app/util/handleSubmitError';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
@@ -24,12 +22,14 @@ export class FichaServicoComponent implements OnInit {
     box: [null, Validators.required],
     descricao: [null, Validators.required],
     inicio: [null, Validators.required],
-    fim: [null, Validators.required]
+    fim: [null]
   });
 
-  timeFields = this.fb.group({
-    inicio: [null, Validators.required],
-    fim: [null, Validators.required]
+  formDataHora = this.fb.group({
+    hrInicio: [null, Validators.required],
+    dtInicio: [null, Validators.required],
+    hrFim: [null],
+    dtFim: [null]
   })
 
   requestError: string = '';
@@ -40,19 +40,6 @@ export class FichaServicoComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location
   ) { }
-
-  ngOnInit() {
-    this.timeFields.valueChanges.subscribe(val => {
-      if (this.formServico.get('inicio').valid && val.inicio != 'Invalid DateTime'){
-        const dataInicio = this.formServico.get('inicio');
-        dataInicio.setValue(addTimeToDate(val.inicio,dataInicio.value));
-      }
-      if (this.formServico.get('fim').valid && val.fim != 'Invalid DateTime'){
-        const dataFim = this.formServico.get('fim');
-        dataFim.setValue(addTimeToDate(val.fim,dataFim.value))
-      }
-    });
-  }
 
   get servicos() {
     return Object.values(ServicoEnum);
@@ -66,12 +53,42 @@ export class FichaServicoComponent implements OnInit {
     return Object.values(BoxEnum);
   }
 
+  ngOnInit() {
+    this._observableFormDataHora();
+  }
+
   onSubmit() {
-    this.fichaService.addServico(this.route.params['_id'], this.formServico.value).subscribe(res => {
-      this.location.back();
-    }, err => {
-      this.requestError = handleSubmitError(err);
+    this.route.params.subscribe(params => {
+      console.log(params);
+      const id = params['_id'];
+      this.fichaService.addServico(id, this.formServico.value).subscribe(res => {
+        this.location.back();
+      }, err => {
+        this.requestError = handleSubmitError(err);
+      });
     });
+  }
+
+
+  private _observableFormDataHora() {
+    this.formDataHora.valueChanges.subscribe(val => {
+      this._preencherHoraInicio(val.hrInicio, val.dtInicio);
+      this._preencherHoraFim(val.hrFim, val.dtFim);
+    });
+  }
+
+  private _preencherHoraInicio(hrInicio: string, dtInicio: Date) {
+    if (hrInicio && dtInicio && hrInicio != 'Invalid DateTime') {
+      const dataInicio = this.formServico.get('inicio');
+      dataInicio.setValue(addTimeToDate(hrInicio, dtInicio));
+    }
+  }
+
+  private _preencherHoraFim(hrFim: string, dtFim: Date) {
+    if (hrFim && dtFim && hrFim != 'Invalid DateTime') {
+      const dataFim = this.formServico.get('fim');
+      dataFim.setValue(addTimeToDate(hrFim, dtFim));
+    }
   }
 
 }
