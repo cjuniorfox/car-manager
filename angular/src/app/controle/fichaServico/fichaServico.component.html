@@ -36,29 +36,27 @@
             <mat-error>Necessário preencher corretamente a descrição do serviço</mat-error>
         </mat-form-field>
     </div>
-    <form [formGroup]="dateTimes">
         <div fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex>
-                <input matInput id="dtInicio" [matDatepicker]="dpInicio" placeholder="Inicio"
-                    formControlName="dtInicio">
+                <input matInput id="inicio" [matDatepicker]="dpInicio" placeholder="Inicio"
+                    formControlName="inicio">
                 <mat-datepicker-toggle matSuffix [for]="dpInicio"> </mat-datepicker-toggle>
                 <mat-datepicker #dpInicio></mat-datepicker>
                 <mat-error>Informe a data inicial</mat-error>
             </mat-form-field>
-            <ngx-timepicker-field fxLayout [controlOnly]="true" [format]="24" formControlName="hrInicio">
+            <ngx-timepicker-field fxFlex aria-placeholder="Hora inicial" [format]="24" [formControl]="timeFields.get('inicio')">
             </ngx-timepicker-field>
         </div>
 
         <div fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex>
-                <input matInput id="dtFim" [matDatepicker]="dpFim" placeholder="Final" formControlName="dtFim">
+                <input matInput id="fim" [matDatepicker]="dpFim" placeholder="Final" formControlName="fim">
                 <mat-datepicker-toggle matSuffix [for]="dpFim"> </mat-datepicker-toggle>
                 <mat-datepicker #dpFim></mat-datepicker>
             </mat-form-field>
-            <ngx-timepicker-field formControlName="hrFim" fxLayout [controlOnly]="true" [format]="24">
+            <ngx-timepicker-field fxFlex aria-placeholder="Hora final" [formControl]="timeFields.get('fim')" fxLayout [format]="24">
             </ngx-timepicker-field>
         </div>
-    </form>
     <div fxLayout="row" class="submit-button">
         <button mat-raised-button type="submit" fxFlex [disabled]="!formServico.valid">Salvar</button>
     </div>
@@ -66,5 +64,5 @@
 </form>
 <pre>
     {{formServico.value | json}}
-    {{dateTimes.value | json}}
+    {{timeFields.value | json}}
 </pre>

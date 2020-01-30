@@ -7,6 +7,9 @@ import { handleSubmitError } from 'src/app/util/handleSubmitError';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
 import { SetorEnum } from 'src/app/enum/setor.enum';
 import { BoxEnum } from 'src/app/enum/box.enum';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { addTimeToDate } from 'src/app/util/addTimeToDate';
 
 @Component({
   selector: 'app-servico',
@@ -24,30 +27,31 @@ export class FichaServicoComponent implements OnInit {
     fim: [null, Validators.required]
   });
 
-  dateTimes = this.fb.group({
-    dtInicio: [null, Validators.required],
-    hrInicio: [null, Validators.required],
-    dtFim: [null, Validators.required],
-    hrFim: [null, Validators.required]
+  timeFields = this.fb.group({
+    inicio: [null, Validators.required],
+    fim: [null, Validators.required]
   })
 
   requestError: string = '';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Ficha,
     private fb: FormBuilder,
     private fichaService: FichaService,
-    private dialogRef: MatDialogRef<FichaServicoComponent>
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit() {
-    this.dateTimes.valueChanges.subscribe(val => {
-      let dtInicio : string = '2020-01-07T03:00:00.000Z';
-      console.log(dtInicio.substring(11,16))
-      if (val.dtInicio && val.hrInicio != 'Invalid Time')
-        this.formServico.get('inicio').setValue(val.dtInicio.replace(val.dtInicio.substring(11, 16), val.hrInicio));
-      
-    })
+    this.timeFields.valueChanges.subscribe(val => {
+      if (this.formServico.get('inicio').valid && val.inicio != 'Invalid DateTime'){
+        const dataInicio = this.formServico.get('inicio');
+        dataInicio.setValue(addTimeToDate(val.inicio,dataInicio.value));
+      }
+      if (this.formServico.get('fim').valid && val.fim != 'Invalid DateTime'){
+        const dataFim = this.formServico.get('fim');
+        dataFim.setValue(addTimeToDate(val.fim,dataFim.value))
+      }
+    });
   }
 
   get servicos() {
@@ -63,9 +67,8 @@ export class FichaServicoComponent implements OnInit {
   }
 
   onSubmit() {
-    this.fichaService.addServico(this.data._id, this.formServico.value).subscribe(res => {
-      this.requestError = null;
-      this.dialogRef.close(true);
+    this.fichaService.addServico(this.route.params['_id'], this.formServico.value).subscribe(res => {
+      this.location.back();
     }, err => {
       this.requestError = handleSubmitError(err);
     });

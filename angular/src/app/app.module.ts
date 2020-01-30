@@ -123,7 +123,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
   entryComponents: [
     AtualizarCarroComponent,
     DeletarCarroComponent,
-    DeletarClienteComponent,
-    FichaServicoComponent]
+    DeletarClienteComponent
+  ]
 })
 export class AppModule { }

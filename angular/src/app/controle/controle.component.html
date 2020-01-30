@@ -144,7 +144,7 @@
                 </div>
                 <div class="acoes-ficha" fxLayout="row" fxLayout.lt-md="column">
                     <div fxFlex>
-                        <button mat-raised-button color="accent" (click)="registrarServicoDialog(f)">
+                        <button mat-raised-button color="accent" [routerLink]="f._id+'/add-servico'">
                             <mat-icon>local_car_wash</mat-icon> Registrar serviço
                         </button>
                     </div>

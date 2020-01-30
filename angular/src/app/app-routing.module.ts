@@ -16,11 +16,13 @@ import { LoginComponent } from './user/login/login.component';
 import { UserGuard } from './guards/user.guard';
 import { LoginGuard } from './guards/login.guard';
 import { AndamentoComponent } from './controle/andamento/andamento.component';
+import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, canActivate: [UserGuard] },
   { path: "controle", component: ControleComponent },
   { path: "controle/entrada", component: EntradaComponent, canActivate: [UserGuard] },
+  { path: "controle/:id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
   { path: "controle/andamento", component: AndamentoComponent, canActivate: [UserGuard] },
   { path: "controle/saida", component: SaidaComponent, canActivate: [UserGuard] },
   { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
