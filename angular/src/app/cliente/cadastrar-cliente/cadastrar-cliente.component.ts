@@ -8,6 +8,7 @@ import { CarroService } from 'src/app/service/carro.service';
 import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
 import { ActivatedRoute } from '@angular/router';
 import { Cliente } from 'src/app/interface/cliente';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-cadastrar-cliente',
@@ -149,7 +150,23 @@ export class CadastrarClienteComponent implements OnInit {
   }
 
   private _getCliente() {
-    this.route.params.subscribe(params => {
+    this.route.params.pipe(
+      switchMap(params => {
+        if (params['id']) {
+          this.cliente_idUpdate = params['id'];
+          return of(params['id']);
+        } else
+          return null;
+      }),
+      switchMap(idCliente => this.clienteService.get(idCliente))
+    ).subscribe(cliente => {
+      this.cadCliForm.patchValue(cliente);
+      cliente.telefones.map(telefone =>
+        this.telefones.push(new FormControl(telefone, Validators.required)));
+      cliente.veiculos.map(veiculo =>
+        this.veiculos.push(this._formGroupVeiculo(veiculo)));
+    });
+    /* this.route.params.subscribe(params => {
       if (!params['id']) {
         return; //Se não exisitir parametro, sai fora
       }
@@ -157,13 +174,13 @@ export class CadastrarClienteComponent implements OnInit {
       this.clienteService.get(this.cliente_idUpdate).subscribe(data => this._mapCliente(data),
         err => this._error(err)
       )
-    });
+    }); */
   }
   _mapCliente(data: Cliente) {
-    this.cadCliForm.get('nome').setValue(data.nome);
-    this.cadCliForm.get('endereco').get('endereco').setValue(data.endereco.endereco);
-    this.cadCliForm.get('endereco').get('cidade').setValue(data.endereco.cidade);
-    this.cadCliForm.get('endereco').get('cep').setValue(data.endereco.cep);
+    //    this.cadCliForm.get('nome').setValue(data.nome);
+    //    this.cadCliForm.get('endereco').get('endereco').setValue(data.endereco.endereco);
+    //    this.cadCliForm.get('endereco').get('cidade').setValue(data.endereco.cidade);
+    //    this.cadCliForm.get('endereco').get('cep').setValue(data.endereco.cep);
     if (data.telefones)
       data.telefones.map(telefone =>
         this.telefones.push(new FormControl(telefone, Validators.required))
@@ -171,8 +188,8 @@ export class CadastrarClienteComponent implements OnInit {
     if (data.veiculos)
       data.veiculos.map(veiculo =>
         this.veiculos.push(this._formGroupVeiculo(veiculo)))
-    this.cadCliForm.get('telefones').setValue(data.telefones);
-    this.cadCliForm.get('endereco').get('endereco').setValue(data.endereco.endereco);
+    //    this.cadCliForm.get('telefones').setValue(data.telefones);
+    //    this.cadCliForm.get('endereco').get('endereco').setValue(data.endereco.endereco);
   }
 
   private _autoCompleteCarro() {
@@ -199,7 +216,7 @@ export class CadastrarClienteComponent implements OnInit {
       placa: [placa, [Validators.required, Validators.minLength(7), Validators.maxLength(7)]],
       chassi: [chassi, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
     };
-    if (_id == null){
+    if (_id == null) {
       delete formVeiculo._id;
     }
     return this.fb.group(formVeiculo);

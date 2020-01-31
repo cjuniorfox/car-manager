@@ -6,6 +6,8 @@ import { Search } from '../model/search.model';
 import { Ficha } from '../interface/ficha';
 import { Observable } from 'rxjs';
 import { FichaPagination } from '../interface/ficha-pagination';
+import { FormBuilder, Validators } from '@angular/forms';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,36 @@ export class FichaService {
     addServico: this.endpoint + '/{_id}/add-servico'
   };
 
-  constructor(private _http: HttpClient) { }
+  fichaForm = this.fb.group({
+    osSistema: [null, Validators.required],
+    osInterna: [null],
+    dadosCadastrais: this.fb.group({
+      cliente: ['', Validators.required],
+      clienteVeiculo: ['', Validators.required]
+    }),
+    entrada: this.fb.group({
+      dataRecepcao: [new Date(), Validators.required],
+      dataPrevisaoSaida: [null],
+      avariaExterior: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
+      avariaInterior: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
+      pertencesNoVeiculo: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
+      servicosPrevisao: this.fb.array([], [RxwebValidators.unique(), Validators.required])
+    })
+  });
+
+  constructor(
+    private _http: HttpClient,
+    private fb: FormBuilder
+    ) { }
 
   public get(fichaId): Observable<Ficha> {
     const url = this.routes.ficha + fichaId;

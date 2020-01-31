@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Location } from '@angular/common';
-import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { Cliente } from 'src/app/interface/cliente';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { FichaService } from 'src/app/service/ficha.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
+import { async } from '@rxweb/reactive-form-validators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-entrada',
@@ -18,31 +19,7 @@ export class EntradaComponent implements OnInit {
 
   veiculos = [];
 
-  formEntrada = this.fb.group({
-    osSistema: [null, Validators.required],
-    osInterna: [null],
-    dadosCadastrais: this.fb.group({
-      cliente: ['', Validators.required],
-      clienteVeiculo: ['', Validators.required]
-    }),
-    entrada: this.fb.group({
-      dataRecepcao: [new Date(), Validators.required],
-      dataPrevisaoSaida: [null],
-      avariaExterior: this.fb.group({
-        existente: [false],
-        detalhe: [{ value: '', disabled: true }, Validators.required]
-      }),
-      avariaInterior: this.fb.group({
-        existente: [false],
-        detalhe: [{ value: '', disabled: true }, Validators.required]
-      }),
-      pertencesNoVeiculo: this.fb.group({
-        existente: [false],
-        detalhe: [{ value: '', disabled: true }, Validators.required]
-      }),
-      servicosPrevisao: this.fb.array([], [RxwebValidators.unique(), Validators.required])
-    })
-  });
+
 
   buscaCliente = new FormControl('', [Validators.required]);
 
@@ -50,58 +27,32 @@ export class EntradaComponent implements OnInit {
 
   servicos = Object.values(ServicoEnum)
   errorForm: string;
+  fichaId: string;
 
   constructor(
-    private fb: FormBuilder,
     private location: Location,
     private router: Router,
     private clienteService: ClienteService,
-    private fichaService: FichaService
+    private fichaService: FichaService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.buscaCliente.valueChanges
-      .pipe(
-        debounceTime(500),
-        tap(search => {
-          if (typeof (search) == 'undefined' || search == "") {
-            this.dadosCadastrais.controls.cliente.setValue("");
-            this.veiculos = [];
-          }
-        }),
-        switchMap(search => this.clienteService.search(
-          typeof (search) == 'string' ? search : '', 0, 10)
-        )
-      ).subscribe(result => {
-        this.clientes = result.clientes;
-      });
+    this._getFicha(); //Em caso de update
+    this._observableClienteAutoComplete();
+    this._observableAvariasEPertences();
+  }
 
-    this.avariaInterior.get('existente').valueChanges.subscribe(
-      value => {
-        const detalhe: FormControl = this.avariaInterior.get('detalhe') as FormControl;
-        value ? detalhe.enable() : detalhe.disable();
-      }
-    );
-    this.avariaExterior.get('existente').valueChanges.subscribe(
-      value => {
-        const detalhe: FormControl = this.avariaExterior.get('detalhe') as FormControl;
-        value ? detalhe.enable() : detalhe.disable();
-      }
-    );
-    this.pertencesNoVeiculo.get('existente').valueChanges.subscribe(
-      value => {
-        const detalhe: FormControl = this.pertencesNoVeiculo.get('detalhe') as FormControl;
-        value ? detalhe.enable() : detalhe.disable();
-      }
-    );
+  get fichaForm() {
+    return this.fichaService.fichaForm as FormGroup;
   }
 
   get dadosCadastrais() {
-    return this.formEntrada.get('dadosCadastrais') as FormGroup;
+    return this.fichaForm.get('dadosCadastrais') as FormGroup;
   }
 
   get entrada() {
-    return this.formEntrada.get('entrada') as FormGroup;
+    return this.fichaForm.get('entrada') as FormGroup;
   }
 
   get avariaExterior() {
@@ -123,7 +74,7 @@ export class EntradaComponent implements OnInit {
   public setCliente(cliente?: Cliente) {
     this.dadosCadastrais.controls.cliente.setValue(cliente._id);
     this.veiculos = cliente.veiculos;
-    //Se cliente possue apenas um veículo, já seleciona o mesmo
+    //Se cliente possuir apenas um veículo, já seleciona o mesmo
     if (this.veiculos.length == 1)
       this.dadosCadastrais.controls.clienteVeiculo.setValue(this.veiculos[0]._id);
     else
@@ -155,11 +106,27 @@ export class EntradaComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.fichaService.saveFichaEntrada(this.formEntrada.value)
+    this.fichaService.saveFichaEntrada(this.fichaForm.value)
       .subscribe(
         () => this.router.navigate(['/controle']),
         err => this._error(err)
       );
+  }
+
+  private _getFicha() {
+    this.activatedRoute.params.pipe(
+      switchMap(params => {
+        if (params['_id']) {
+          this.fichaId = params['_id'];
+          return of(this.fichaId);
+        } else
+          return null;
+      }),
+      switchMap(fichaId => this.fichaService.get(fichaId))
+    ).subscribe(ficha => {
+      this.fichaForm.patchValue(ficha);
+      
+    });
   }
 
   private _error(err: any): void {
@@ -169,5 +136,44 @@ export class EntradaComponent implements OnInit {
       this.errorForm = 'Ocorreu um erro desconhecido'
     }
   };
+
+  private _observableClienteAutoComplete() {
+    this.buscaCliente.valueChanges
+      .pipe(
+        debounceTime(500),
+        tap(search => {
+          if (typeof (search) == 'undefined' || search == "") {
+            this.dadosCadastrais.controls.cliente.setValue("");
+            this.veiculos = [];
+          }
+        }),
+        switchMap(search => this.clienteService.search(
+          typeof (search) == 'string' ? search : '', 0, 10)
+        )
+      ).subscribe(result => {
+        this.clientes = result.clientes;
+      });
+  }
+
+  private _observableAvariasEPertences() {
+    this.avariaInterior.get('existente').valueChanges.subscribe(
+      value => {
+        const detalhe: FormControl = this.avariaInterior.get('detalhe') as FormControl;
+        value ? detalhe.enable() : detalhe.disable();
+      }
+    );
+    this.avariaExterior.get('existente').valueChanges.subscribe(
+      value => {
+        const detalhe: FormControl = this.avariaExterior.get('detalhe') as FormControl;
+        value ? detalhe.enable() : detalhe.disable();
+      }
+    );
+    this.pertencesNoVeiculo.get('existente').valueChanges.subscribe(
+      value => {
+        const detalhe: FormControl = this.pertencesNoVeiculo.get('detalhe') as FormControl;
+        value ? detalhe.enable() : detalhe.disable();
+      }
+    );
+  }
 
 }
