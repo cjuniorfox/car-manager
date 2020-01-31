@@ -23,6 +23,11 @@ export class FichaService {
 
   constructor(private _http: HttpClient) { }
 
+  public get(fichaId): Observable<Ficha> {
+    const url = this.routes.ficha + fichaId;
+    return this._http.get<Ficha>(url);
+  }
+
   public listar(getQuery: Search):Observable<FichaPagination> {
     const url = this.routes.listar;
     let params = new HttpParams()

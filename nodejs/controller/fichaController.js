@@ -65,7 +65,7 @@ exports.addServico = async (req, res) => {
     if (!validateServico(req)) return null;
     try {
         const body = req.body;
-        Object.assign(body,{user:req.user._id});
+        Object.assign(body, { user: req.user._id });
         const update = { "$push": { "servicos": body } };
         const ficha = await Ficha.findOneAndUpdate({ "_id": req.params._id }, update);
         if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
@@ -92,6 +92,24 @@ exports.updateServico = async (req, res) => {
     } catch (err) { res.status(500).send(err); }
 }
 
+exports.get = async (req, res) => {
+    const { error } = fichaIdValidation(req.params);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    try {
+        const ficha = await Ficha.findById(req.params._id)
+        .populate('dadosCadastrais.cliente')
+        .populate('dadosCadastrais.clienteVeiculo')
+        .populate('created.user');
+        if (!ficha)
+            return res.status(404).send({ "message": "Ficha não encontrada" });
+        return res.send(Object.assign(
+            { request: defineRequest('GET', 'ficha', ficha._id) },
+            ficha._doc)
+        );
+    } catch (err) { res.status(500).send(err); console.error(err) }
+}
+
 exports.fichas = async (req, res) => {
     const { error } = searchFichaValidation(req.query);
     if (typeof error !== 'undefined')
@@ -112,7 +130,7 @@ exports.fichas = async (req, res) => {
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)
             .populate({ path: 'created.user', select: 'name username admin' })
-            .populate({ path: 'servicos.user', select: 'name username'})
+            .populate({ path: 'servicos.user', select: 'name username' })
             .populate({ path: 'dadosCadastrais.cliente', select: 'nome documento endereco telefones' })
             .populate({
                 path: 'dadosCadastrais.clienteVeiculo',

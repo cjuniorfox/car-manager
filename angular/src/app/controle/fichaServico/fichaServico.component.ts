@@ -8,6 +8,8 @@ import { BoxEnum } from 'src/app/enum/box.enum';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { addTimeToDate } from 'src/app/util/addTimeToDate';
+import { Ficha } from 'src/app/interface/ficha';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-servico',
@@ -34,12 +36,16 @@ export class FichaServicoComponent implements OnInit {
 
   requestError: string = '';
 
+  ficha$: Observable<Ficha>;
+  fichaId: string;
+
   constructor(
     private fb: FormBuilder,
     private fichaService: FichaService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
+
 
   get servicos() {
     return Object.values(ServicoEnum);
@@ -55,18 +61,18 @@ export class FichaServicoComponent implements OnInit {
 
   ngOnInit() {
     this._observableFormDataHora();
+    this.route.params.subscribe(params => {
+      this.fichaId = params['_id'];
+      this.ficha$ = this.fichaService.get(this.fichaId);
+    });
   }
 
   onSubmit() {
-    this.route.params.subscribe(params => {
-      console.log(params);
-      const id = params['_id'];
-      this.fichaService.addServico(id, this.formServico.value).subscribe(res => {
+      this.fichaService.addServico(this.fichaId, this.formServico.value).subscribe(res => {
         this.location.back();
       }, err => {
         this.requestError = handleSubmitError(err);
       });
-    });
   }
 
 
