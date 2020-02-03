@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Cliente, ClienteVeiculo } from 'src/app/interface/cliente';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, tap, finalize, map, filter } from 'rxjs/operators';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { FichaService } from 'src/app/service/ficha.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
 import { of } from 'rxjs';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
 @Component({
   selector: 'app-entrada',
@@ -18,7 +19,31 @@ export class EntradaComponent implements OnInit {
 
   veiculos = [];
 
-
+  fichaForm = this.fb.group({
+    osSistema: [null, Validators.required],
+    osInterna: [null],
+    dadosCadastrais: this.fb.group({
+      cliente: ['', Validators.required],
+      clienteVeiculo: ['', Validators.required]
+    }),
+    entrada: this.fb.group({
+      dataRecepcao: [new Date(), Validators.required],
+      dataPrevisaoSaida: [null],
+      avariaExterior: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
+      avariaInterior: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
+      pertencesNoVeiculo: this.fb.group({
+        existente: [false],
+        detalhe: [{ value: '', disabled: true }, Validators.required]
+      }),
+      servicosPrevisao: this.fb.array([], [RxwebValidators.unique(), Validators.required])
+    })
+  });
 
   buscaCliente = new FormControl('', [Validators.required]);
 
@@ -34,17 +59,14 @@ export class EntradaComponent implements OnInit {
     private router: Router,
     private clienteService: ClienteService,
     private fichaService: FichaService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
     this._getFicha(); //Em caso de update
     this._observableClienteAutoComplete();
     this._observableAvariasEPertences();
-  }
-
-  get fichaForm() {
-    return this.fichaService.fichaForm as FormGroup;
   }
 
   get dadosCadastrais() {
@@ -106,22 +128,32 @@ export class EntradaComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.fichaService.saveFichaEntrada(this.fichaForm.value)
-      .subscribe(
-        () => this.router.navigate(['/controle']),
-        err => this._error(err)
-      );
+    //Se fichaId, significa que transação se trata de um update.
+    if (this.fichaId) {
+      this.fichaService.put(this.fichaId, this.fichaForm.value)
+        .subscribe(
+          () => this.router.navigate(['/controle']),
+          err => this._error(err)
+        );
+    } else {
+      this.fichaService.saveFichaEntrada(this.fichaForm.value)
+        .subscribe(
+          () => this.router.navigate(['/controle']),
+          err => this._error(err)
+        );
+    }
   }
 
   private _getFicha() {
     this.activatedRoute.params.pipe(
-      switchMap(params => {
+      map(params => {
         if (params['_id']) {
           this.fichaId = params['_id'];
-          return of(this.fichaId);
-        } else
-          return null;
+          return this.fichaId;
+        }
+        return false;
       }),
+      filter(fichaId => fichaId != false),
       switchMap(fichaId => this.fichaService.get(fichaId))
     ).subscribe(ficha => {
       this.fichaForm.patchValue(ficha);
@@ -195,8 +227,7 @@ export class EntradaComponent implements OnInit {
     return Object.values(ServicoEnum).map(servico => ({
       name: servico,
       checked: (this.entrada.get('servicosPrevisao').value.includes(servico))
-    })
-    );
+    }));
   }
 
 }

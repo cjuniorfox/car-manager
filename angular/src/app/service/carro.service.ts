@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CarroMarcaModelo } from '../interface/carro-marca-modelo';
 import { CarroListPaginator } from '../interface/carro-list-paginator';
+import { updateOps } from '../util/updateOps';
 
 @Injectable({
   providedIn: 'root'
@@ -21,16 +22,6 @@ export class CarroService {
 
 
   constructor(private http: HttpClient) { }
-
-  private _mapToArray(data: Object) {
-    let arr = [];
-    Object.keys(data).map(function (key) {
-      if (data[key] && data[key].length > 0) {
-        arr.push({ propName: key, value: data[key] })
-      }
-    });
-    return arr;
-  }
 
   listAsTable(search: string, pageIndex: number, pageSize: number) {
     const params = new HttpParams()
@@ -55,12 +46,12 @@ export class CarroService {
   updateMarca(carro, id: number) {
     //Converte o objeto para array de acordo com o serviço.
     const url = this.routes.marca + '/' + id;
-    return this.http.patch<CarroModel>(url, this._mapToArray(carro));
+    return this.http.patch<CarroModel>(url, updateOps(carro));
   }
   updateModelo(modelo, id: number) {
     //Converte o objeto para array de acordo com o serviço.
     const url = this.routes.modelo + '/' + id;
-    return this.http.patch<CarroModel>(url, this._mapToArray(modelo));
+    return this.http.patch<CarroModel>(url, updateOps(modelo));
   }
   deleteModelo(id: Number) {
     const url = this.routes.modelo + '/' + id;

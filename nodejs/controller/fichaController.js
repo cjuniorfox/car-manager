@@ -26,6 +26,16 @@ const validateServico = (req, validateIdServico) => {
     return true;
 }
 
+const _updateFicha = async (_id, res, body) => {
+    const ficha = await Ficha.findOneAndUpdate({ _id: _id }, { "$set": body });
+    if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
+    res.send(
+        {
+            "message": "Ficha atualizada com sucesso.",
+            "request": defineRequest('GET', 'ficha', ficha._id)
+        });
+}
+
 exports.post = async (req, res) => {
     const { error } = fichaPostValidation(req.body);
     if (typeof error !== 'undefined')
@@ -42,6 +52,25 @@ exports.post = async (req, res) => {
     } catch (err) { res.status(500).send(err); }
 }
 
+exports.put = async (req, res) => {
+    const { error } = fichaPostValidation(req.body);
+    const { paramError } = fichaIdValidation(req.params);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    if (typeof paramError !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    try {
+        console.log(req.body)
+        const ficha = await Ficha.findOneAndUpdate({ _id: req.params._id },  req.body );
+        if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
+        res.send(
+            {
+                "message": "Ficha atualizada com sucesso.",
+                "request": defineRequest('GET', 'ficha', ficha._id)
+            });
+    } catch (err) { console.error(err); res.status(500).send(err); }
+}
+
 exports.patch = async (req, res) => {
     const update = updateOps(req.body);
     const { error } = fichaPatchValidation(update);
@@ -51,13 +80,7 @@ exports.patch = async (req, res) => {
     if (typeof paramError !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     try {
-        ficha = await findOneAndUpdate({ _id: res.params._id }, { "$set": update });
-        if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
-        res.send(
-            {
-                "message": "Servico adicionado a ficha com sucesso.",
-                "request": defineRequest('GET', 'ficha', ficha._id)
-            });
+        return await _updateFicha(req.params._id, res, update);
     } catch (err) { res.status(500).send(err); }
 }
 
@@ -77,7 +100,7 @@ exports.addServico = async (req, res) => {
     } catch (err) { res.status(500).send(err); }
 }
 
-exports.updateServico = async (req, res) => {
+exports.putServico = async (req, res) => {
     if (!validateServico(req, true)) return null;
     try {
         const where = { "_id": req.params._id, "servicos._id": req.params.servico_id }
