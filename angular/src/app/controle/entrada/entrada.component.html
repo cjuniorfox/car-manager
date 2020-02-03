@@ -19,7 +19,7 @@
         <div [formGroup]="dadosCadastrais">
             <form fxLayout="row" fxLayout.lt-md="column">
                 <mat-form-field fxFlex>
-                    <input type="text"[matAutocomplete]="autoCompleteCliente" id="buscaCliente" matInput
+                    <input type="text" [matAutocomplete]="autoCompleteCliente" id="buscaCliente" matInput
                         placeholder="Cliente" [formControl]="buscaCliente">
                     <mat-autocomplete #autoCompleteCliente="matAutocomplete" [displayWith]="displayWithCliente"
                         (optionSelected)="setCliente($event.option.value)" (closed)="setBuscaCliente()">
@@ -91,14 +91,13 @@
             <div fxLayout="column">
                 <h4>Serviços</h4>
                 <div class="servicos" fxFlex *ngFor="let servico of servicos; let i=index">
-                    <mat-checkbox [value]="servico" (change)="onChangeServicos($event)">{{servico}}</mat-checkbox>
+                    <mat-checkbox [checked]="servico.checked" [value]="servico.name" (change)="onChangeServicos($event)">{{servico.name}}</mat-checkbox>
                 </div>
             </div>
         </div>
         <div fxLayout="row" class="submit-button">
-            <button mat-raised-button type="submit" fxFlex [disabled]="!fichaForm.valid">Salvar</button>
+            <button mat-raised-button type="submit" color="primary" fxFlex [disabled]="!fichaForm.valid">Salvar</button>
         </div>
         <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
     </form>
 </div>
-<pre>{{fichaForm.value | json}}</pre>

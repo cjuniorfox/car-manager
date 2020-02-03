@@ -98,9 +98,18 @@ exports.get = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     try {
         const ficha = await Ficha.findById(req.params._id)
-        .populate('dadosCadastrais.cliente')
-        .populate('dadosCadastrais.clienteVeiculo')
-        .populate('created.user');
+            .populate({
+                'path': 'dadosCadastrais.cliente',
+                'populate': {
+                    'path': 'veiculos',
+                    'populate': [
+                        { 'path': 'carro', 'select': 'marca' },
+                        { 'path': 'carroModelo', 'select': 'nome' }
+                    ]
+                }
+            })
+            .populate('dadosCadastrais.clienteVeiculo')
+            .populate('created.user');
         if (!ficha)
             return res.status(404).send({ "message": "Ficha não encontrada" });
         return res.send(Object.assign(

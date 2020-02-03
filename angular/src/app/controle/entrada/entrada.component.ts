@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Location } from '@angular/common';
-import { Cliente } from 'src/app/interface/cliente';
+import { Cliente, ClienteVeiculo } from 'src/app/interface/cliente';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { FichaService } from 'src/app/service/ficha.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
-import { async } from '@rxweb/reactive-form-validators';
 import { of } from 'rxjs';
 
 @Component({
@@ -25,7 +24,8 @@ export class EntradaComponent implements OnInit {
 
   clientes = [];
 
-  servicos = Object.values(ServicoEnum)
+  servicos = this._defineServicos();
+
   errorForm: string;
   fichaId: string;
 
@@ -72,7 +72,7 @@ export class EntradaComponent implements OnInit {
   }
 
   public setCliente(cliente?: Cliente) {
-    this.dadosCadastrais.controls.cliente.setValue(cliente._id);
+    this.dadosCadastrais.get('cliente').setValue(cliente._id);
     this.veiculos = cliente.veiculos;
     //Se cliente possuir apenas um veículo, já seleciona o mesmo
     if (this.veiculos.length == 1)
@@ -125,8 +125,23 @@ export class EntradaComponent implements OnInit {
       switchMap(fichaId => this.fichaService.get(fichaId))
     ).subscribe(ficha => {
       this.fichaForm.patchValue(ficha);
-      
+      const servicosPrevisao = this.entrada.get('servicosPrevisao') as FormArray;
+      const cliente = ficha.dadosCadastrais.cliente;
+      const clienteVeiculo = ficha.dadosCadastrais.clienteVeiculo;
+      this.buscaCliente.setValue(cliente)
+      this._setClienteVeiculo(cliente, clienteVeiculo);
+      ficha.entrada.servicosPrevisao.map(servico =>
+        servicosPrevisao.push(new FormControl(servico))
+      );
+      this.servicos = this._defineServicos();
     });
+  }
+
+  private _setClienteVeiculo(cliente: Cliente, clienteVeiculo: ClienteVeiculo) {
+    const dadosCadastrais = this.fichaForm.get('dadosCadastrais') as FormGroup;
+    this.setCliente(cliente);
+    dadosCadastrais.get('cliente').setValue(cliente._id);
+    dadosCadastrais.get('clienteVeiculo').setValue(clienteVeiculo._id);
   }
 
   private _error(err: any): void {
@@ -173,6 +188,14 @@ export class EntradaComponent implements OnInit {
         const detalhe: FormControl = this.pertencesNoVeiculo.get('detalhe') as FormControl;
         value ? detalhe.enable() : detalhe.disable();
       }
+    );
+  }
+
+  private _defineServicos(): Array<{ name: string, checked: boolean }> {
+    return Object.values(ServicoEnum).map(servico => ({
+      name: servico,
+      checked: (this.entrada.get('servicosPrevisao').value.includes(servico))
+    })
     );
   }
 

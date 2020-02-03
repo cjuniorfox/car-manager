@@ -8,7 +8,8 @@ export interface ClienteVeiculo {
         _id: string
     },
     placa: string,
-    chassi: string
+    chassi: string,
+    _id: string
 }
 
 export interface Cliente {

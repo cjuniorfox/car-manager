@@ -12,8 +12,10 @@ export interface Ficha {
     },
     osSistema: Number,
     osInterna: Number,
-    dadosCadastrais: Cliente,
-    clienteVeiculo: ClienteVeiculo,
+    dadosCadastrais: {
+        cliente :  Cliente, 
+        clienteVeiculo: ClienteVeiculo
+    },
     entrada: {
         dataRecepcao: Date,
         dataPrevistaSaida: Date,
