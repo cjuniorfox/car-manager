@@ -56,6 +56,7 @@ import { InterceptorModule } from './modules/interceptor/interceptor.module';
 import { AndamentoComponent } from './controle/andamento/andamento.component';
 import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     DeletarClienteComponent,
     LoginComponent,
     AndamentoComponent,
-    FichaServicoComponent
+    FichaServicoComponent,
+    SaidaDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -123,7 +125,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
   entryComponents: [
     AtualizarCarroComponent,
     DeletarCarroComponent,
-    DeletarClienteComponent
+    DeletarClienteComponent,
+    SaidaDialogComponent
   ]
 })
 export class AppModule { }

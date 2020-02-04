@@ -1,0 +1,18 @@
+<form [formGroup]="saidaForm">
+    <div [formGroup]="dataHoraSaidaForm" fxLayout="row" fxLayout.lt-md="column">
+        <mat-form-field fxFlex>
+            <input matInput formControlName="dataSaida" placeholder="Data e horário de saída" type="text"
+                [matDatepicker]="dpSaida">
+            <mat-datepicker-toggle matSuffix [for]="dpSaida"> </mat-datepicker-toggle>
+            <mat-datepicker #dpSaida></mat-datepicker>
+            <mat-error>Necessário informar data e hora</mat-error>
+        </mat-form-field>
+        <ngx-timepicker-field aria-placeholder="Hora de saída" [format]="24" formControlName="horaSaida"></ngx-timepicker-field>
+    </div>
+    <div fxLayout="column">
+        <button mat-raised-button color="primary" type="submit">Finalizar ficha</button>
+    </div>
+    <mat-error>{{errorForm}}</mat-error>
+</form>
+<pre>{{saidaForm.value | json}}</pre>
+<pre>{{dataHoraSaidaForm.value | json}}</pre>

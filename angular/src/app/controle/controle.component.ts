@@ -9,7 +9,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { ClienteService } from '../service/cliente.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Ficha } from '../interface/ficha';
-import { FichaServicoComponent } from './fichaServico/fichaServico.component';
+import { SaidaDialogComponent } from './saida-dialog/saida-dialog.component';
 
 @Component({
   selector: 'app-controle',
@@ -50,9 +50,8 @@ export class ControleComponent implements OnInit, AfterViewInit {
     this.paginator.page.subscribe(res => { this._mapResultList(res) });
   }
 
-  registrarServicoDialog(ficha: Ficha) {
-    const data = { ficha: ficha }
-    this.dialog.open(FichaServicoComponent, { data: data });
+  saidaDialog(ficha: Ficha) {
+    this.dialog.open(SaidaDialogComponent, { data: ficha})
   }
 
   private _mapResultList(res: any) {
