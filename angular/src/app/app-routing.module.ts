@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ControleComponent } from './controle/controle.component';
 import { EntradaComponent } from './controle/entrada/entrada.component';
-import { SaidaComponent } from './controle/saida/saida.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
@@ -26,7 +25,6 @@ const routes: Routes = [
   { path: "controle/:_id", component: EntradaComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
   { path: "controle/andamento", component: AndamentoComponent, canActivate: [UserGuard] },
-  { path: "controle/saida", component: SaidaComponent, canActivate: [UserGuard] },
   { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
   { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
   { path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },

@@ -24,7 +24,6 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { HomeComponent } from './home/home.component';
 import { ControleComponent } from './controle/controle.component';
 import { EntradaComponent } from './controle/entrada/entrada.component';
-import { SaidaComponent } from './controle/saida/saida.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
@@ -44,7 +43,6 @@ import { MatCardModule } from '@angular/material/card';
 import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
@@ -66,7 +64,6 @@ import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.compo
     HomeComponent,
     ControleComponent,
     EntradaComponent,
-    SaidaComponent,
     OpcaoComponent,
     UsuarioComponent,
     PermissaoComponent,

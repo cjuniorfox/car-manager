@@ -4,6 +4,7 @@ import { FichaService } from 'src/app/service/ficha.service';
 import { Ficha } from 'src/app/interface/ficha';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { addTimeToDate } from 'src/app/util/addTimeToDate';
+import { getErrorMessage } from 'src/app/util/getErrorMessage';
 
 @Component({
   selector: 'app-saida-dialog',
@@ -21,8 +22,8 @@ export class SaidaDialogComponent implements OnInit {
   });
 
   dataHoraSaidaForm = this.fb.group({
-    dataSaida : [new Date(), Validators.required],
-    horaSaida : [new Date().getHours() + ':' + new Date().getMinutes(), Validators.required]
+    dataSaida: [new Date(), Validators.required],
+    horaSaida: [new Date().getHours() + ':' + new Date().getMinutes(), Validators.required]
   })
 
   constructor(public dialogref: MatDialogRef<SaidaDialogComponent>,
@@ -36,11 +37,24 @@ export class SaidaDialogComponent implements OnInit {
     const saida = this.saidaForm.get('saida') as FormControl;
     const dataSaida = this.dataHoraSaidaForm.get('dataSaida') as FormControl;
     const horaSaida = this.dataHoraSaidaForm.get('horaSaida') as FormControl;
-    this.dataHoraSaidaForm.valueChanges.subscribe(value=>{
+    this.dataHoraSaidaForm.valueChanges.subscribe(value => {
       if (horaSaida.value && dataSaida.value && horaSaida.value != 'Invalid DateTime') {
         saida.setValue(addTimeToDate(horaSaida.value, dataSaida.value));
       }
     })
+  }
+
+  onClose(): void {
+    this.dialogref.close();
+  }
+
+  onSubmit(): void {
+    this.fichaService.finalizar(this.ficha._id, this.saidaForm.get('saida').value)
+    .subscribe(()=>{
+      this.dialogref.close(true)
+    },err=>{
+      this.errorForm = getErrorMessage(err);
+    });
   }
 
 }
