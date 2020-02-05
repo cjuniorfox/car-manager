@@ -6,10 +6,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SearchFicha } from '../model/searchFicha.model';
 import { FichaPagination } from '../interface/ficha-pagination';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { ClienteService } from '../service/cliente.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Ficha } from '../interface/ficha';
 import { SaidaDialogComponent } from './saida-dialog/saida-dialog.component';
+import { FormControl } from '@angular/forms';
+import { ClienteService } from '../service/cliente.service';
 
 @Component({
   selector: 'app-controle',
@@ -30,6 +31,8 @@ export class ControleComponent implements OnInit, AfterViewInit {
   colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo'];
   colunasServico = ['funcionario','inicio', 'servico', 'setor','fim'];
 
+  sliderAtivas = new FormControl([true]);
+
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -44,6 +47,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const getQuery = new SearchFicha();
+    getQuery.ativas = this.sliderAtivas.value ? 1 : 0;
     getQuery.pageIndex = this.paginator.pageIndex;
     getQuery.pageSize = this.paginator.pageSize;
     this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });

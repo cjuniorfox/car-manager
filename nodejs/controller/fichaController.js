@@ -61,7 +61,7 @@ exports.put = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     try {
         console.log(req.body)
-        const ficha = await Ficha.findOneAndUpdate({ _id: req.params._id },  req.body );
+        const ficha = await Ficha.findOneAndUpdate({ _id: req.params._id }, req.body);
         if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
         res.send(
             {
@@ -148,16 +148,17 @@ exports.fichas = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     const getQuery = defineQuery(req.query);
     try {
-        let where = {
-            $or: [
-                { "finalizado.at": null },
-                { finalizado: null }
-            ]
-        };
+        let where = {};
         //Se ativas =1 (true), exibe apenas fichas que não foram finalizadas.
         if (req.query.ativas == 1)
-            where.$or.push({ finalizado: { $exists: false } });
-
+            where = {
+                $or: [
+                    { "finalizado.at": null },
+                    { finalizado: null }
+                ]
+            };
+        //where.$or.push({ finalizado: { $exists: false } });
+        console.log(req.query)
         const fichas = await Ficha.find(where)
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)

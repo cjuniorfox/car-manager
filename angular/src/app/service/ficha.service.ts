@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { removeEmpty } from '../util/removeEmpty';
-import { Search } from '../model/search.model';
 import { Ficha } from '../interface/ficha';
 import { Observable } from 'rxjs';
 import { FichaPagination } from '../interface/ficha-pagination';
-import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
-import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { updateOps } from '../util/updateOps';
+import { SearchFicha } from '../model/searchFicha.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,12 +42,13 @@ export class FichaService {
     return this._http.put(url, postRequest);
   }
 
-  public listar(getQuery: Search): Observable<FichaPagination> {
+  public listar(getQuery: SearchFicha): Observable<FichaPagination> {
     const url = this.routes.listar;
     let params = new HttpParams()
       .set('search', getQuery.search)
       .set('index', getQuery.pageIndex.toString())
-      .set('size', getQuery.pageSize.toString());
+      .set('size', getQuery.pageSize.toString())
+      .set('ativas', getQuery.ativas.toString());
     return this._http.get<FichaPagination>(url, { params });
   }
 

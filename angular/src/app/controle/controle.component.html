@@ -6,7 +6,7 @@
 
     <div class="toolmenu" fxLayout="row">
         <div fxFlex>
-            <mat-slide-toggle>Fichas em andamento</mat-slide-toggle>
+            <mat-slide-toggle [formControl]="sliderAtivas">Apenas em andamento</mat-slide-toggle>
         </div>
         <div fxFlex fxHide.lt-md>
             <button mat-raised-button>Busca avançada</button></div>
