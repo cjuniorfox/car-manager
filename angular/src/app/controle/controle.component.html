@@ -6,8 +6,10 @@
 
     <div class="toolmenu" fxLayout="row">
         <div fxFlex>
-            <mat-slide-toggle [formControl]="sliderAtivas">Apenas em andamento</mat-slide-toggle>
+            <mat-slider id="slider-ativas" min= "0" max="2" step="1"></mat-slider>
         </div>
+        <label fxFlex for="slider-ativas" [formControl]="sliderAtivo">{{messageSliderAtivo}}</label>
+        <mat-slide-toggle [formControl]="sliderAtivas">Apenas em andamento</mat-slide-toggle>
         <div fxFlex fxHide.lt-md>
             <button mat-raised-button>Busca avançada</button></div>
         <div fxFlex fxHide.lt-md>

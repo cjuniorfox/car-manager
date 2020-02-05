@@ -55,6 +55,7 @@ import { AndamentoComponent } from './controle/andamento/andamento.component';
 import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
+import { MatSliderModule } from '@angular/material/slider'; 
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.compo
     NgxMaskModule.forRoot(),
     MatTooltipModule,
     MatSlideToggleModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -178,7 +178,6 @@ exports.fichas = async (req, res) => {
                 ]
             };
         //where.$or.push({ finalizado: { $exists: false } });
-        console.log(req.query)
         const fichas = await Ficha.find(where)
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)

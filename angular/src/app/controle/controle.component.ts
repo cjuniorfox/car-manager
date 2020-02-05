@@ -32,6 +32,8 @@ export class ControleComponent implements OnInit, AfterViewInit {
   colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim'];
 
   sliderAtivas = new FormControl([true]);
+  sliderAtivo = new FormControl([0]);
+  messageSliderAtivo = "Apenas ativos"
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -43,10 +45,12 @@ export class ControleComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this._sliderAtivasValuechanges();
+  }
 
   ngAfterViewInit() {
-    this._refreshList()
+    this._refreshList();
   }
 
   saidaDialog(ficha: Ficha) {
@@ -66,11 +70,18 @@ export class ControleComponent implements OnInit, AfterViewInit {
   }
 
   private _refreshList() {
+    this.loading = true;
     const getQuery = new SearchFicha();
     getQuery.ativas = this.sliderAtivas.value ? 1 : 0;
     getQuery.pageIndex = this.paginator.pageIndex;
     getQuery.pageSize = this.paginator.pageSize;
     this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
     this.paginator.page.subscribe(res => { this._mapResultList(res) });
+  }
+
+  private _sliderAtivasValuechanges(){
+    this.sliderAtivas.valueChanges.subscribe(val => {
+      this._refreshList();
+    })
   }
 }
