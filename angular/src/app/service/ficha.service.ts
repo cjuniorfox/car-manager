@@ -18,7 +18,8 @@ export class FichaService {
     ficha: this.endpoint + '/',
     saveFichaEntrada: this.endpoint + '/entrada',
     listar: this.endpoint + '/listar',
-    addServico: this.endpoint + '/{_id}/add-servico'
+    addServico: this.endpoint + '/{_id}/add-servico',
+    finalizar: this.endpoint + '/{_id}/finalizar'
   };
 
   constructor(
@@ -62,6 +63,12 @@ export class FichaService {
     const postRequest = removeEmpty(body);
     const url = this.routes.addServico.replace('{_id}', id);
     return this._http.post(url, postRequest);
+  }
+
+  public finalizar(id: string, dataFinalizacao: Date):Observable<any> {
+    const postRequest = { at: dataFinalizacao};
+    const url = this.routes.finalizar.replace('{_id}', id);
+    return this._http.post(url, postRequest)
   }
 
 }

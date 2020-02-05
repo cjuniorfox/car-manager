@@ -1,5 +1,10 @@
 Ficha = require('../model/Ficha');
-const { fichaPostValidation, fichaPatchValidation, fichaServicoValidation, fichaIdValidation, fichaIdServicoValidation } = require('../validation/fichaValidation');
+const { fichaPostValidation,
+    fichaPatchValidation,
+    fichaServicoValidation,
+    fichaIdValidation,
+    fichaIdServicoValidation,
+    fichaFinalizadoValidation } = require('../validation/fichaValidation');
 const { searchFichaValidation } = require('../validation/searchValidation');
 const defineRequest = require('../util/defineRequest');
 const defineQuery = require('../util/defineQuery');
@@ -60,7 +65,6 @@ exports.put = async (req, res) => {
     if (typeof paramError !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     try {
-        console.log(req.body)
         const ficha = await Ficha.findOneAndUpdate({ _id: req.params._id }, req.body);
         if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
         res.send(
@@ -81,6 +85,22 @@ exports.patch = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     try {
         return await _updateFicha(req.params._id, res, update);
+    } catch (err) { res.status(500).send(err); }
+}
+
+exports.finalizar = async (req, res) => {
+    const { error } = fichaFinalizadoValidation(req.body);
+
+    const { paramError } = fichaIdValidation(req.params);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    if (typeof paramError !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    try {
+        const finalizado = { ...req.body, ...{ user: req.user._id } };
+        const update = { finalizado: finalizado };
+        console.log(update);
+        return await _updateFicha(req.params._id, res, update)
     } catch (err) { res.status(500).send(err); }
 }
 

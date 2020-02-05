@@ -29,7 +29,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
   colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo'];
-  colunasServico = ['funcionario','inicio', 'servico', 'setor','fim'];
+  colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim'];
 
   sliderAtivas = new FormControl([true]);
 
@@ -46,16 +46,16 @@ export class ControleComponent implements OnInit, AfterViewInit {
   ngOnInit() { }
 
   ngAfterViewInit() {
-    const getQuery = new SearchFicha();
-    getQuery.ativas = this.sliderAtivas.value ? 1 : 0;
-    getQuery.pageIndex = this.paginator.pageIndex;
-    getQuery.pageSize = this.paginator.pageSize;
-    this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
-    this.paginator.page.subscribe(res => { this._mapResultList(res) });
+    this._refreshList()
   }
 
   saidaDialog(ficha: Ficha) {
-    this.dialog.open(SaidaDialogComponent, { data: ficha})
+    const dialogRef = this.dialog.open(SaidaDialogComponent, { data: ficha });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res === true) {
+        this._refreshList();
+      }
+    })
   }
 
   private _mapResultList(res: any) {
@@ -63,5 +63,14 @@ export class ControleComponent implements OnInit, AfterViewInit {
     this.paginator.length = res.count;
     this.fichas.sort = this.sort;
     this.loading = false;
+  }
+
+  private _refreshList() {
+    const getQuery = new SearchFicha();
+    getQuery.ativas = this.sliderAtivas.value ? 1 : 0;
+    getQuery.pageIndex = this.paginator.pageIndex;
+    getQuery.pageSize = this.paginator.pageSize;
+    this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
+    this.paginator.page.subscribe(res => { this._mapResultList(res) });
   }
 }

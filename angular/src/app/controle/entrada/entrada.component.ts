@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
 import { of } from 'rxjs';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
+import { getErrorMessage } from 'src/app/util/getErrorMessage';
 
 @Component({
   selector: 'app-entrada',
@@ -133,13 +134,13 @@ export class EntradaComponent implements OnInit {
       this.fichaService.put(this.fichaId, this.fichaForm.value)
         .subscribe(
           () => this.router.navigate(['/controle']),
-          err => this._error(err)
+          err => getErrorMessage(err)
         );
     } else {
       this.fichaService.saveFichaEntrada(this.fichaForm.value)
         .subscribe(
           () => this.router.navigate(['/controle']),
-          err => this._error(err)
+          err => getErrorMessage(err)
         );
     }
   }
@@ -176,13 +177,7 @@ export class EntradaComponent implements OnInit {
     dadosCadastrais.get('clienteVeiculo').setValue(clienteVeiculo._id);
   }
 
-  private _error(err: any): void {
-    if ((err.error.message)) {
-      this.errorForm = err.error.message;
-    } else {
-      this.errorForm = 'Ocorreu um erro desconhecido'
-    }
-  };
+
 
   private _observableClienteAutoComplete() {
     this.buscaCliente.valueChanges

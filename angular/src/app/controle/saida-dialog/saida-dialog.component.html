@@ -1,18 +1,24 @@
-<form [formGroup]="saidaForm">
-    <div [formGroup]="dataHoraSaidaForm" fxLayout="row" fxLayout.lt-md="column">
-        <mat-form-field fxFlex>
-            <input matInput formControlName="dataSaida" placeholder="Data e horário de saída" type="text"
-                [matDatepicker]="dpSaida">
-            <mat-datepicker-toggle matSuffix [for]="dpSaida"> </mat-datepicker-toggle>
-            <mat-datepicker #dpSaida></mat-datepicker>
-            <mat-error>Necessário informar data e hora</mat-error>
-        </mat-form-field>
-        <ngx-timepicker-field aria-placeholder="Hora de saída" [format]="24" formControlName="horaSaida"></ngx-timepicker-field>
-    </div>
-    <div fxLayout="column">
-        <button mat-raised-button color="primary" type="submit">Finalizar ficha</button>
-    </div>
-    <mat-error>{{errorForm}}</mat-error>
-</form>
-<pre>{{saidaForm.value | json}}</pre>
-<pre>{{dataHoraSaidaForm.value | json}}</pre>
+<div class="saida-dialog">
+    <h1>Confirmar registro de saída?</h1>
+    <p>Confirmando o horário de saída do veículo, você finalizará a ficha.</p>
+    <form [formGroup]="saidaForm" (ngSubmit)="onSubmit()">
+        <div [formGroup]="dataHoraSaidaForm" fxLayout="row" fxLayout.lt-md="column">
+            <mat-form-field fxFlex>
+                <input matInput formControlName="dataSaida" placeholder="Data e horário de saída" type="text"
+                    [matDatepicker]="dpSaida">
+                <mat-datepicker-toggle matSuffix [for]="dpSaida"> </mat-datepicker-toggle>
+                <mat-datepicker #dpSaida></mat-datepicker>
+                <mat-error>Necessário informar data e hora</mat-error>
+            </mat-form-field>
+            <ngx-timepicker-field aria-placeholder="Hora de saída" [format]="24" [controlOnly]="true"
+                formControlName="horaSaida">
+            </ngx-timepicker-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-md="column">
+            <button fxFlex="2 0 0" mat-raised-button color="primary" [disabled]="!saidaForm.valid"
+                type="submit">Finalizar ficha</button>
+            <button fxFlex mat-raised-button color="warn" type="button" (click)="onClose()">Fechar</button>
+        </div>
+        <mat-error>{{errorForm}}</mat-error>
+    </form>
+</div>

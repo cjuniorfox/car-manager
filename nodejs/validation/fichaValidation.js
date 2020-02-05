@@ -45,6 +45,13 @@ const fichaPatchValidation = (data) => {
     return fichaSchema.allOptional().validate(data);
 }
 
+const fichaFinalizadoValidation = (data) => {
+    const schema = Joi.object({
+        at: Joi.date().optional()
+    });
+    return schema.validate(data);
+}
+
 const fichaServicoValidation = (data) => {
     const schema = Joi.object({
         servico: Joi.required().valid(ServicoEnum.CORTESIA, ServicoEnum.DUCHA, ServicoEnum.LAVAGEM_COMPLETA, ServicoEnum.LAVAGEM_SIMPLES),
@@ -69,11 +76,13 @@ const fichaIdServicoValidation = (data) => {
     return schema.validate(data);
 }
 
+
 module.exports = {
-    fichaPostValidation: fichaPostValidation,
-    fichaPatchValidation : fichaPatchValidation,
-    fichaServicoValidation: fichaServicoValidation,
-    fichaPatchValidation: fichaPatchValidation,
-    fichaIdValidation: fichaIdValidation,
-    fichaIdServicoValidation: fichaIdServicoValidation
+    fichaPostValidation,
+    fichaPatchValidation,
+    fichaServicoValidation,
+    fichaPatchValidation,
+    fichaIdValidation,
+    fichaIdServicoValidation,
+    fichaFinalizadoValidation
 }
