@@ -44,23 +44,28 @@
                 </div>
             </div>
         </div>
-        <div [formGroup]="entrada">
-            <div fxLayout="row" fxLayout.lt-md="column">
-                <form [formGroup]="formDataHora">
-                    <mat-form-field fxFlex>
-                        <input matInput id="dataRecepcao" [matDatepicker]="dpDataRecepcao"
-                            placeholder="Data de recepção" formControlName="dataRecepcao">
-                        <mat-datepicker-toggle matSuffix [for]="dpDataRecepcao"> </mat-datepicker-toggle>
-                        <mat-datepicker #dpDataRecepcao></mat-datepicker>
-                    </mat-form-field>
-                </form>
+        <div>
+            <form [formGroup]="dataHoraRecepcao" fxLayout="row" fxLayout.lt-md="column">
+                <mat-form-field fxFlex>
+                    <input matInput id="dataRecepcao" [matDatepicker]="dpDataRecepcao" placeholder="Data de recepção"
+                        formControlName="dataRecepcao">
+                    <mat-datepicker-toggle matSuffix [for]="dpDataRecepcao"> </mat-datepicker-toggle>
+                    <mat-datepicker #dpDataRecepcao></mat-datepicker>
+                </mat-form-field>
+                <ngx-timepicker-field aria-placeholder="Hora inicial" [format]="24" formControlName="horaRecepcao">
+                </ngx-timepicker-field>
+            </form>
+            <form [formGroup]="dataHoraPrevisaoSaida" fxLayout="row" fxLayout.lt-md="column">
                 <mat-form-field fxFlex>
                     <input matInput id="dataPrevisaoSaida" [matDatepicker]="dpDataPrevisaoSaida"
                         placeholder="Data de previsão de saída" formControlName="dataPrevisaoSaida">
                     <mat-datepicker-toggle matSuffix [for]="dpDataPrevisaoSaida"> </mat-datepicker-toggle>
                     <mat-datepicker #dpDataPrevisaoSaida></mat-datepicker>
                 </mat-form-field>
-            </div>
+                <ngx-timepicker-field aria-placeholder="Hora previsão saída" [format]="24"
+                    formControlName="horaPrevisaoSaida">
+                </ngx-timepicker-field>
+            </form>
             <div fxLayout="column" [formGroup]="avariaExterior">
                 <div fxFlex>
                     <mat-slide-toggle labelPosition="before" formControlName="existente">Avaria no exterior do veículo
@@ -105,4 +110,6 @@
         <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
     </form>
 </div>
-<!-- <pre>{{fichaForm.value | json}}</pre> -->
+<pre>{{fichaForm.value | json}}</pre>
+<pre>{{dataHoraRecepcao.value | json}}</pre>
+<pre>{{dataHoraPrevisaoSaida.value | json}}</pre>

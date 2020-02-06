@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: "controle/entrada", component: EntradaComponent, canActivate: [UserGuard] },
   { path: "controle/:_id", component: EntradaComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
+  { path: "controle/:_id/:servico_id", component: FichaServicoComponent, canActivate: [UserGuard] },
   { path: "controle/andamento", component: AndamentoComponent, canActivate: [UserGuard] },
   { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
   { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },

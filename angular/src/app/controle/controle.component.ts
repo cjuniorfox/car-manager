@@ -29,10 +29,10 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
-  colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo'];
-  colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim'];
+  colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo', 'finalizado'];
+  colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim', 'actions'];
 
-  sliderAtivas = new FormControl([true]);
+//  sliderAtivas = new FormControl([true]);
   arrLabelSliderAtivo = ['Apenas ativas', 'Apenas finalizadas', 'Todas as fichas']
   sliderAtivo = new FormControl([0]);
   labelSliderAtivo = this.arrLabelSliderAtivo[this.sliderAtivo.value];

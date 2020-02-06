@@ -65,7 +65,10 @@ const fichaServicoValidation = (data) => {
 }
 
 const fichaIdValidation = (data) => {
-    const schema = Joi.object({ _id: Joi.required().valid() });
+    const schema = Joi.object({
+        _id: Joi.required().valid(),
+        servico_id: Joi.optional()
+    });
     return schema.validate(data);
 }
 const fichaIdServicoValidation = (data) => {

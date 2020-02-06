@@ -19,6 +19,7 @@ export class FichaService {
     saveFichaEntrada: this.endpoint + '/entrada',
     listar: this.endpoint + '/listar',
     addServico: this.endpoint + '/{_id}/add-servico',
+    putServico: this.endpoint+ '/{_id}/{servico._id}',
     finalizar: this.endpoint + '/{_id}/finalizar'
   };
 
@@ -26,8 +27,10 @@ export class FichaService {
     private _http: HttpClient
   ) { }
 
-  public get(fichaId): Observable<Ficha> {
-    const url = this.routes.ficha + fichaId;
+  public get(fichaId, servicoId): Observable<Ficha> {
+    let url = this.routes.ficha + fichaId;
+    if (servicoId)
+      url = url + '/' + servicoId;
     return this._http.get<Ficha>(url);
   }
 
@@ -37,7 +40,7 @@ export class FichaService {
     return this._http.patch(url, updFicha);
   }
 
-  public put(fichaId, ficha){
+  public put(fichaId, ficha) {
     const url = this.routes.ficha + fichaId;
     const postRequest = removeEmpty(ficha);
     return this._http.put(url, postRequest);
@@ -59,16 +62,23 @@ export class FichaService {
     return this._http.post(url, postRequest);
   }
 
-  public addServico(id, body) {
+  public addServico(id: string, body: any) {
     const postRequest = removeEmpty(body);
     const url = this.routes.addServico.replace('{_id}', id);
     return this._http.post(url, postRequest);
   }
 
-  public finalizar(id: string, dataFinalizacao: Date):Observable<any> {
-    const postRequest = { at: dataFinalizacao};
+  public finalizar(id: string, dataFinalizacao: Date): Observable<any> {
+    const postRequest = { at: dataFinalizacao };
     const url = this.routes.finalizar.replace('{_id}', id);
     return this._http.post(url, postRequest)
   }
+
+  public putServico(id: string, servicoId: string, body: any) {
+    const postRequest = removeEmpty(body);
+    const url = this.routes.putServico.replace('{_id}', id).replace('{servico._id}',servicoId);
+    return this._http.put(url,postRequest);
+  }
+
 
 }

@@ -7,9 +7,10 @@ import { ClienteService } from 'src/app/service/cliente.service';
 import { FichaService } from 'src/app/service/ficha.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
-import { of } from 'rxjs';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { getErrorMessage } from 'src/app/util/getErrorMessage';
+import { observablDatetime } from 'src/app/util/observableDatetime';
+import { fillDateAndTimeWithDatetime } from 'src/app/util/fillDateAndTimeWithDatetime';
 
 @Component({
   selector: 'app-entrada',
@@ -28,8 +29,8 @@ export class EntradaComponent implements OnInit {
       clienteVeiculo: ['', Validators.required]
     }),
     entrada: this.fb.group({
-      dataRecepcao: [new Date(), Validators.required],
-      dataPrevisaoSaida: [null],
+      dataRecepcao: ['', Validators.required],
+      dataPrevisaoSaida: [''],
       avariaExterior: this.fb.group({
         existente: [false],
         detalhe: [{ value: '', disabled: true }, Validators.required]
@@ -45,6 +46,15 @@ export class EntradaComponent implements OnInit {
       servicosPrevisao: this.fb.array([], [RxwebValidators.unique(), Validators.required])
     })
   });
+
+  dataHoraRecepcao = this.fb.group({
+    dataRecepcao: [new Date(), Validators.required],
+    horaRecepcao: [new Date().getHours() + ':' + new Date().getMinutes(), Validators.required]
+  })
+  dataHoraPrevisaoSaida = this.fb.group({
+    dataPrevisaoSaida: [''],
+    horaPrevisaoSaida: ['']
+  })
 
   buscaCliente = new FormControl('', [Validators.required]);
 
@@ -66,29 +76,22 @@ export class EntradaComponent implements OnInit {
 
   ngOnInit() {
     this._getFicha(); //Em caso de update
+    this._observableDataHora();
     this._observableClienteAutoComplete();
     this._observableAvariasEPertences();
   }
 
-  get dadosCadastrais() {
-    return this.fichaForm.get('dadosCadastrais') as FormGroup;
-  }
-
-  get entrada() {
-    return this.fichaForm.get('entrada') as FormGroup;
-  }
-
-  get avariaExterior() {
-    return this.entrada.get('avariaExterior') as FormGroup;
-  }
-
-  get avariaInterior() {
-    return this.entrada.get('avariaInterior') as FormGroup;
-  }
-
-  get pertencesNoVeiculo() {
-    return this.entrada.get('pertencesNoVeiculo') as FormGroup;
-  }
+  get dadosCadastrais() { return this.fichaForm.get('dadosCadastrais') as FormGroup }
+  get entrada() { return this.fichaForm.get('entrada') as FormGroup }
+  get avariaExterior() { return this.entrada.get('avariaExterior') as FormGroup }
+  get avariaInterior() { return this.entrada.get('avariaInterior') as FormGroup }
+  get pertencesNoVeiculo() { return this.entrada.get('pertencesNoVeiculo') as FormGroup }
+  get dataRecepcao() { return this.dataHoraRecepcao.get('dataRecepcao') as FormControl };
+  get horaRecepcao() { return this.dataHoraRecepcao.get('horaRecepcao') as FormControl };
+  get datahoraRecepcaoField() { return this.fichaForm.get('entrada').get('dataRecepcao') as FormControl };
+  get dataPrevisaoSaida() { return this.dataHoraPrevisaoSaida.get('dataPrevisaoSaida') as FormControl };
+  get horaPrevisaoSaida() { return this.dataHoraPrevisaoSaida.get('horaPrevisaoSaida') as FormControl };
+  get dataHoraPrevisaoSaidaField() { return this.fichaForm.get('entrada').get('dataPrevisaoSaida') as FormControl };
 
   public displayWithCliente(cliente?: Cliente): string | undefined {
     return cliente ? cliente.nome : undefined;
@@ -155,7 +158,7 @@ export class EntradaComponent implements OnInit {
         return false;
       }),
       filter(fichaId => fichaId != false),
-      switchMap(fichaId => this.fichaService.get(fichaId))
+      switchMap(fichaId => this.fichaService.get(fichaId, null))
     ).subscribe(ficha => {
       this.fichaForm.patchValue(ficha);
       const servicosPrevisao = this.entrada.get('servicosPrevisao') as FormArray;
@@ -163,6 +166,8 @@ export class EntradaComponent implements OnInit {
       const clienteVeiculo = ficha.dadosCadastrais.clienteVeiculo;
       this.buscaCliente.setValue(cliente)
       this._setClienteVeiculo(cliente, clienteVeiculo);
+      fillDateAndTimeWithDatetime(this.dataRecepcao, this.horaRecepcao, this.datahoraRecepcaoField);
+      fillDateAndTimeWithDatetime(this.dataPrevisaoSaida, this.horaPrevisaoSaida, this.dataHoraPrevisaoSaidaField);
       ficha.entrada.servicosPrevisao.map(servico =>
         servicosPrevisao.push(new FormControl(servico))
       );
@@ -224,5 +229,24 @@ export class EntradaComponent implements OnInit {
       checked: (this.entrada.get('servicosPrevisao').value.includes(servico))
     }));
   }
+
+  private _observableDataHora() {
+    observablDatetime(this.dataRecepcao, this.horaRecepcao, this.datahoraRecepcaoField);
+    observablDatetime(this.dataPrevisaoSaida, this.horaPrevisaoSaida, this.dataHoraPrevisaoSaidaField);
+  }
+
+  /* private _preencherHoraInicio(hrInicio: string, dtInicio: Date) {
+    if (hrInicio && dtInicio && hrInicio != 'Invalid DateTime') {
+      const dataInicio = this.formServico.get('inicio');
+      dataInicio.setValue(addTimeToDate(hrInicio, dtInicio));
+    }
+  }
+
+  private _preencherHoraFim(hrFim: string, dtFim: Date) {
+    if (hrFim && dtFim && hrFim != 'Invalid DateTime') {
+      const dataFim = this.formServico.get('fim');
+      dataFim.Value(addTimeToDate(hrFim, dtFim));
+    }
+  } */
 
 }

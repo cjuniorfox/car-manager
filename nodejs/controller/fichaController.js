@@ -10,6 +10,7 @@ const defineRequest = require('../util/defineRequest');
 const defineQuery = require('../util/defineQuery');
 const paginationRequest = require('../util/paginationRequest');
 const updateOps = require('../util/updateOps');
+const mongoose = require('mongoose');
 
 const defineFichaCreated = (req) => {
     return {
@@ -99,7 +100,6 @@ exports.finalizar = async (req, res) => {
     try {
         const finalizado = { ...req.body, ...{ user: req.user._id } };
         const update = { finalizado: finalizado };
-        console.log(update);
         return await _updateFicha(req.params._id, res, update)
     } catch (err) { res.status(500).send(err); }
 }
@@ -123,8 +123,10 @@ exports.addServico = async (req, res) => {
 exports.putServico = async (req, res) => {
     if (!validateServico(req, true)) return null;
     try {
+        const body = req.body;
+        Object.assign(body, { user: req.user._id });
         const where = { "_id": req.params._id, "servicos._id": req.params.servico_id }
-        const update = { "$set": { "servicos.$": req.body } };
+        const update = { "$set": { "servicos.$": body } };
         const ficha = await Ficha.findOneAndUpdate(where, update);
         if (!ficha) return res.status(404).send({ "message": "Ficha ou serviço não encontrado." });
         res.send(
@@ -140,7 +142,13 @@ exports.get = async (req, res) => {
     if (typeof error !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     try {
-        const ficha = await Ficha.findById(req.params._id)
+        let filter = { _id: req.params._id };
+        let options;
+        if (req.params.servico_id){
+            filter = { ...filter, ...{ servicos: { $elemMatch: { _id: req.params.servico_id } } } }
+            options = { 'servicos.$': 1 }
+        }
+        const ficha = await Ficha.findOne(filter)
             .populate({
                 'path': 'dadosCadastrais.cliente',
                 'populate': {
@@ -153,6 +161,23 @@ exports.get = async (req, res) => {
             })
             .populate('dadosCadastrais.clienteVeiculo')
             .populate('created.user');
+        /* const fichaAg = await Ficha.aggregate([{
+            "$match":
+                { _id: mongoose.Types.ObjectId(req.params._id) },
+        }, {
+            "$project": {
+                "servicos": {
+                    "$filter": {
+                        "input": "$servicos",
+                        "as": "servicos",
+                        "cond": {
+                            "$eq": ["$$servicos._id", mongoose.Types.ObjectId(req.params.servico_id)]
+                        }
+                    }
+                }
+            }
+        }]);
+         */
         if (!ficha)
             return res.status(404).send({ "message": "Ficha não encontrada" });
         return res.send(Object.assign(
@@ -179,7 +204,7 @@ exports.fichas = async (req, res) => {
         else if (req.query.ativas == 1)
             where = {
                 $or: [
-                    { finalizado: {$exists:true} }
+                    { finalizado: { $exists: true } }
                 ]
             };
         else
@@ -189,6 +214,7 @@ exports.fichas = async (req, res) => {
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)
             .populate({ path: 'created.user', select: 'name username admin' })
+            .populate('finalizado.user')
             .populate({ path: 'servicos.user', select: 'name username' })
             .populate({ path: 'dadosCadastrais.cliente', select: 'nome documento endereco telefones' })
             .populate({
@@ -198,6 +224,10 @@ exports.fichas = async (req, res) => {
                     'carroModelo'
                 ]
             });
+        fichas.map(ficha => {
+            ficha.servicos.sort((m1, m2) => m1.inicio - m2.inicio)
+            return ficha;
+        })
         const qtFichas = await Ficha.countDocuments(where);
         res.send(paginationRequest(fichas, qtFichas, getQuery, 'ficha'));
     } catch (err) { res.status(500).send(err); console.error(err) }

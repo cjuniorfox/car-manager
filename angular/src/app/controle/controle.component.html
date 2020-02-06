@@ -5,10 +5,9 @@
     <div class="spacer"></div>
 
     <div class="toolmenu" fxLayout="row">
-        <label fxFlex="2 0 0" for="slider-ativo" [formControl]="sliderAtivo">{{labelSliderAtivo}}</label>
+        <label fxFlex="2 0 0" for="slider-ativo">{{labelSliderAtivo}}</label>
         <mat-slider fxFlex [formControl]="sliderAtivo" id="slider-ativo" min="0" max="2" step="1"></mat-slider>
-<!--         <mat-slide-toggle [formControl]="sliderAtivas">Apenas em andamento</mat-slide-toggle>
- -->        <div fxFlex fxHide.lt-md>
+        <div fxFlex fxHide.lt-md>
             <button mat-raised-button>Busca avançada</button></div>
         <div fxFlex fxHide.lt-md>
             <button mat-raised-button routerLink="entrada">Entrada de veículo</button></div>
@@ -50,6 +49,15 @@
     <ng-container matColumnDef="carroModelo">
         <th mat-header-cell *matHeaderCellDef>Modelo</th>
         <td mat-cell *matCellDef="let f"> {{f.dadosCadastrais.clienteVeiculo.carroModelo.nome}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="finalizado">
+        <th mat-header-cell *matHeaderCellDef>Finalizado</th>
+        <td mat-cell *matCellDef="let f">
+            <ng-container *ngIf="f.finalizado.at">
+                <mat-icon color="green">ok</mat-icon>
+            </ng-container>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="expandedDetail">
@@ -100,6 +108,26 @@
                             </ul>
                         </mat-card-content>
                     </mat-card>
+                    <mat-card class="secao" fxFlex *ngIf="f.finalizado.at">
+                        <mat-card-header>
+                            <h3>Finalizado / Retorno</h3>
+                        </mat-card-header>
+                        <mat-card-content>
+                            Finalizado em: {{f.finalizado.at | date}} por {{f.finalizado.user.username}}
+                        </mat-card-content>
+                        <mat-card-content>
+                            <div>
+                                <h4>Retorno</h4>
+                                <ul>
+                                    <li *ngFor="let r of f.retornos"></li>
+                                </ul>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+
+
+                </div>
+                <div class="detalhe-ficha" fxLayout="row" fxLayout.lt-md="column">
                     <mat-card class="secao" *ngIf="f.servicos.length > 0" fxFlex="4 0 0">
                         <mat-card-header>
                             <h3>Serviços realizados</h3>
@@ -136,6 +164,18 @@
                                         {{servico.user.username}}
                                     </td>
                                 </ng-container>
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef>&nbsp;</th>
+                                    <td mat-cell *matCellDef="let servico">
+                                        <button matTooltip="Atualizar serviço" [routerLink]="f._id+'/'+servico._id"
+                                            mat-icon-button>
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                        <button matTooltip="Remover serviço" mat-icon-button>
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="colunasServico"></tr>
                                 <tr mat-row *matRowDef="let row; columns: colunasServico;"></tr>
                             </table>
@@ -154,8 +194,16 @@
                         </button>
                     </div>
                     <div fxFlex>
-                        <button mat-raised-button color="primary" (click)="saidaDialog(f)">
-                            <mat-icon>arrow_downward</mat-icon> Saida
+                        <button *ngIf="f.finalizado.at" mat-raised-button color="accent" (click)="saidaDialog(f)">
+                            <mat-icon>arrow_downward</mat-icon> Alterar saída
+                        </button>
+                        <button *ngIf="!f.finalizado.at" [disabled]="f.servicos.length == 0" mat-raised-button color="primary" (click)="saidaDialog(f)">
+                            <mat-icon>arrow_downward</mat-icon> Registrar saída
+                        </button>
+                    </div>
+                    <div fxFlex *ngIf="f.finalizado.at">
+                        <button mat-raised-button color="warn">
+                            <mat-icon>repeat</mat-icon> Registrar retorno
                         </button>
                     </div>
                 </div>

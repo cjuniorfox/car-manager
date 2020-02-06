@@ -38,7 +38,7 @@ const fichaSchema = new mongoose.Schema({
             required: true,
             default: Date.now
         },
-        dataPrevistaSaida: Date,
+        dataPrevisaoSaida: Date,
         avariaExterior: {
             existente: {
                 type: Boolean,
@@ -83,29 +83,23 @@ const fichaSchema = new mongoose.Schema({
             type: String,
             Enumerator: Object.values(BoxEnum)
         },
-        descricao: {
-            type: String,
-            required: false
-        },
-        inicio: {
-            type: Date,
-            required: true
-        },
-        fim: Date
+        descricao: { type: String, required: false },
+        inicio: { type: Date, required: true },
+        fim: Date,
+        retorno: { type: mongoose.Schema.Types.ObjectId }
     }],
     finalizado: {
-        at: {
-            type: Date
-        },
+        at: { type: Date },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'users'
         }
     },
-    retorno: {
-        type: Boolean,
-        default: false
-    }
+    retornos: [{
+        inicio: { type: Date, required: true },
+        motivo: { type: String, required: true },
+        fim: { type: Date },
+    }]
 });
 
 module.exports = mongoose.model('fichas', fichaSchema);
