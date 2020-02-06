@@ -14,7 +14,7 @@ const searchFichaValidation = (data) => {
         search: Joi.string().optional().allow('',null),
         index: Joi.number(),
         size: Joi.number(),
-        ativas: Joi.string().valid('0', '1').optional()
+        ativas: Joi.string().valid('0', '1', '2').optional()
     });
     return schema.validate(data);
 }

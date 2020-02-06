@@ -39,18 +39,21 @@
                     <mat-error>Selecione o veículo do cliente</mat-error>
                 </mat-form-field>
                 <div fxFlex="1 0 0" class="button-routercadcli">
-                    <button type="button" mat-button matTooltip="Redireciona para cadastro de clientes" routerLink="/cliente/cadastrar">Cadastro de clientes e veículos</button>
+                    <button type="button" mat-button matTooltip="Redireciona para cadastro de clientes"
+                        routerLink="/cliente/cadastrar">Cadastro de clientes e veículos</button>
                 </div>
             </div>
         </div>
         <div [formGroup]="entrada">
             <div fxLayout="row" fxLayout.lt-md="column">
-                <mat-form-field fxFlex>
-                    <input matInput id="dataRecepcao" [matDatepicker]="dpDataRecepcao" placeholder="Data de recepção"
-                        formControlName="dataRecepcao">
-                    <mat-datepicker-toggle matSuffix [for]="dpDataRecepcao"> </mat-datepicker-toggle>
-                    <mat-datepicker #dpDataRecepcao></mat-datepicker>
-                </mat-form-field>
+                <form [formGroup]="formDataHora">
+                    <mat-form-field fxFlex>
+                        <input matInput id="dataRecepcao" [matDatepicker]="dpDataRecepcao"
+                            placeholder="Data de recepção" formControlName="dataRecepcao">
+                        <mat-datepicker-toggle matSuffix [for]="dpDataRecepcao"> </mat-datepicker-toggle>
+                        <mat-datepicker #dpDataRecepcao></mat-datepicker>
+                    </mat-form-field>
+                </form>
                 <mat-form-field fxFlex>
                     <input matInput id="dataPrevisaoSaida" [matDatepicker]="dpDataPrevisaoSaida"
                         placeholder="Data de previsão de saída" formControlName="dataPrevisaoSaida">
@@ -91,7 +94,8 @@
             <div fxLayout="column">
                 <h4>Serviços</h4>
                 <div class="servicos" fxFlex *ngFor="let servico of servicos; let i=index">
-                    <mat-checkbox [checked]="servico.checked" [value]="servico.name" (change)="onChangeServicos($event)">{{servico.name}}</mat-checkbox>
+                    <mat-checkbox [checked]="servico.checked" [value]="servico.name"
+                        (change)="onChangeServicos($event)">{{servico.name}}</mat-checkbox>
                 </div>
             </div>
         </div>

@@ -168,15 +168,22 @@ exports.fichas = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     const getQuery = defineQuery(req.query);
     try {
-        let where = {};
+        let where;
         //Se ativas =1 (true), exibe apenas fichas que não foram finalizadas.
-        if (req.query.ativas == 1)
+        if (req.query.ativas == 0)
             where = {
                 $or: [
-                    { "finalizado.at": null },
                     { finalizado: null }
                 ]
             };
+        else if (req.query.ativas == 1)
+            where = {
+                $or: [
+                    { finalizado: {$exists:true} }
+                ]
+            };
+        else
+            where = {};
         //where.$or.push({ finalizado: { $exists: false } });
         const fichas = await Ficha.find(where)
             .skip(getQuery.skip)

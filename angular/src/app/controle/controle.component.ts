@@ -24,6 +24,7 @@ import { ClienteService } from '../service/cliente.service';
     ]),
   ]
 })
+
 export class ControleComponent implements OnInit, AfterViewInit {
 
   fichas = new MatTableDataSource<FichaPagination>();
@@ -32,8 +33,9 @@ export class ControleComponent implements OnInit, AfterViewInit {
   colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim'];
 
   sliderAtivas = new FormControl([true]);
+  arrLabelSliderAtivo = ['Apenas ativas', 'Apenas finalizadas', 'Todas as fichas']
   sliderAtivo = new FormControl([0]);
-  messageSliderAtivo = "Apenas ativos"
+  labelSliderAtivo = this.arrLabelSliderAtivo[this.sliderAtivo.value];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -45,8 +47,9 @@ export class ControleComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog
   ) { }
 
-  ngOnInit() { 
-    this._sliderAtivasValuechanges();
+  ngOnInit() {
+//    this._sliderAtivasValuechanges();
+    this._sliderAtivoValueChanges();
   }
 
   ngAfterViewInit() {
@@ -72,16 +75,22 @@ export class ControleComponent implements OnInit, AfterViewInit {
   private _refreshList() {
     this.loading = true;
     const getQuery = new SearchFicha();
-    getQuery.ativas = this.sliderAtivas.value ? 1 : 0;
+    getQuery.ativas = this.sliderAtivo.value;
     getQuery.pageIndex = this.paginator.pageIndex;
     getQuery.pageSize = this.paginator.pageSize;
     this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
     this.paginator.page.subscribe(res => { this._mapResultList(res) });
   }
 
-  private _sliderAtivasValuechanges(){
+  private _sliderAtivoValueChanges() {
+    this.sliderAtivo.valueChanges.subscribe(value => {
+      this.labelSliderAtivo = this.arrLabelSliderAtivo[value];
+      this._refreshList();
+    });
+  }
+/*   private _sliderAtivasValuechanges() {
     this.sliderAtivas.valueChanges.subscribe(val => {
       this._refreshList();
     })
-  }
+  } */
 }
