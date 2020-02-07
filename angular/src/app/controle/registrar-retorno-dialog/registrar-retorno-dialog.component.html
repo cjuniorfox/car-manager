@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Registro de retorno</h1>
+<p>Deseja reabrir a ficha e registrar o retorno do veículo?</p>
+<form [formGroup]="retornoForm" (ngSubmit)="onSubmit()">
+    <div [formGroup]="dataHoraRetornoForm" fxLayout="row" fxLayout.lt-md="column">
+        <mat-form-field fxFlex>
+            <input matInput formControlName="data" placeholder="Data e horário de saída" type="text"
+                [matDatepicker]="dpSaida">
+            <mat-datepicker-toggle matSuffix [for]="dpSaida"> </mat-datepicker-toggle>
+            <mat-datepicker #dpSaida></mat-datepicker>
+            <mat-error>Necessário informar data e hora</mat-error>
+        </mat-form-field>
+        <ngx-timepicker-field aria-placeholder="Hora de saída" [format]="24" [controlOnly]="true"
+            formControlName="hora">
+        </ngx-timepicker-field>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayout.lt-md="column">
+        <button fxFlex="2 0 0" mat-raised-button color="primary" [disabled]="!retornoForm.valid" type="submit">Registrar
+            retorno</button>
+        <button fxFlex mat-raised-button color="warn" type="button" (click)="onClose()">Fechar</button>
+    </div>
+    <mat-error>{{errorForm}}</mat-error>
+</form>

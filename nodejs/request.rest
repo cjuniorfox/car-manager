@@ -29,16 +29,22 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/api/cliente/buscar
-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1Nzk2NDIzNzIsImV4cCI6MTU3OTY0MjQzMn0.2YQ3ypgDjcs5e3GSniOJaVrMdz2LwL9WHt5IiOWsYYw
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODEwOTQ2NzcsImV4cCI6MTU4MTA5NTg3N30.8U3iKlaVNjNGO99lE-CBVHPwgbLTWKt4GeJt0sdqi-0
 
 ###Fichas
-GET http://localhost:3000/api/ficha/listar?ativas=1
-token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEFuc2VsbW8gTWVuZGVzIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTIzMDYzZDc5YzFmODdkMjg2OGUxYjUiLCJpYXQiOjE1ODAwNDg5MDIsImV4cCI6MTU4MDA1MDEwMn0.5GsCJDc7r8EfxynpfplikDFgKgv4TRDVLruWC0iYfX8
+GET http://localhost:3000/api/ficha/listar?ativas=0
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODEwOTQ2NzcsImV4cCI6MTU4MTA5NTg3N30.8U3iKlaVNjNGO99lE-CBVHPwgbLTWKt4GeJt0sdqi-0
 
 ###
 GET http://localhost:3000/api/ficha/5e307d134125206ca549c89a
 Content-Type: application/json
-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODA0Mjk5MjQsImV4cCI6MTU4MDQzMTEyNH0.-h3Gk_XMdux9ZmX-f-_XxvyPpNS21xWvp58x78W9WXw
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODEwODA4NjUsImV4cCI6MTU4MTA4MjA2NX0.5-fsvVawJQW42jtsWUlQr8-eeEZG9MNqXr1SH8BC1Xw
+
+### Deletar serviço
+DELETE http://localhost:3000/api/ficha/5e3822ee48d8fe1a866e7d4c/5e3d649cfa75f0d3ca755719
+Content-Type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODExMDEzOTksImV4cCI6MTU4MTEwMjU5OX0.nJMl28eP5pS5uzoQG0KDq5-RbMoMOwxctQTm4-i4jfQ
+
 
 ###
 POST http://localhost:3000/api/ficha/5e3021d55cd8591b807ab698/add-servico
@@ -51,6 +57,14 @@ token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJu
     "box": "Detalhamento",
     "descricao": "Detalhamento da lavagem",
     "inicio": "2019-01-28T10:30"
+}
+### Finalizar
+POST http://localhost:3000/api/ficha/5e3c6eefd9496f2750ea5198/finalizar
+Content-Type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODEwODA4NjUsImV4cCI6MTU4MTA4MjA2NX0.5-fsvVawJQW42jtsWUlQr8-eeEZG9MNqXr1SH8BC1Xw
+
+{
+    "at":"2020-02-07T09:45"
 }
 ###
 

@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 const { ServicoEnum, BoxEnum, SetorEnum } = require('../enum/setorServicoBoxEnum');
 
+const finalizado = new mongoose.Schema({
+    at: { type: Date },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    }
+});
+
 const fichaSchema = new mongoose.Schema({
     created: {
         user: {
@@ -88,17 +96,15 @@ const fichaSchema = new mongoose.Schema({
         fim: Date,
         retorno: { type: mongoose.Schema.Types.ObjectId }
     }],
-    finalizado: {
-        at: { type: Date },
-        user: {
+    finalizado: finalizado,
+    retornos: [{
+        finalizacaoAnterior: finalizado,
+        data: { type: Date, required: true, default: Date.now() },
+        user : {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'users'
-        }
-    },
-    retornos: [{
-        inicio: { type: Date, required: true },
-        motivo: { type: String, required: true },
-        fim: { type: Date },
+        },
+        justificativa: { type: String, required: true }
     }]
 });
 

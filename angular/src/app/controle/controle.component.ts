@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { FichaService } from '../service/ficha.service';
 import { MatSort } from '@angular/material/sort';
@@ -6,11 +6,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SearchFicha } from '../model/searchFicha.model';
 import { FichaPagination } from '../interface/ficha-pagination';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Ficha } from '../interface/ficha';
 import { SaidaDialogComponent } from './saida-dialog/saida-dialog.component';
 import { FormControl } from '@angular/forms';
 import { ClienteService } from '../service/cliente.service';
+import { Servico } from '../interface/ficha-servico';
+import { RegistrarRetornoDialogComponent } from './registrar-retorno-dialog/registrar-retorno-dialog.component';
 
 @Component({
   selector: 'app-controle',
@@ -32,7 +34,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
   colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo', 'finalizado'];
   colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim', 'actions'];
 
-//  sliderAtivas = new FormControl([true]);
+  //  sliderAtivas = new FormControl([true]);
   arrLabelSliderAtivo = ['Apenas ativas', 'Apenas finalizadas', 'Todas as fichas']
   sliderAtivo = new FormControl([0]);
   labelSliderAtivo = this.arrLabelSliderAtivo[this.sliderAtivo.value];
@@ -48,7 +50,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-//    this._sliderAtivasValuechanges();
+    //    this._sliderAtivasValuechanges();
     this._sliderAtivoValueChanges();
   }
 
@@ -62,8 +64,39 @@ export class ControleComponent implements OnInit, AfterViewInit {
       if (res === true) {
         this._refreshList();
       }
+    });
+  }
+  registrarRetornoDialog(ficha: Ficha) {
+    const dialogRef = this.dialog.open(RegistrarRetornoDialogComponent, { data: ficha });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res === true) {
+        this._refreshList();
+      }
+    });
+  }
+
+  deletarServicoDialog(servico: Servico) {
+    const dialogRef = this.dialog.open(
+      DeletarServicoDialogComponent,
+      { data: servico, width: '350px' }
+    );
+    dialogRef.afterClosed().subscribe(res => {
+      if (res === true) {
+        this._refreshList();
+      }
     })
   }
+
+  alterarSaidaDialog(ficha: Ficha) {
+    const dialogRef = this.dialog.open(AlterarSaidaDialogComponent, { width: '350px' });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res === true) {
+        this.saidaDialog(ficha);
+      }
+    })
+  }
+
+
 
   private _mapResultList(res: any) {
     this.fichas.data = res.data;
@@ -88,9 +121,35 @@ export class ControleComponent implements OnInit, AfterViewInit {
       this._refreshList();
     });
   }
-/*   private _sliderAtivasValuechanges() {
-    this.sliderAtivas.valueChanges.subscribe(val => {
-      this._refreshList();
-    })
-  } */
+}
+
+@Component({
+  selector: 'alterar-saida-dialog',
+  templateUrl: './alterar-saida-dialog.html',
+})
+export class AlterarSaidaDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<AlterarSaidaDialogComponent>) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+@Component({
+  selector: 'deletar-servico-dialog',
+  templateUrl: './deletar-servico-dialog.html',
+})
+export class DeletarServicoDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<DeletarServicoDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Servico) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

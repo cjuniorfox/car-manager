@@ -13,14 +13,16 @@ import { SearchFicha } from '../model/searchFicha.model';
 })
 export class FichaService {
 
+
   endpoint = environment.baseUrl + '/ficha';
   routes = {
     ficha: this.endpoint + '/',
     saveFichaEntrada: this.endpoint + '/entrada',
     listar: this.endpoint + '/listar',
     addServico: this.endpoint + '/{_id}/add-servico',
-    putServico: this.endpoint+ '/{_id}/{servico._id}',
-    finalizar: this.endpoint + '/{_id}/finalizar'
+    putServico: this.endpoint + '/{_id}/{servico._id}',
+    finalizar: this.endpoint + '/{_id}/finalizar',
+    registrarRetorno: this.endpoint + '/{_id}/registrar-retorno'
   };
 
   constructor(
@@ -74,10 +76,16 @@ export class FichaService {
     return this._http.post(url, postRequest)
   }
 
+  public registrarRetorno(id: string, retorno: { data: Date }): Observable<any> {
+    const url = this.routes.registrarRetorno.replace('{_id}', id);
+    return this._http.post(url, retorno)
+    throw new Error("Method not implemented.");
+  }
+
   public putServico(id: string, servicoId: string, body: any) {
     const postRequest = removeEmpty(body);
-    const url = this.routes.putServico.replace('{_id}', id).replace('{servico._id}',servicoId);
-    return this._http.put(url,postRequest);
+    const url = this.routes.putServico.replace('{_id}', id).replace('{servico._id}', servicoId);
+    return this._http.put(url, postRequest);
   }
 
 

@@ -1,8 +1,11 @@
 import { User } from './user';
 import { Cliente, ClienteVeiculo } from './cliente';
-import { ServicoEnum } from '../enum/servico.enum';
-import { SetorEnum } from '../enum/setor.enum';
-import { BoxEnum } from '../enum/box.enum';
+import { Servico } from './ficha-servico';
+
+export interface finalizado {
+    at: Date,
+    user: User
+}
 
 export interface Ficha {
     created: {
@@ -13,7 +16,7 @@ export interface Ficha {
     osSistema: Number,
     osInterna: Number,
     dadosCadastrais: {
-        cliente :  Cliente, 
+        cliente: Cliente,
         clienteVeiculo: ClienteVeiculo
     },
     entrada: {
@@ -33,20 +36,12 @@ export interface Ficha {
         },
         servicosPrevisao: [string]
     },
-    servicos: [{
-        user: User,
-        servico: ServicoEnum,
-        setor: SetorEnum,
-        box: BoxEnum,
-        descricao: string,
-        inicio: Date,
-        fim: Date,
-        id: string
+    servicos: [Servico],
+    finalizado: finalizado,
+    retornos: [{
+        finalizacaoAnterior: finalizado,
+        data: Date,
+        justificativa: string
     }],
-    finalizado: {
-        at: Date,
-        user: User
-    },
-    retorno: boolean,
     _id: string
 };

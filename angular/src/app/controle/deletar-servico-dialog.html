@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Remover serviço</h1>
+<div mat-dialog-content>
+  <p>Deseja remover o serviço: <br> {{data.descricao}} <br> iniciado: {{data.inicio | date}} ?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>Sim</button>
+  <button mat-button (click)="onNoClick()">Não</button>
+</div>

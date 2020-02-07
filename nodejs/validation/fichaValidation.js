@@ -47,7 +47,13 @@ const fichaPatchValidation = (data) => {
 
 const fichaFinalizadoValidation = (data) => {
     const schema = Joi.object({
-        at: Joi.date().optional()
+        at: Joi.date()
+    });
+    return schema.validate(data);
+}
+const fichaRetornoValidation = (data) => {
+    const schema = Joi.object({
+        date: Joi.date()
     });
     return schema.validate(data);
 }
@@ -87,5 +93,6 @@ module.exports = {
     fichaPatchValidation,
     fichaIdValidation,
     fichaIdServicoValidation,
-    fichaFinalizadoValidation
+    fichaFinalizadoValidation,
+    fichaRetornoValidation
 }

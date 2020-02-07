@@ -4,7 +4,8 @@ const { fichaPostValidation,
     fichaServicoValidation,
     fichaIdValidation,
     fichaIdServicoValidation,
-    fichaFinalizadoValidation } = require('../validation/fichaValidation');
+    fichaFinalizadoValidation,
+    fichaRetornoValidation } = require('../validation/fichaValidation');
 const { searchFichaValidation } = require('../validation/searchValidation');
 const defineRequest = require('../util/defineRequest');
 const defineQuery = require('../util/defineQuery');
@@ -98,10 +99,49 @@ exports.finalizar = async (req, res) => {
     if (typeof paramError !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
     try {
+        const find = {
+            "$and": [
+                { _id: req.params._id },
+                {
+                    "servicos._id":
+                        { "$exists": false }
+                }
+            ]
+        };
+        //Verifica se é tentativa de finalizar ficha sem serviços.
+        if (await Ficha.findOne(find))
+            return res.status(400).send({ "message": "Para finalizar a ficha, necessário executar ao menos um serviço." });
         const finalizado = { ...req.body, ...{ user: req.user._id } };
         const update = { finalizado: finalizado };
         return await _updateFicha(req.params._id, res, update)
-    } catch (err) { res.status(500).send(err); }
+    } catch (err) { console.error(err); res.status(500).send(err); }
+}
+
+exports.registrarRetorno = async (req, res) => {
+    const { error } = fichaRetornoValidation(req.body);
+    const { paramError } = fichaIdValidation(req.params);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    if (typeof paramError !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    try {
+        //Só é possível reabrir fichas já finalizadas
+        const ficha = await Ficha.findById(req.params._id);
+        if (!ficha)
+            return res.status(404).send({ "message": "ficha não encontrada" });
+        if (!ficha.finalizado)
+            return res.status(400).send({ "message": "Impossível reabrir ficha não finalizada" });
+        const reabertura = {
+            finalizacaoAnterior: ficha.finalizado,
+            data: req.body.data,
+            user : req.user._id,
+            justificativa: req.body.justificativa
+        }
+        ficha.reaberturas.push(reabertura);
+        delete ficha.finalizado;
+        await ficha.save();
+        return res.status(201).send({"message":"ficha atualizada com ẽxito"})
+    } catch (err) { console.error(err); res.status(500).send(err); }
 }
 
 exports.addServico = async (req, res) => {
@@ -112,7 +152,7 @@ exports.addServico = async (req, res) => {
         const update = { "$push": { "servicos": body } };
         const ficha = await Ficha.findOneAndUpdate({ "_id": req.params._id }, update);
         if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
-        res.send(
+        res.status(201).send(
             {
                 "message": "Servico adicionado a ficha com sucesso.",
                 "request": defineRequest('GET', 'ficha', ficha._id)
@@ -137,6 +177,31 @@ exports.putServico = async (req, res) => {
     } catch (err) { res.status(500).send(err); }
 }
 
+exports.deleteServico = async (req, res) => {
+    const { error } = fichaIdServicoValidation(req.params);
+    if (typeof error !== 'undefined')
+        return res.status(400).send({ message: error.details[0].message });
+    try {
+        console.log(req.params);
+        const find = {
+            _id: req.params._id,
+            servicos: { $elemMatch: { _id: req.params.servico_id } }
+        }
+        const update = {
+            "$pull": { servicos: { _id: req.params.servico_id } }
+        }
+        //Verifica se a ficha foi finalizada. Caso afirmativo, impede de deletar o serviço.
+        ficha = await Ficha.findOne(find);
+        if (ficha && ficha.finalizado && ficha.finalizado.at) {
+            return res.status(400).send({ "message": "Não é possível remover serviço de ficha finalizada" })
+        }
+        if (!await Ficha.findOneAndUpdate(find, update)) {
+            return res.status(404).send({ "message": "Ficha ou serviço não encontrado" })
+        }
+        return res.send({ "message": "Serviço removido com êxito" })
+    } catch (err) { res.status(500).send(err); console.error(err) }
+}
+
 exports.get = async (req, res) => {
     const { error } = fichaIdValidation(req.params);
     if (typeof error !== 'undefined')
@@ -144,11 +209,11 @@ exports.get = async (req, res) => {
     try {
         let filter = { _id: req.params._id };
         let options;
-        if (req.params.servico_id){
+        if (req.params.servico_id) {
             filter = { ...filter, ...{ servicos: { $elemMatch: { _id: req.params.servico_id } } } }
             options = { 'servicos.$': 1 }
         }
-        const ficha = await Ficha.findOne(filter)
+        const ficha = await Ficha.findOne(filter, options)
             .populate({
                 'path': 'dadosCadastrais.cliente',
                 'populate': {
@@ -193,24 +258,24 @@ exports.fichas = async (req, res) => {
         return res.status(400).send({ message: error.details[0].message });
     const getQuery = defineQuery(req.query);
     try {
-        let where;
+        let find;
         //Se ativas =1 (true), exibe apenas fichas que não foram finalizadas.
         if (req.query.ativas == 0)
-            where = {
+            find = {
                 $or: [
                     { finalizado: null }
                 ]
             };
         else if (req.query.ativas == 1)
-            where = {
+            find = {
                 $or: [
                     { finalizado: { $exists: true } }
                 ]
             };
         else
-            where = {};
+            find = {};
         //where.$or.push({ finalizado: { $exists: false } });
-        const fichas = await Ficha.find(where)
+        const fichas = await Ficha.find(find)
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)
             .populate({ path: 'created.user', select: 'name username admin' })
@@ -228,7 +293,7 @@ exports.fichas = async (req, res) => {
             ficha.servicos.sort((m1, m2) => m1.inicio - m2.inicio)
             return ficha;
         })
-        const qtFichas = await Ficha.countDocuments(where);
+        const qtFichas = await Ficha.countDocuments(find);
         res.send(paginationRequest(fichas, qtFichas, getQuery, 'ficha'));
     } catch (err) { res.status(500).send(err); console.error(err) }
 }

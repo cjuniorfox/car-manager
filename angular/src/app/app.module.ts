@@ -22,7 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { HomeComponent } from './home/home.component';
-import { ControleComponent } from './controle/controle.component';
+import { ControleComponent, AlterarSaidaDialogComponent, DeletarServicoDialogComponent } from './controle/controle.component';
 import { EntradaComponent } from './controle/entrada/entrada.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
@@ -55,7 +55,8 @@ import { AndamentoComponent } from './controle/andamento/andamento.component';
 import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
-import { MatSliderModule } from '@angular/material/slider'; 
+import { MatSliderModule } from '@angular/material/slider';
+import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,10 @@ import { MatSliderModule } from '@angular/material/slider';
     LoginComponent,
     AndamentoComponent,
     FichaServicoComponent,
-    SaidaDialogComponent
+    SaidaDialogComponent,
+    AlterarSaidaDialogComponent,
+    DeletarServicoDialogComponent,
+    RegistrarRetornoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -125,7 +129,10 @@ import { MatSliderModule } from '@angular/material/slider';
     AtualizarCarroComponent,
     DeletarCarroComponent,
     DeletarClienteComponent,
-    SaidaDialogComponent
+    SaidaDialogComponent,
+    AlterarSaidaDialogComponent,
+    DeletarServicoDialogComponent,
+    RegistrarRetornoDialogComponent
   ]
 })
 export class AppModule { }

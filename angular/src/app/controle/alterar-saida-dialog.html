@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Alterar finalização de ficha</h1>
+<div mat-dialog-content>
+  <p>Esta ficha já foi finalizada anteriormente. Avançando, você sobrescreverá os dados de finalização. Deseja continuar?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Sim</button>
+  <button mat-button (click)="onNoClick()">Não</button>
+</div>
