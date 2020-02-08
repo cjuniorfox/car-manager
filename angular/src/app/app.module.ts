@@ -56,6 +56,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-di
     MatTooltipModule,
     MatSlideToggleModule,
     NgxMaterialTimepickerModule,
-    MatSliderModule
+    MatSliderModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent],

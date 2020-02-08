@@ -69,11 +69,11 @@
                 </ngx-timepicker-field>
             </div>
         </form>
+        <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
         <div fxLayout="row" class="submit-button">
             <button fxFlex mat-raised-button color="primary" type="submit"
                 [disabled]="!formServico.valid || !formDataHora.valid">Salvar</button>
         </div>
-        <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
     </form>
 </div>
 <!-- <pre>

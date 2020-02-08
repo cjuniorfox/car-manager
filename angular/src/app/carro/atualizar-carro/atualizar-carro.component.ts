@@ -3,8 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
 import { FormControl, Validators } from '@angular/forms';
 import { CarroService } from 'src/app/service/carro.service';
-import { CarroModeloModel } from 'src/app/interface/carro-model';
-import { handleSubmitError } from 'src/app/util/handleSubmitError';
+import { getErrorMessage } from 'src/app/util/getErrorMessage';
 
 @Component({
   selector: 'app-atualizar-carro',
@@ -70,7 +69,7 @@ export class AtualizarCarroComponent implements OnInit {
             this.requestError = null;
             this.dialogRef.close(true);
           }, err => {
-            this.requestError = handleSubmitError(err);
+            this.requestError = getErrorMessage(err);
           });
         break;
       }

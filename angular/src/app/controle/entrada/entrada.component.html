@@ -104,10 +104,10 @@
                 </div>
             </div>
         </div>
+        <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
         <div fxLayout="row" class="submit-button">
             <button mat-raised-button type="submit" color="primary" fxFlex [disabled]="!fichaForm.valid">Salvar</button>
         </div>
-        <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
     </form>
 </div>
 <!-- <pre>{{fichaForm.value | json}}</pre>

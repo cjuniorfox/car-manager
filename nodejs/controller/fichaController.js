@@ -130,7 +130,7 @@ exports.registrarRetorno = async (req, res) => {
         if (!ficha)
             return res.status(404).send({ "message": "ficha não encontrada" });
         if (!ficha.finalizado)
-            return res.status(400).send({ "message": "Impossível reabrir ficha não finalizada" });
+            return res.status(400).send({ "message": "Não é possível reabrir ficha não finalizada" });
 
         const retorno = Object.assign({
             finalizacaoAnterior: ficha.finalizado,
@@ -148,6 +148,9 @@ exports.addServico = async (req, res) => {
     try {
         const body = req.body;
         Object.assign(body, { user: req.user._id });
+        //Não pode-se adicionar um serviço a uma ficha finalizada.
+        if ((await Ficha.findById(req.params._id)).finalizado)
+            return res.status(400).send({ "message": "Não é possível incluir serviço a uma ficha finalizada" })
         const update = { "$push": { "servicos": body } };
         const ficha = await Ficha.findOneAndUpdate({ "_id": req.params._id }, update);
         if (!ficha) return res.status(404).send({ "message": "Ficha não encontrada" });
@@ -251,7 +254,7 @@ exports.get = async (req, res) => {
     } catch (err) { res.status(500).send(err); console.error(err) }
 }
 
-exports.fichas = async (req, res) => {
+exports.list = async (req, res) => {
     const { error } = searchFichaValidation(req.query);
     if (typeof error !== 'undefined')
         return res.status(400).send({ message: error.details[0].message });
@@ -275,6 +278,7 @@ exports.fichas = async (req, res) => {
             find = {};
         //where.$or.push({ finalizado: { $exists: false } });
         const fichas = await Ficha.find(find)
+            .sort({ "entrada.dataRecepcao": -1 })
             .skip(getQuery.skip)
             .limit(getQuery.pageSize)
             .populate({ path: 'created.user', select: 'name username admin' })

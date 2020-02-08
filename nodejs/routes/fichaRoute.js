@@ -3,7 +3,7 @@ const FichaController = require('../controller/fichaController');
 const VerifyToken = require('../util/verifyToken');
 
 router.post('/entrada', VerifyToken.allowUser, FichaController.post);
-router.get('/listar', VerifyToken.allowUser, FichaController.fichas);
+router.get('/listar', VerifyToken.allowUser, FichaController.list);
 router.post('/:_id/add-servico', VerifyToken.allowUser, FichaController.addServico);
 router.post('/:_id/finalizar', VerifyToken.allowUser, FichaController.finalizar);
 router.post('/:_id/registrar-retorno', VerifyToken.allowUser, FichaController.registrarRetorno);

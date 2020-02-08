@@ -143,7 +143,7 @@ export class EntradaComponent implements OnInit {
       this.fichaService.saveFichaEntrada(this.fichaForm.value)
         .subscribe(
           () => this.router.navigate(['/controle']),
-          err => getErrorMessage(err)
+          err => {this.errorForm = getErrorMessage(err)}
         );
     }
   }

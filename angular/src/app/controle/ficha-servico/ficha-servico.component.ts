@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FichaService } from 'src/app/service/ficha.service';
-import { handleSubmitError } from 'src/app/util/handleSubmitError';
 import { ServicoEnum } from 'src/app/enum/servico.enum';
 import { SetorEnum } from 'src/app/enum/setor.enum';
 import { BoxEnum } from 'src/app/enum/box.enum';
@@ -11,6 +10,7 @@ import { Ficha } from 'src/app/interface/ficha';
 import { Observable } from 'rxjs';
 import { observablDatetime } from 'src/app/util/observableDatetime';
 import { fillDateAndTimeWithDatetime } from 'src/app/util/fillDateAndTimeWithDatetime';
+import { getErrorMessage } from 'src/app/util/getErrorMessage';
 
 @Component({
   selector: 'app-servico',
@@ -42,7 +42,7 @@ export class FichaServicoComponent implements OnInit {
   get horaFim() { return this.formDataHora.get('hrFim') as FormControl };
   get dataHoraFim() { return this.formServico.get('fim') as FormControl };
 
-  requestError: string = '';
+  errorForm: string = '';
 
   ficha$: Observable<Ficha>;
   fichaId: string;
@@ -92,7 +92,7 @@ export class FichaServicoComponent implements OnInit {
     submit.subscribe(res => {
       this.location.back();
     }, err => {
-      this.requestError = handleSubmitError(err);
+      this.errorForm = getErrorMessage(err);
     });
   }
 
