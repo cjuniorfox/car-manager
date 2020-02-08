@@ -8,5 +8,7 @@ proxy:
     - node-car-manager
 angular-car-manager:
   image: angular-car-manager
+  ports:
+    - 8080:3001
 node-car-manager:
   image: node-car-manager
