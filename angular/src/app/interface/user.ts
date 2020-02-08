@@ -8,6 +8,7 @@ export interface User {
 
 export interface LoggedUser {
     name: string,
+    username: string,
     admin: boolean
 }
 

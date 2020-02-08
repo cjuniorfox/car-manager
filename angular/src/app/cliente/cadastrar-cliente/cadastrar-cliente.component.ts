@@ -48,7 +48,7 @@ export class CadastrarClienteComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private location: Location,
+    public location: Location,
     private clienteService: ClienteService,
     private carroService: CarroService
   ) { }

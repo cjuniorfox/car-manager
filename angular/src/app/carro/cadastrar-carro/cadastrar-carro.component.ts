@@ -20,7 +20,7 @@ export class CadastrarCarroComponent implements OnInit {
   requestError:string;
 
   constructor(
-    private location: Location,
+    public location: Location,
     private carroService: CarroService,
     private formBuilder: FormBuilder
   ) {

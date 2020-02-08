@@ -17,7 +17,7 @@
                 <mat-form-field fxFlex="2 0 0">
                     <input matInput placeholder="Documento" formControlName="documento" id="documento">
                     <mat-error>
-                        {{getErrorMessage(cadCliForm.controls.documento.controls.documento)}}
+                        {{getErrorMessage(cadCliForm.get('documento').get('documento'))}}
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field fxFlex>
@@ -28,7 +28,7 @@
                         <mat-option value="CNH">CNH</mat-option>
                     </mat-select>
                     <mat-error>
-                        {{getErrorMessage(cadCliForm.controls.documento.controls.tipoDocumento)}}
+                        {{getErrorMessage(cadCliForm.get('documento').get('tipoDocumento'))}}
                     </mat-error>
                 </mat-form-field>
             </div>

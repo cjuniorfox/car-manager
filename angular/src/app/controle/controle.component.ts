@@ -30,6 +30,8 @@ import { tap, switchMap } from 'rxjs/operators';
 
 export class ControleComponent implements OnInit, AfterViewInit {
 
+  expandedElement: Ficha | null;
+
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
   colunasFicha = ['osSistema','dataRecepcao', 'cliente', 'placa', 'carro', 'carroModelo', 'status'];
@@ -46,7 +48,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fichaService: FichaService,
-    private clienteService: ClienteService,
+    public clienteService: ClienteService,
     public dialog: MatDialog
   ) { }
 

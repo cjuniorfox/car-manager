@@ -68,7 +68,7 @@ export class EntradaComponent implements OnInit {
   fichaId: string;
 
   constructor(
-    private location: Location,
+    public location: Location,
     private router: Router,
     private clienteService: ClienteService,
     private fichaService: FichaService,

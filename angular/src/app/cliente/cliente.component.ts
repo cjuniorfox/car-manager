@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { DeletarClienteComponent } from './deletar-cliente/deletar-cliente.component';
 import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
+import { Cliente } from '../interface/cliente';
 
 @Component({
   selector: 'app-cliente',
@@ -32,11 +33,13 @@ export class ClienteComponent implements OnInit, AfterViewInit {
     buscar: ['']
   });;
 
+  expandedElement: Cliente | null;
+
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private clienteService: ClienteService,
+    public clienteService: ClienteService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog
   ) { }

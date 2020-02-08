@@ -52,7 +52,7 @@ export class FichaServicoComponent implements OnInit {
     private fb: FormBuilder,
     private fichaService: FichaService,
     private route: ActivatedRoute,
-    private location: Location
+    public location: Location
   ) { }
 
   get servicos() {
