@@ -12,11 +12,13 @@ import { getErrorMessage } from 'src/app/util/getErrorMessage';
 import { observablDatetime } from 'src/app/util/observableDatetime';
 import { fillDateAndTimeWithDatetime } from 'src/app/util/fillDateAndTimeWithDatetime';
 
+
 @Component({
   selector: 'app-entrada',
   templateUrl: './entrada.component.html',
   styleUrls: ['./entrada.component.scss']
 })
+
 export class EntradaComponent implements OnInit {
 
   veiculos = [];

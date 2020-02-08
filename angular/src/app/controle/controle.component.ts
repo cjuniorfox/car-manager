@@ -32,7 +32,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
-  colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo', 'status'];
+  colunasFicha = ['osSistema','dataRecepcao', 'cliente', 'placa', 'carro', 'carroModelo', 'status'];
   colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim', 'actions'];
 
   //  sliderAtivas = new FormControl([true]);
@@ -118,7 +118,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
     this.loading = true;
     const getQuery = this._getQuery();
     this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
-//    this.paginator.page.subscribe(res => { this._mapResultList(res) });
+    //    this.paginator.page.subscribe(res => { this._mapResultList(res) });
   }
 
   private _getQuery() {

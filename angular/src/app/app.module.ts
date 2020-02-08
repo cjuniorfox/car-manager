@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,6 +57,11 @@ import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.compo
 import { MatSliderModule } from '@angular/material/slider';
 import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
 import { MatBadgeModule } from '@angular/material/badge';
+import { registerLocaleData } from '@angular/common';
+import localeBr from '@angular/common/locales/br';
+
+
+registerLocaleData(localeBr, 'pt-BR');
 
 @NgModule({
   declarations: [
@@ -119,11 +124,11 @@ import { MatBadgeModule } from '@angular/material/badge';
     NgxMaskModule.forRoot(),
     MatTooltipModule,
     MatSlideToggleModule,
-    NgxMaterialTimepickerModule,
+    NgxMaterialTimepickerModule.setLocale('pt-BR'),
     MatSliderModule,
     MatBadgeModule
   ],
-  providers: [],
+  providers: [ { provide: LOCALE_ID, useValue: "pt-BR" }],
   bootstrap: [AppComponent],
   entryComponents: [
     AtualizarCarroComponent,
