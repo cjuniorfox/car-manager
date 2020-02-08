@@ -33,7 +33,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
   colunasFicha = ['osSistema','dataRecepcao', 'cliente', 'placa', 'carro', 'carroModelo', 'status'];
-  colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim', 'actions'];
+  colunasServico = [ 'inicio', 'servico', 'setor', 'fim','funcionario', 'actions'];
 
   //  sliderAtivas = new FormControl([true]);
   arrLabelSliderAtivo = ['Apenas ativas', 'Apenas finalizadas', 'Todas as fichas']

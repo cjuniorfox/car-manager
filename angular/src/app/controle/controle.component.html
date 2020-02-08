@@ -32,13 +32,13 @@
     </ng-container>
 
     <ng-container matColumnDef="dataRecepcao">
-        <th mat-header-cell *matHeaderCellDef>Data recepção</th>
-        <td mat-cell *matCellDef="let f"> {{f.entrada.dataRecepcao | date: 'short'}}</td>
+        <th mat-header-cell *matHeaderCellDef fxHide.lt-md>Data recepção</th>
+        <td mat-cell *matCellDef="let f" fxHide.lt-md> {{f.entrada.dataRecepcao | date: 'short'}}</td>
     </ng-container>
 
     <ng-container matColumnDef="cliente">
-        <th mat-header-cell *matHeaderCellDef>Cliente</th>
-        <td mat-cell *matCellDef="let f"> {{f.dadosCadastrais.cliente.nome}}</td>
+        <th mat-header-cell *matHeaderCellDef fxHide.lt-md>Cliente</th>
+        <td mat-cell *matCellDef="let f" fxHide.lt-md> {{f.dadosCadastrais.cliente.nome}}</td>
     </ng-container>
 
     <ng-container matColumnDef="placa">
@@ -47,8 +47,8 @@
     </ng-container>
 
     <ng-container matColumnDef="carro">
-        <th mat-header-cell *matHeaderCellDef>Carro</th>
-        <td mat-cell *matCellDef="let f"> {{f.dadosCadastrais.clienteVeiculo.carro.marca}}</td>
+        <th mat-header-cell *matHeaderCellDef fxHide.lt-md>Carro</th>
+        <td mat-cell *matCellDef="let f" fxHide.lt-md> {{f.dadosCadastrais.clienteVeiculo.carro.marca}}</td>
     </ng-container>
 
     <ng-container matColumnDef="carroModelo">
@@ -146,21 +146,21 @@
                     </mat-card>
                 </div>
                 <div class="detalhe-ficha" fxLayout="row" fxLayout.lt-md="column">
-                    <mat-card class="secao" *ngIf="f.servicos.length > 0" fxFlex="4 0 0">
+                    <mat-card class="secao" *ngIf="f.servicos.length > 0" fxFlex>
                         <mat-card-header>
                             <h3>Serviços realizados</h3>
                         </mat-card-header>
                         <mat-card-content>
                             <table mat-table [dataSource]="f.servicos">
                                 <ng-container matColumnDef="inicio">
-                                    <th mat-header-cell *matHeaderCellDef>Inicio</th>
-                                    <td mat-cell *matCellDef="let servico">
+                                    <th mat-header-cell *matHeaderCellDef fxHide.lt-md>Inicio</th>
+                                    <td mat-cell *matCellDef="let servico" fxHide.lt-md>
                                         {{servico.inicio | date : 'short'}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="fim">
-                                    <th mat-header-cell *matHeaderCellDef>Fim</th>
-                                    <td mat-cell *matCellDef="let servico">
+                                    <th mat-header-cell *matHeaderCellDef fxHide.lt-md>Fim</th>
+                                    <td mat-cell *matCellDef="let servico" fxHide.lt-md>
                                         {{servico.fim | date : 'short'}}
                                     </td>
                                 </ng-container>
@@ -171,8 +171,8 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="setor">
-                                    <th mat-header-cell *matHeaderCellDef>Setor</th>
-                                    <td mat-cell *matCellDef="let servico">
+                                    <th mat-header-cell *matHeaderCellDef fxHide.lt-md>Setor</th>
+                                    <td mat-cell *matCellDef="let servico" fxHide.lt-md>
                                         {{servico.setor}}
                                     </td>
                                 </ng-container>
@@ -202,31 +202,25 @@
                     </mat-card>
                 </div>
                 <div class="acoes-ficha" fxLayout="row" fxLayout.lt-md="column">
-                    <div fxFlex>
-                        <button [disabled]="f.finalizado" mat-raised-button color="accent"
-                            [routerLink]="f._id+'/add-servico'">
-                            <mat-icon>local_car_wash</mat-icon> Registrar serviço
-                        </button>
-                    </div>
-                    <div fxFlex>
-                        <button mat-raised-button [routerLink]="f._id">
-                            <mat-icon>edit</mat-icon>Alterar dados de receção
-                        </button>
-                    </div>
-                    <div fxFlex>
-                        <button *ngIf="f.finalizado" mat-raised-button color="accent" (click)="alterarSaidaDialog(f)">
-                            <mat-icon>arrow_downward</mat-icon> Alterar saída
-                        </button>
-                        <button *ngIf="!f.finalizado" [disabled]="f.servicos.length == 0" mat-raised-button
-                            color="primary" (click)="saidaDialog(f)">
-                            <mat-icon>arrow_downward</mat-icon> Registrar saída
-                        </button>
-                    </div>
-                    <div fxFlex *ngIf="f.finalizado">
-                        <button mat-raised-button color="warn" (click)="registrarRetornoDialog(f)">
-                            <mat-icon>repeat</mat-icon> Registrar retorno
-                        </button>
-                    </div>
+                    <button fxFlex [disabled]="f.finalizado" mat-raised-button color="accent"
+                        [routerLink]="f._id+'/add-servico'">
+                        <mat-icon>local_car_wash</mat-icon> Registrar serviço
+                    </button>
+                    <button fxFlex mat-raised-button [routerLink]="f._id">
+                        <mat-icon>edit</mat-icon>Alterar ficha
+                    </button>
+                    <button fxFlex *ngIf="f.finalizado" mat-raised-button color="accent"
+                        (click)="alterarSaidaDialog(f)">
+                        <mat-icon>arrow_downward</mat-icon> Alterar saída
+                    </button>
+                    <button fxFlex *ngIf="!f.finalizado" [disabled]="f.servicos.length == 0" mat-raised-button
+                        color="primary" (click)="saidaDialog(f)">
+                        <mat-icon>arrow_downward</mat-icon> Registrar saída
+                    </button>
+                    <button *ngIf="f.finalizado" fxFlex mat-raised-button color="warn"
+                        (click)="registrarRetornoDialog(f)">
+                        <mat-icon>repeat</mat-icon> Registrar retorno
+                    </button>
                 </div>
             </div>
         </td>
