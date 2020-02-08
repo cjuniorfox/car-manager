@@ -29,7 +29,7 @@ export class EntradaComponent implements OnInit {
       clienteVeiculo: ['', Validators.required]
     }),
     entrada: this.fb.group({
-      dataRecepcao: ['', Validators.required],
+      dataRecepcao: [new Date(), Validators.required],
       dataPrevisaoSaida: [''],
       avariaExterior: this.fb.group({
         existente: [false],

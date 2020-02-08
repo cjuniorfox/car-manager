@@ -76,7 +76,7 @@ export class FichaService {
     return this._http.post(url, postRequest)
   }
 
-  public registrarRetorno(id: string, retorno: { data: Date }): Observable<any> {
+  public registrarRetorno(id: string, retorno: { data: Date, justificativa: string }): Observable<any> {
     const url = this.routes.registrarRetorno.replace('{_id}', id);
     return this._http.post(url, retorno)
     throw new Error("Method not implemented.");

@@ -32,8 +32,8 @@ GET http://localhost:3000/api/cliente/buscar
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODEwOTQ2NzcsImV4cCI6MTU4MTA5NTg3N30.8U3iKlaVNjNGO99lE-CBVHPwgbLTWKt4GeJt0sdqi-0
 
 ###Fichas
-GET http://localhost:3000/api/ficha/listar?ativas=0
-token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODEwOTQ2NzcsImV4cCI6MTU4MTA5NTg3N30.8U3iKlaVNjNGO99lE-CBVHPwgbLTWKt4GeJt0sdqi-0
+GET http://localhost:3000/api/ficha/listar?search=&index=1&size=5&ativas=2
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODExMjI3NzIsImV4cCI6MTU4MTEyMzk3Mn0.deIT2blEE2WlcZbe8C3yUjIR8mYyC1_HviXKfp5jbqY
 
 ###
 GET http://localhost:3000/api/ficha/5e307d134125206ca549c89a
@@ -66,8 +66,16 @@ token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJu
 {
     "at":"2020-02-07T09:45"
 }
-###
+### Registrar retorno
+POST http://localhost:3000/api/ficha/5e3822ee48d8fe1a866e7d4c/registrar-retorno
+Content-Type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODExMjA0ODQsImV4cCI6MTU4MTEyMTY4NH0.3NGUAf8aWFmz6jxyM8OHfM2ZbCNeRW9BsErAoeOs7yg
 
+{
+    "data": "2020-02-08T00:05:34.742Z",
+    "justificativa" : "Carro sujo"
+}
+###
 POST http://localhost:3000/api/ficha/update-veiculo/5e3021d55cd8591b807ab698
 Content-Type: application/json
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqdW5pb3Jmb3giLCJuYW1lIjoiQ2FybG9zIEp1bmlvciIsImFkbWluIjp0cnVlLCJfaWQiOiI1ZTJmMzYyZmFiZTJjZDFkNjUxZWE2OTgiLCJpYXQiOjE1ODAyMjAwNzEsImV4cCI6MTU4MDIyMTI3MX0.A0TRYSGxbLdUTMMHZzMHnpvaDpfLasZ2s9c3aHNfTd4

@@ -131,16 +131,15 @@ exports.registrarRetorno = async (req, res) => {
             return res.status(404).send({ "message": "ficha não encontrada" });
         if (!ficha.finalizado)
             return res.status(400).send({ "message": "Impossível reabrir ficha não finalizada" });
-        const reabertura = {
+
+        const retorno = Object.assign({
             finalizacaoAnterior: ficha.finalizado,
-            data: req.body.data,
-            user : req.user._id,
-            justificativa: req.body.justificativa
-        }
-        ficha.reaberturas.push(reabertura);
-        delete ficha.finalizado;
+            user: req.user._id
+        }, req.body);
+        ficha.retornos.push(retorno);
+        ficha.finalizado = undefined;
         await ficha.save();
-        return res.status(201).send({"message":"ficha atualizada com ẽxito"})
+        return res.status(201).send({ "message": "ficha atualizada com ẽxito" })
     } catch (err) { console.error(err); res.status(500).send(err); }
 }
 

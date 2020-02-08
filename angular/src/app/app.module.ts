@@ -51,8 +51,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
 import { LoginComponent } from './user/login/login.component';
 import { InterceptorModule } from './modules/interceptor/interceptor.module';
-import { AndamentoComponent } from './controle/andamento/andamento.component';
-import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
+import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
 import { MatSliderModule } from '@angular/material/slider';
@@ -78,7 +77,6 @@ import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-di
     AtualizarCarroComponent,
     DeletarClienteComponent,
     LoginComponent,
-    AndamentoComponent,
     FichaServicoComponent,
     SaidaDialogComponent,
     AlterarSaidaDialogComponent,

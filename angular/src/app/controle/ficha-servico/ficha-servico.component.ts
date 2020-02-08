@@ -8,14 +8,14 @@ import { BoxEnum } from 'src/app/enum/box.enum';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Ficha } from 'src/app/interface/ficha';
-import { Observable, merge } from 'rxjs';
+import { Observable } from 'rxjs';
 import { observablDatetime } from 'src/app/util/observableDatetime';
 import { fillDateAndTimeWithDatetime } from 'src/app/util/fillDateAndTimeWithDatetime';
 
 @Component({
   selector: 'app-servico',
-  templateUrl: './fichaServico.component.html',
-  styleUrls: ['./fichaServico.component.scss']
+  templateUrl: './ficha-servico.component.html',
+  styleUrls: ['./ficha-servico.component.scss']
 })
 export class FichaServicoComponent implements OnInit {
 

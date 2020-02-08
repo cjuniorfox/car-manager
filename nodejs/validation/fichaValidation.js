@@ -53,7 +53,8 @@ const fichaFinalizadoValidation = (data) => {
 }
 const fichaRetornoValidation = (data) => {
     const schema = Joi.object({
-        date: Joi.date()
+        data: Joi.date().required(),
+        justificativa: Joi.string().required()
     });
     return schema.validate(data);
 }

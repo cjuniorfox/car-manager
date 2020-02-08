@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@ang
 import { Location } from '@angular/common';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap, filter, map } from 'rxjs/operators';
 import { CarroService } from 'src/app/service/carro.service';
 import { CarroMarcaModelo } from 'src/app/interface/carro-marca-modelo';
 import { ActivatedRoute } from '@angular/router';
@@ -151,13 +151,14 @@ export class CadastrarClienteComponent implements OnInit {
 
   private _getCliente() {
     this.route.params.pipe(
-      switchMap(params => {
+      map(params => {
         if (params['id']) {
           this.cliente_idUpdate = params['id'];
-          return of(params['id']);
+          return params['id'];
         } else
-          return null;
+          return false;
       }),
+      filter(idCliente => idCliente != false),
       switchMap(idCliente => this.clienteService.get(idCliente))
     ).subscribe(cliente => {
       this.cadCliForm.patchValue(cliente);

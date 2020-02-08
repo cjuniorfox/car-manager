@@ -13,10 +13,18 @@
             formControlName="hora">
         </ngx-timepicker-field>
     </div>
+    <div fxLayout="column">
+        <mat-form-field fxFlex>
+            <textarea placeholder="Justificativa" matInput name="justificativa" id="justificativa"
+                formControlName="justificativa" rows="2"></textarea>
+        </mat-form-field>
+    </div>
+    <div fxLayout="column">
+        <mat-error *ngIf="errorForm">{{errorForm}}</mat-error>
+    </div>
     <div mat-dialog-actions fxLayout="row" fxLayout.lt-md="column">
         <button fxFlex="2 0 0" mat-raised-button color="primary" [disabled]="!retornoForm.valid" type="submit">Registrar
             retorno</button>
         <button fxFlex mat-raised-button color="warn" type="button" (click)="onClose()">Fechar</button>
     </div>
-    <mat-error>{{errorForm}}</mat-error>
 </form>

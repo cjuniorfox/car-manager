@@ -18,7 +18,8 @@ export class RegistrarRetornoDialogComponent implements OnInit {
   errorForm = "";
 
   retornoForm = this.fb.group({
-    data: [new Date(), Validators.required]
+    data: [new Date(), Validators.required],
+    justificativa: ['', Validators.required]
   });
 
   dataHoraRetornoForm = this.fb.group({
@@ -42,7 +43,7 @@ export class RegistrarRetornoDialogComponent implements OnInit {
       if (hora.value && data.value && hora.value != 'Invalid DateTime') {
         dataHora.setValue(addTimeToDate(hora.value, data.value));
       }
-    })
+    });
   }
 
   onClose(): void {
@@ -50,12 +51,12 @@ export class RegistrarRetornoDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.fichaService.finalizar(this.ficha._id, this.dataHoraRetornoForm.get('saida').value)
-    .subscribe(()=>{
-      this.dialogRef.close(true)
-    },err=>{
-      this.errorForm = getErrorMessage(err);
-    });
+    this.fichaService.registrarRetorno(this.ficha._id, this.retornoForm.value)
+      .subscribe(() => {
+        this.dialogRef.close(true)
+      }, err => {
+        this.errorForm = getErrorMessage(err);
+      });
   }
 
 }

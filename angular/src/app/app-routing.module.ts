@@ -14,8 +14,7 @@ import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar
 import { LoginComponent } from './user/login/login.component';
 import { UserGuard } from './guards/user.guard';
 import { LoginGuard } from './guards/login.guard';
-import { AndamentoComponent } from './controle/andamento/andamento.component';
-import { FichaServicoComponent } from './controle/fichaServico/fichaServico.component';
+import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, canActivate: [UserGuard] },
@@ -25,7 +24,6 @@ const routes: Routes = [
   { path: "controle/:_id", component: EntradaComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/:servico_id", component: FichaServicoComponent, canActivate: [UserGuard] },
-  { path: "controle/andamento", component: AndamentoComponent, canActivate: [UserGuard] },
   { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
   { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
   { path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },

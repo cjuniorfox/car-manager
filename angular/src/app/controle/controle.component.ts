@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 import { ClienteService } from '../service/cliente.service';
 import { Servico } from '../interface/ficha-servico';
 import { RegistrarRetornoDialogComponent } from './registrar-retorno-dialog/registrar-retorno-dialog.component';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-controle',
@@ -31,7 +32,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   fichas = new MatTableDataSource<FichaPagination>();
   loading = true;
-  colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo', 'finalizado'];
+  colunasFicha = ['osInterna', 'osSistema', 'cliente', 'placa', 'carro', 'carroModelo', 'status'];
   colunasServico = ['funcionario', 'inicio', 'servico', 'setor', 'fim', 'actions'];
 
   //  sliderAtivas = new FormControl([true]);
@@ -56,6 +57,7 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this._refreshList();
+    this._paginationObserver();
   }
 
   saidaDialog(ficha: Ficha) {
@@ -96,7 +98,14 @@ export class ControleComponent implements OnInit, AfterViewInit {
     })
   }
 
-
+  private _paginationObserver() {
+    this.paginator.page.pipe(
+      tap(() => this.loading = true),
+      switchMap(() =>
+        this.fichaService.listar(this._getQuery())
+      )
+    ).subscribe(res => { this._mapResultList(res) });
+  }
 
   private _mapResultList(res: any) {
     this.fichas.data = res.data;
@@ -107,12 +116,17 @@ export class ControleComponent implements OnInit, AfterViewInit {
 
   private _refreshList() {
     this.loading = true;
+    const getQuery = this._getQuery();
+    this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
+//    this.paginator.page.subscribe(res => { this._mapResultList(res) });
+  }
+
+  private _getQuery() {
     const getQuery = new SearchFicha();
     getQuery.ativas = this.sliderAtivo.value;
     getQuery.pageIndex = this.paginator.pageIndex;
     getQuery.pageSize = this.paginator.pageSize;
-    this.fichaService.listar(getQuery).subscribe(res => { this._mapResultList(res) });
-    this.paginator.page.subscribe(res => { this._mapResultList(res) });
+    return getQuery;
   }
 
   private _sliderAtivoValueChanges() {
