@@ -5,9 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
+//import { FlexLayoutModule } from '@angular/flex-layout';
+//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+//import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 import { registerLocaleData } from '@angular/common';
 import localeBr from '@angular/common/locales/br';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,27 +19,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
+//import { MatFormFieldModule } from '@angular/material/form-field';
+//import { MatInputModule } from '@angular/material/input';
+//import { MatDatepickerModule } from '@angular/material/datepicker';
+//import { MatCheckboxModule } from '@angular/material/checkbox';
+//import { MatSelectModule } from '@angular/material/select';
+//import { MatTableModule } from '@angular/material/table';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatChipsModule } from '@angular/material/chips';
+//import { MatSortModule } from '@angular/material/sort';
+//import { MatPaginatorModule } from '@angular/material/paginator';
+//import { MatDialogModule } from '@angular/material/dialog';
+//import { MatAutocompleteModule } from '@angular/material/autocomplete';
+//import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+//import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatBadgeModule } from '@angular/material/badge';
+//import { MatTooltipModule } from '@angular/material/tooltip';
+//import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+//import { MatSliderModule } from '@angular/material/slider';
+//import { MatBadgeModule } from '@angular/material/badge';
 import { NgxMaskModule } from 'ngx-mask';
 import { InterceptorModule } from './modules/interceptor/interceptor.module';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+//import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 //import { LoginComponent } from './user/login/login.component';
 //import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
@@ -94,12 +94,12 @@ registerLocaleData(localeBr, 'pt-BR');
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
+    //FormsModule,
+    //ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-    FlexLayoutModule,
+    //FlexLayoutModule,
     HttpClientModule,
     InterceptorModule,
     MatToolbarModule,
@@ -109,27 +109,26 @@ registerLocaleData(localeBr, 'pt-BR');
     MatListModule,
     MatMenuModule,
     MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
+    //MatFormFieldModule,
+    //MatInputModule,
+    //MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
+    //MatCheckboxModule,
+    //MatSelectModule,
+    //MatTableModule,
+    //MatSortModule,
+    //MatPaginatorModule,
+    //MatDialogModule,
+    //MatAutocompleteModule,
+    //MatProgressSpinnerModule,
+    //MatChipsModule,
     MatCardModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MatSliderModule,
-    MatBadgeModule,
-    NgxMaterialTimepickerModule.setLocale('pt-BR'),
-
-    RxReactiveFormsModule,
+    //MatTooltipModule,
+    //MatSlideToggleModule,
+    //MatSliderModule,
+    //MatBadgeModule,
+    //NgxMaterialTimepickerModule.setLocale('pt-BR'),
+    //RxReactiveFormsModule,
     NgxMaskModule.forRoot()
   ],
   providers: [ { provide: LOCALE_ID, useValue: "pt-BR" }],
