@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "car-manager"
+  "defaultProject": "car-manager",
+  "cli": {
+    "analytics": "5ca0f3e0-a22a-4c5c-b15f-8373a7ca795d"
+  }
 }
