@@ -1,3 +1,7 @@
+//import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
+//import { LoginComponent } from './user/login/login.component';
+//import { LoginGuard } from './guards/login.guard';
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -6,17 +10,30 @@ import { EntradaComponent } from './controle/entrada/entrada.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
-import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
-import { ClienteComponent } from './cliente/cliente.component';
+//import { ClienteComponent } from './cliente/cliente.component';
 import { CarroComponent } from './carro/carro.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
-import { LoginComponent } from './user/login/login.component';
 import { UserGuard } from './guards/user.guard';
-import { LoginGuard } from './guards/login.guard';
 import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 
 const routes: Routes = [
+  {
+    path: "user/login",
+    loadChildren: () => import('./user/login/login.module').then(m => m.LoginModule)
+  },
+  {
+    path: "relatorio-gerencial",
+    loadChildren: () => import('./relatorio-gerencial/relatorio-genrencial.module').then(m => m.RelatorioGerencialModule)
+  },
+  {
+    path: "cliente",
+    loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule)
+  },
+//  { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
+//  { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
+//  { path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },
+ 
   { path: "", component: HomeComponent, canActivate: [UserGuard] },
   { path: "controle", component: ControleComponent },
   { path: "controle/entrada", component: EntradaComponent, canActivate: [UserGuard] },
@@ -24,16 +41,12 @@ const routes: Routes = [
   { path: "controle/:_id", component: EntradaComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/:servico_id", component: FichaServicoComponent, canActivate: [UserGuard] },
-  { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
-  { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
-  { path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },
   { path: "carro", component: CarroComponent, canActivate: [UserGuard] },
-  { path: "carro/cadastrar", component: CadastrarCarroComponent , canActivate: [UserGuard]},
+  { path: "carro/cadastrar", component: CadastrarCarroComponent, canActivate: [UserGuard] },
   { path: "opcao", component: OpcaoComponent, canActivate: [UserGuard] },
-  { path: "opcao/usuario", component: UsuarioComponent , canActivate: [UserGuard]},
+  { path: "opcao/usuario", component: UsuarioComponent, canActivate: [UserGuard] },
   { path: "opcao/permissao", component: PermissaoComponent, canActivate: [UserGuard] },
-  { path: "relatorio-gerencial", component: RelatorioGerencialComponent, canActivate: [UserGuard] },
-  { path: "user/login", component: LoginComponent, canActivate: [LoginGuard] },
+
   { path: "logout", component: HomeComponent }
 ];
 

@@ -6,6 +6,12 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
+import { registerLocaleData } from '@angular/common';
+import localeBr from '@angular/common/locales/br';
+import { HttpClientModule } from '@angular/common/http';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -20,8 +26,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -29,16 +33,19 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
-import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatBadgeModule } from '@angular/material/badge';
 import { NgxMaskModule } from 'ngx-mask';
 import { InterceptorModule } from './modules/interceptor/interceptor.module';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatBadgeModule } from '@angular/material/badge';
-import { registerLocaleData } from '@angular/common';
-import localeBr from '@angular/common/locales/br';
+
+//import { LoginComponent } from './user/login/login.component';
+//import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
+//import { ClienteComponent } from './cliente/cliente.component';
+//import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
+//import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
 
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
@@ -48,18 +55,12 @@ import { EntradaComponent } from './controle/entrada/entrada.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
-import { RelatorioGerencialComponent } from './relatorio-gerencial/relatorio-gerencial.component';
 import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
-import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
-import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
-import { ClienteComponent } from './cliente/cliente.component';
-import { CarroComponent } from './carro/carro.component';
-import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
-import { LoginComponent } from './user/login/login.component';
 import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
+import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
+import { CarroComponent } from './carro/carro.component';
+
 import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
-
-
 import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
 
@@ -77,15 +78,15 @@ registerLocaleData(localeBr, 'pt-BR');
     OpcaoComponent,
     UsuarioComponent,
     PermissaoComponent,
-    RelatorioGerencialComponent,
-    ClienteComponent,
+    //LoginComponent,
+    //RelatorioGerencialComponent,
+    //ClienteComponent,
+    //CadastrarClienteComponent,
+    //DeletarClienteComponent,
     CarroComponent,
-    DeletarCarroComponent,
     CadastrarCarroComponent,
-    CadastrarClienteComponent,
+    DeletarCarroComponent,
     AtualizarCarroComponent,
-    DeletarClienteComponent,
-    LoginComponent,
     FichaServicoComponent,
     SaidaDialogComponent,
     AlterarSaidaDialogComponent,
@@ -123,20 +124,21 @@ registerLocaleData(localeBr, 'pt-BR');
     MatProgressSpinnerModule,
     MatChipsModule,
     MatCardModule,
-    RxReactiveFormsModule,
-    NgxMaskModule.forRoot(),
     MatTooltipModule,
     MatSlideToggleModule,
-    NgxMaterialTimepickerModule.setLocale('pt-BR'),
     MatSliderModule,
-    MatBadgeModule
+    MatBadgeModule,
+    NgxMaterialTimepickerModule.setLocale('pt-BR'),
+
+    RxReactiveFormsModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [ { provide: LOCALE_ID, useValue: "pt-BR" }],
   bootstrap: [AppComponent],
   entryComponents: [
+  //  DeletarClienteComponent,
     AtualizarCarroComponent,
-    DeletarCarroComponent,
-    DeletarClienteComponent,
+    DeletarCarroComponent, 
     SaidaDialogComponent,
     AlterarSaidaDialogComponent,
     DeletarServicoDialogComponent,
