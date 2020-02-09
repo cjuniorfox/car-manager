@@ -5,17 +5,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ControleComponent } from './controle/controle.component';
-import { EntradaComponent } from './controle/entrada/entrada.component';
-import { OpcaoComponent } from './opcao/opcao.component';
-import { UsuarioComponent } from './opcao/usuario/usuario.component';
-import { PermissaoComponent } from './opcao/permissao/permissao.component';
+//import { ControleComponent } from './controle/controle.component';
+//import { EntradaComponent } from './controle/entrada/entrada.component';
+//import { OpcaoComponent } from './opcao/opcao.component';
+//import { UsuarioComponent } from './opcao/usuario/usuario.component';
+//import { PermissaoComponent } from './opcao/permissao/permissao.component';
 //import { ClienteComponent } from './cliente/cliente.component';
 //import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
 //import { CarroComponent } from './carro/carro.component';
 //import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { UserGuard } from './guards/user.guard';
-import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
+//import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 
 const routes: Routes = [
   {
@@ -38,6 +38,11 @@ const routes: Routes = [
     path: "controle",
     loadChildren: () => import('./controle/controle.module').then(m => m.ControleModule)
   },
+  {
+    path: "opcao",
+    loadChildren: () => import('./opcao/opcao.module').then(m => m.OpcaoModule)
+  },
+  { path: "", component: HomeComponent, canActivate: [UserGuard] }
   //{ path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
   //{ path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
   //{ path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },
@@ -49,11 +54,10 @@ const routes: Routes = [
   //{ path: "controle/:_id", component: EntradaComponent, canActivate: [UserGuard] },
   //{ path: "controle/:_id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
   //{ path: "controle/:_id/:servico_id", component: FichaServicoComponent, canActivate: [UserGuard] },
-  { path: "", component: HomeComponent, canActivate: [UserGuard] },
-  { path: "opcao", component: OpcaoComponent, canActivate: [UserGuard] },
-  { path: "opcao/usuario", component: UsuarioComponent, canActivate: [UserGuard] },
-  { path: "opcao/permissao", component: PermissaoComponent, canActivate: [UserGuard] },
-  { path: "logout", component: HomeComponent }
+  //{ path: "opcao", component: OpcaoComponent, canActivate: [UserGuard] },
+  //{ path: "opcao/usuario", component: UsuarioComponent, canActivate: [UserGuard] },
+  //{ path: "opcao/permissao", component: PermissaoComponent, canActivate: [UserGuard] },
+  //{ path: "logout", component: HomeComponent }
 ];
 
 @NgModule({

@@ -55,13 +55,13 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 //import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
 //import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 //import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
+//import { OpcaoComponent } from './opcao/opcao.component';
+//import { UsuarioComponent } from './opcao/usuario/usuario.component';
+//import { PermissaoComponent } from './opcao/permissao/permissao.component';
 
 import { MainNavComponent } from './main-nav/main-nav.component';
-import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from './main-nav/breadcrumb/breadcrumb.component';
 import { HomeComponent } from './home/home.component';
-import { OpcaoComponent } from './opcao/opcao.component';
-import { UsuarioComponent } from './opcao/usuario/usuario.component';
-import { PermissaoComponent } from './opcao/permissao/permissao.component';
 
 
 registerLocaleData(localeBr, 'pt-BR');
@@ -76,9 +76,9 @@ registerLocaleData(localeBr, 'pt-BR');
     //AlterarSaidaDialogComponent,
     //DeletarServicoDialogComponent,
     //EntradaComponent,
-    OpcaoComponent,
-    UsuarioComponent,
-    PermissaoComponent,
+    //OpcaoComponent,
+    //UsuarioComponent,
+    //PermissaoComponent,
     //LoginComponent,
     //RelatorioGerencialComponent,
     //ClienteComponent,
