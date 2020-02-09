@@ -18,7 +18,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { CadastrarClienteComponent } from './cadastrar-cliente/cadastrar-cliente.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
-import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -26,7 +25,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   imports: [
     CommonModule,
     ClienteRoutingModule,
-    HttpClientModule,
     FlexLayoutModule,
     MatIconModule,
     MatTableModule,

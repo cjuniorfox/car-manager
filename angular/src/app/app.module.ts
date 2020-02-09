@@ -46,7 +46,10 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 //import { ClienteComponent } from './cliente/cliente.component';
 //import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
 //import { DeletarClienteComponent } from './cliente/deletar-cliente/deletar-cliente.component';
-
+//import { CarroComponent } from './carro/carro.component';
+//import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
+//import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
+//import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ControleComponent, AlterarSaidaDialogComponent, DeletarServicoDialogComponent } from './controle/controle.component';
@@ -55,11 +58,6 @@ import { EntradaComponent } from './controle/entrada/entrada.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
-import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
-import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
-import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
-import { CarroComponent } from './carro/carro.component';
-
 import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
 import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
@@ -83,10 +81,10 @@ registerLocaleData(localeBr, 'pt-BR');
     //ClienteComponent,
     //CadastrarClienteComponent,
     //DeletarClienteComponent,
-    CarroComponent,
-    CadastrarCarroComponent,
-    DeletarCarroComponent,
-    AtualizarCarroComponent,
+    //CarroComponent,
+    //CadastrarCarroComponent,
+    //DeletarCarroComponent,
+    //AtualizarCarroComponent,
     FichaServicoComponent,
     SaidaDialogComponent,
     AlterarSaidaDialogComponent,
@@ -136,9 +134,9 @@ registerLocaleData(localeBr, 'pt-BR');
   providers: [ { provide: LOCALE_ID, useValue: "pt-BR" }],
   bootstrap: [AppComponent],
   entryComponents: [
-  //  DeletarClienteComponent,
-    AtualizarCarroComponent,
-    DeletarCarroComponent, 
+    //DeletarClienteComponent,
+    //AtualizarCarroComponent,
+    //DeletarCarroComponent, 
     SaidaDialogComponent,
     AlterarSaidaDialogComponent,
     DeletarServicoDialogComponent,

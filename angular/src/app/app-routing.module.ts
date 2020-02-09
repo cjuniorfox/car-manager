@@ -11,9 +11,9 @@ import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
 //import { ClienteComponent } from './cliente/cliente.component';
-import { CarroComponent } from './carro/carro.component';
-import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
-import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
+//import { CadastrarClienteComponent } from './cliente/cadastrar-cliente/cadastrar-cliente.component';
+//import { CarroComponent } from './carro/carro.component';
+//import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 import { UserGuard } from './guards/user.guard';
 import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
 
@@ -30,10 +30,15 @@ const routes: Routes = [
     path: "cliente",
     loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule)
   },
-//  { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
-//  { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
-//  { path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },
- 
+  {
+    path: "carro",
+    loadChildren: () => import('./carro/carro.module').then(m => m.CarroModule)
+  },
+  //  { path: "cliente", component: ClienteComponent, canActivate: [UserGuard] },
+  //  { path: "cliente/cadastrar", component: CadastrarClienteComponent, canActivate: [UserGuard] },
+  //  { path: "cliente/:id", component: CadastrarClienteComponent, canActivate: [UserGuard] },
+  //  { path: "carro", component: CarroComponent, canActivate: [UserGuard] },
+  //  { path: "carro/cadastrar", component: CadastrarCarroComponent, canActivate: [UserGuard] },
   { path: "", component: HomeComponent, canActivate: [UserGuard] },
   { path: "controle", component: ControleComponent },
   { path: "controle/entrada", component: EntradaComponent, canActivate: [UserGuard] },
@@ -41,8 +46,7 @@ const routes: Routes = [
   { path: "controle/:_id", component: EntradaComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/add-servico", component: FichaServicoComponent, canActivate: [UserGuard] },
   { path: "controle/:_id/:servico_id", component: FichaServicoComponent, canActivate: [UserGuard] },
-  { path: "carro", component: CarroComponent, canActivate: [UserGuard] },
-  { path: "carro/cadastrar", component: CadastrarCarroComponent, canActivate: [UserGuard] },
+
   { path: "opcao", component: OpcaoComponent, canActivate: [UserGuard] },
   { path: "opcao/usuario", component: UsuarioComponent, canActivate: [UserGuard] },
   { path: "opcao/permissao", component: PermissaoComponent, canActivate: [UserGuard] },
