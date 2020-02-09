@@ -50,17 +50,18 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 //import { CadastrarCarroComponent } from './carro/cadastrar-carro/cadastrar-carro.component';
 //import { DeletarCarroComponent } from './carro/deletar-carro/deletar-carro.component';
 //import { AtualizarCarroComponent } from './carro/atualizar-carro/atualizar-carro.component';
+//import { ControleComponent, AlterarSaidaDialogComponent, DeletarServicoDialogComponent } from './controle/controle.component';
+//import { EntradaComponent } from './controle/entrada/entrada.component';
+//import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
+//import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
+//import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
+
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { ControleComponent, AlterarSaidaDialogComponent, DeletarServicoDialogComponent } from './controle/controle.component';
 import { HomeComponent } from './home/home.component';
-import { EntradaComponent } from './controle/entrada/entrada.component';
 import { OpcaoComponent } from './opcao/opcao.component';
 import { UsuarioComponent } from './opcao/usuario/usuario.component';
 import { PermissaoComponent } from './opcao/permissao/permissao.component';
-import { SaidaDialogComponent } from './controle/saida-dialog/saida-dialog.component';
-import { FichaServicoComponent } from './controle/ficha-servico/ficha-servico.component';
-import { RegistrarRetornoDialogComponent } from './controle/registrar-retorno-dialog/registrar-retorno-dialog.component';
 
 
 registerLocaleData(localeBr, 'pt-BR');
@@ -71,8 +72,10 @@ registerLocaleData(localeBr, 'pt-BR');
     MainNavComponent,
     BreadcrumbComponent,
     HomeComponent,
-    ControleComponent,
-    EntradaComponent,
+    //ControleComponent,
+    //AlterarSaidaDialogComponent,
+    //DeletarServicoDialogComponent,
+    //EntradaComponent,
     OpcaoComponent,
     UsuarioComponent,
     PermissaoComponent,
@@ -85,11 +88,9 @@ registerLocaleData(localeBr, 'pt-BR');
     //CadastrarCarroComponent,
     //DeletarCarroComponent,
     //AtualizarCarroComponent,
-    FichaServicoComponent,
-    SaidaDialogComponent,
-    AlterarSaidaDialogComponent,
-    DeletarServicoDialogComponent,
-    RegistrarRetornoDialogComponent
+    //FichaServicoComponent,
+    //SaidaDialogComponent,
+    //RegistrarRetornoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -137,10 +138,10 @@ registerLocaleData(localeBr, 'pt-BR');
     //DeletarClienteComponent,
     //AtualizarCarroComponent,
     //DeletarCarroComponent, 
-    SaidaDialogComponent,
-    AlterarSaidaDialogComponent,
-    DeletarServicoDialogComponent,
-    RegistrarRetornoDialogComponent
+    //SaidaDialogComponent,
+    //AlterarSaidaDialogComponent,
+    //DeletarServicoDialogComponent,
+    //RegistrarRetornoDialogComponent
   ]
 })
 export class AppModule { }
